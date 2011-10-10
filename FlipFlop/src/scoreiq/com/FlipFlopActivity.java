@@ -13,6 +13,5 @@ public class FlipFlopActivity extends Activity {
         
         view = new FlipFlopView(this);
         setContentView(view);
-        
     }
 }

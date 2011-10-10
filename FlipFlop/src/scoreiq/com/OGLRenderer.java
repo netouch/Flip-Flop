@@ -7,7 +7,7 @@ import android.opengl.GLU;
 
 public class OGLRenderer implements Renderer {
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		//TODO: fix this later
+		//TODO: fix 800x400 later
 		GLU.gluOrtho2D(gl, 0, 800, 0, 400);
 		// Set the background color to black ( rgba ).
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.5f);
