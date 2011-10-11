@@ -68,8 +68,6 @@ public class Mesh implements IMesh{
 	}
 	
 	public void draw(GL10 gl) {
-	    	update();
-		
 			// Counter-clockwise winding.
 			gl.glFrontFace(GL10.GL_CCW);
 			// Enable face culling.
@@ -125,8 +123,7 @@ public class Mesh implements IMesh{
 			gl.glDisable(GL10.GL_CULL_FACE);
   }
 	
-	public void update(){
-		
+	public void update(long msecElapsed){
 	};
 	
 	public void setVertices(float[] vertices){

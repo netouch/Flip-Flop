@@ -4,8 +4,24 @@ import android.opengl.GLSurfaceView.Renderer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLU;
+import java.util.Date;
 
 public class OGLRenderer implements Renderer {
+	Date date;
+	long prevTime = 0;
+	long curTime = 0;
+	
+	IMesh root = null;
+	
+	public OGLRenderer(){
+		date = new Date();
+		prevTime = curTime = date.getTime();
+	}
+	
+	public void setDrawing(IMesh m_root){
+		root = m_root;
+	}
+	
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		//TODO: fix 800x400 later
 		GLU.gluOrtho2D(gl, 0, 800, 0, 400);
@@ -24,12 +40,20 @@ public class OGLRenderer implements Renderer {
 	}
 
 	public void onDrawFrame(GL10 gl) {
+		curTime = date.getTime();
+		
 		// Clears the screen and depth buffer.
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity();
 
 		// Draw.
+		if(root!=null){
+			root.update(curTime - prevTime);
+			root.draw(gl);
+		}
+		
+		prevTime = curTime;
 	}
 
 	public void onSurfaceChanged(GL10 gl, int width, int height) {

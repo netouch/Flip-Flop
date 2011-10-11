@@ -8,19 +8,21 @@ public class MeshGroup extends Mesh {
 	
 	@Override
 	public void draw(GL10 gl){
-	    update();
-	    
 		gl.glPushMatrix();
-	    gl.glTranslatef(x, y, z);
-	    gl.glRotatef(rx, 1, 0, 0);
-	    gl.glRotatef(ry, 0, 1, 0);
-	    gl.glRotatef(rz, 0, 0, 1);
+	    multiplyMatricies(gl);
 		
 		int num = mChildren.size();
 		for(int i=0;i<num;i++){
 			mChildren.get(i).draw(gl);
 		}
 		gl.glPopMatrix();
+	}
+	
+	private void multiplyMatricies(GL10 gl){
+		gl.glTranslatef(x, y, z);
+	    gl.glRotatef(rx, 1, 0, 0);
+	    gl.glRotatef(ry, 0, 1, 0);
+	    gl.glRotatef(rz, 0, 0, 1);
 	}
 	
 	public boolean addMesh(Mesh object){

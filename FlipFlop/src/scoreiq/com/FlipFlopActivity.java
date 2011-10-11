@@ -14,4 +14,12 @@ public class FlipFlopActivity extends Activity {
         view = new FlipFlopView(this);
         setContentView(view);
     }
+    
+    @Override
+    public void onPause(){
+    }
+    
+    @Override
+    public void onStop(){
+    }
 }
