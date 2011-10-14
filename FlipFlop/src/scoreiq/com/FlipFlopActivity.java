@@ -22,4 +22,9 @@ public class FlipFlopActivity extends Activity {
     @Override
     public void onStop(){
     }
+    
+    @Override
+    public void onResume(){
+    	
+    }
 }
