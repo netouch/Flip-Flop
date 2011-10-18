@@ -7,15 +7,13 @@ import android.opengl.GLU;
 import java.util.Date;
 
 public class OGLRenderer implements Renderer {
-	Date date;
 	long prevTime = 0;
 	long curTime = 0;
 	
 	IMesh root = null;
 	
 	public OGLRenderer(){
-		date = new Date();
-		prevTime = curTime = date.getTime();
+		prevTime = curTime = System.currentTimeMillis();
 	}
 	
 	public void setDrawing(IMesh m_root){
@@ -40,7 +38,7 @@ public class OGLRenderer implements Renderer {
 	}
 
 	public void onDrawFrame(GL10 gl) {
-		curTime = date.getTime();
+		curTime = System.currentTimeMillis();
 		
 		// Clears the screen and depth buffer.
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
