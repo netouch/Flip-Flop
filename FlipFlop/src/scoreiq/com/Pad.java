@@ -1,10 +1,15 @@
 package scoreiq.com;
 
-public class Pad extends MeshGroup {
+public class Pad extends MeshGroup{
 	private float rxSpeed = 0;
 	private float targetRx = 0;
 	
-	public Pad(){
+	Mesh top;
+	Mesh bottom;
+	
+	public Pad(Mesh m_top, Mesh m_bottom){
+		this.addMesh(m_top);
+		this.addMesh(m_bottom);
 	}
 	
 	@Override
@@ -23,4 +28,5 @@ public class Pad extends MeshGroup {
 			rxSpeed = rxDelta/miliseconds;
 		}
 	}
+	
 }
