@@ -29,6 +29,14 @@ public class MeshGroup extends Mesh {
 		return mChildren.add(object);
 	}
 	
+	@Override
+	public void update(float secondsElapsed){
+		int num = mChildren.size();
+		for(int i=0;i<num;i++){
+			mChildren.get(i).update(secondsElapsed);
+		}
+	}
+	
 	public void clear(){
 		mChildren.clear();
 	}

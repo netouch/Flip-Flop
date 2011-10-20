@@ -123,7 +123,7 @@ public class Mesh implements IMesh{
 			gl.glDisable(GL10.GL_CULL_FACE);
   }
 	
-	public void update(long msecElapsed){
+	public void update(float secElapsed){
 	};
 	
 	public void setVertices(float[] vertices){

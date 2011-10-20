@@ -47,7 +47,7 @@ public class OGLRenderer implements Renderer {
 
 		// Draw.
 		if(root!=null){
-			root.update(curTime - prevTime);
+			root.update((float)(curTime - prevTime)/1000);
 			root.draw(gl);
 		}
 		
