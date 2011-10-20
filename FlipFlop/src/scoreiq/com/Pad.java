@@ -12,9 +12,9 @@ public class Pad extends MeshGroup{
 		if(rx<targetRx)rx+=(float)(rxSpeedPerSecond*secElapsed);
 	}
 	
-	public void Rotate(int miliseconds){
+	public void Rotate(float seconds){
 		targetRx += 90;
-		setRxSpeed(miliseconds);
+		setRxSpeed(seconds);
 	}
 
 	private void setRxSpeed(float seconds) {

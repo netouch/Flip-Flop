@@ -1,5 +1,6 @@
 package scoreiq.com;
 
+import android.R;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ public class FlipFlopActivity extends Activity {
     	Mesh tmpMesh;
     	
     	tmpMesh = builder.createMesh("top.obj");
-    	tmpMesh.loadBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.icon));
+    	//tmpMesh.loadBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.icon));
     	tmpPad.addMesh(tmpMesh);
     	tmpMesh = builder.createMesh("bottom.obj");
     	tmpPad.addMesh(tmpMesh);
