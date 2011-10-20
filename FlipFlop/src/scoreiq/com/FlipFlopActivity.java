@@ -4,6 +4,7 @@ import android.R;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 
 public class FlipFlopActivity extends Activity {
 	FlipFlopView view;
@@ -16,6 +17,7 @@ public class FlipFlopActivity extends Activity {
         createPads();
         
         setContentView(view);
+        Log.d("TEST", String.format("NEW START\nActivity created"));
     }
     
     public void createPads(){
@@ -25,13 +27,14 @@ public class FlipFlopActivity extends Activity {
     	
     	tmpMesh = builder.createMesh("pad_top.obj");
     	//tmpMesh.loadBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.icon));
+ 
     	tmpPad.addMesh(tmpMesh);
     	tmpMesh = builder.createMesh("pad_bottom.obj");
     	tmpPad.addMesh(tmpMesh);
     	
     	view.padList.addMesh(tmpPad);
     }
-    
+/*    
     @Override
     public void onPause(){
     }
@@ -44,4 +47,5 @@ public class FlipFlopActivity extends Activity {
     public void onResume(){
     	
     }
+*/
 }
