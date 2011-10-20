@@ -23,10 +23,10 @@ public class FlipFlopActivity extends Activity {
     	Pad tmpPad = new Pad();
     	Mesh tmpMesh;
     	
-    	tmpMesh = builder.createMesh("top.obj");
+    	tmpMesh = builder.createMesh("pad_top.obj");
     	//tmpMesh.loadBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.icon));
     	tmpPad.addMesh(tmpMesh);
-    	tmpMesh = builder.createMesh("bottom.obj");
+    	tmpMesh = builder.createMesh("pad_bottom.obj");
     	tmpPad.addMesh(tmpMesh);
     	
     	view.padList.addMesh(tmpPad);

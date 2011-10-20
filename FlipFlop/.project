@@ -30,4 +30,16 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>assets/pad_bottom.obj</name>
+			<type>1</type>
+			<location>/home/askoropadsky/git/FlipFlop/FlipFlop/assets/pad_bottom.obj</location>
+		</link>
+		<link>
+			<name>assets/pad_top.obj</name>
+			<type>1</type>
+			<location>/home/askoropadsky/git/FlipFlop/FlipFlop/assets/pad_top.obj</location>
+		</link>
+	</linkedResources>
 </projectDescription>
