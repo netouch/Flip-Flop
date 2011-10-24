@@ -32,6 +32,8 @@ public class FlipFlopActivity extends Activity {
     	tmpMesh = builder.createMesh("pad_bottom.obj");
     	tmpPad.addMesh(tmpMesh);
     	
+    	tmpPad.Rotate(5);
+    	
     	view.padList.addMesh(tmpPad);
     }
 /*    
