@@ -1,5 +1,7 @@
 package scoreiq.com;
 
+import java.io.File;
+
 import android.R;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
@@ -30,8 +32,13 @@ public class FlipFlopActivity extends Activity {
  
     	tmpPad.addMesh(tmpMesh);
     	tmpMesh = builder.createMesh("pad_bottom.obj");
+    	
+    	//String fname=new File(getFilesDir(), "back.png").getAbsolutePath();
+    	//Log.d("TEST", String.format(fname));
+    	//tmpMesh.loadBitmap(BitmapFactory.decodeFile(fname));
     	tmpPad.addMesh(tmpMesh);
     	
+    	tmpPad.Rotate(5);
     	tmpPad.Rotate(5);
     	
     	view.padList.addMesh(tmpPad);

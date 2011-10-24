@@ -60,7 +60,7 @@ public class OGLRenderer implements Renderer {
 		}
 		
 		prevTime = curTime;
-		Log.d("TEST", String.format("Render.onDrawFrame %f", (float)((curTime - prevTime)/1000)));
+		//Log.d("TEST", String.format("Render.onDrawFrame %f", (float)((curTime - prevTime)/1000)));
 	}
 
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
