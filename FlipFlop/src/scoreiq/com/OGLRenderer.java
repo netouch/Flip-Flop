@@ -12,14 +12,14 @@ public class OGLRenderer implements Renderer {
 	long prevTime = 0;
 	long curTime = 0;
 	
-	Mesh root = null;
+	IMesh root = null;
 	
 	public OGLRenderer(){
 		prevTime = curTime = System.currentTimeMillis();
 		Log.d("TEST", String.format("Render. created"));
 	}
 	
-	public void setDrawing(Mesh m_root){
+	public void setDrawing(IMesh m_root){
 		root = m_root;
 	}
 	

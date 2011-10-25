@@ -18,6 +18,10 @@ public class MeshGroup extends Mesh {
 		gl.glPopMatrix();
 	}
 	
+	public int size(){
+		return mChildren.size();
+	}
+	
 	private void multiplyMatricies(GL10 gl){
 		gl.glTranslatef(x, y, z);
 	    gl.glRotatef(rx, 1, 0, 0);
@@ -35,6 +39,10 @@ public class MeshGroup extends Mesh {
 		for(int i=0;i<num;i++){
 			mChildren.get(i).update(secondsElapsed);
 		}
+	}
+	
+	public Mesh getByIndex(int i){
+		return mChildren.get(i);
 	}
 	
 	public void clear(){

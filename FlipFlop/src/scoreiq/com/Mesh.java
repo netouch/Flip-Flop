@@ -1,6 +1,8 @@
 package scoreiq.com;
 
 //import java.net.ContentHandler;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -8,7 +10,9 @@ import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 //import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
 //import android.content.Context;
@@ -49,6 +53,20 @@ public class Mesh implements IMesh{
 		mShouldLoadTexture = true;
 	}
 	
+	public void loadBitmapFromFile(String file, Activity act){
+		Bitmap btmp=null;
+		//btmp = .....
+		try{
+			InputStream in = act.getAssets().open(file);
+			btmp = BitmapFactory.decodeStream(in);
+		}
+		catch (IOException e){
+		}
+		
+		if(btmp!=null)
+			loadBitmap(btmp);
+	}
+	
 	private void loadTexture(GL10 gl){
 		int textures[] = new int[1];
 		Log.d("TEST", String.format("not generated texture = %d", mTextureId));
@@ -69,7 +87,7 @@ public class Mesh implements IMesh{
 	
 	public void draw(GL10 gl) {
 			// Counter-clockwise winding.
-			gl.glFrontFace(GL10.GL_CCW);
+		gl.glFrontFace(GL10.GL_CCW);
 			// Enable face culling.
 			gl.glEnable(GL10.GL_CULL_FACE);
 			// What faces to remove with the face culling.

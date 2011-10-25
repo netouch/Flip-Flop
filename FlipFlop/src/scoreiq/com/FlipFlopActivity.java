@@ -1,6 +1,7 @@
 package scoreiq.com;
 
 import java.io.File;
+import java.io.InputStream;
 
 import android.R;
 import android.app.Activity;
@@ -28,20 +29,49 @@ public class FlipFlopActivity extends Activity {
     	Mesh tmpMesh;
     	
     	tmpMesh = builder.createMesh("pad_top.obj");
-    	//tmpMesh.loadBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.icon));
- 
+    	tmpMesh.loadBitmapFromFile("fr1.png", this);
     	tmpPad.addMesh(tmpMesh);
+    	
     	tmpMesh = builder.createMesh("pad_bottom.obj");
+    	tmpMesh.loadBitmapFromFile("back.png", this);
     	
-    	//String fname=new File(getFilesDir(), "back.png").getAbsolutePath();
-    	//Log.d("TEST", String.format(fname));
-    	//tmpMesh.loadBitmap(BitmapFactory.decodeFile(fname));
     	tmpPad.addMesh(tmpMesh);
     	
-    	tmpPad.Rotate(5);
-    	tmpPad.Rotate(5);
+    	tmpPad.Rotate(180, 1);
+    	tmpPad.x += -2.2;
+ 
+    	view.addPad(tmpPad);
+    	/////////////
+    	tmpPad = new Pad();
+    	tmpMesh = builder.createMesh("pad_top.obj");
+    	tmpMesh.loadBitmapFromFile("fr2.png", this);
+    	tmpPad.addMesh(tmpMesh);
     	
-    	view.padList.addMesh(tmpPad);
+    	tmpMesh = builder.createMesh("pad_bottom.obj");
+    	tmpMesh.loadBitmapFromFile("back.png", this);
+    	
+    	tmpPad.addMesh(tmpMesh);
+    	
+    	tmpPad.Rotate(180, 1);
+    	tmpPad.x += 0;
+ 
+    	view.addPad(tmpPad);
+    	//////////////////////////
+    	tmpPad = new Pad();
+    	tmpMesh = builder.createMesh("pad_top.obj");
+    	tmpMesh.loadBitmapFromFile("fr3.png", this);
+    	tmpPad.addMesh(tmpMesh);
+    	
+    	tmpMesh = builder.createMesh("pad_bottom.obj");
+    	tmpMesh.loadBitmapFromFile("back.png", this);
+    	
+    	tmpPad.addMesh(tmpMesh);
+    	
+    	tmpPad.Rotate(180, 1);
+    	tmpPad.x += 2.2;
+ 
+    	view.addPad(tmpPad);
+    	
     }
 /*    
     @Override
