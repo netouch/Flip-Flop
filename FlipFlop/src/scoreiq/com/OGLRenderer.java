@@ -11,6 +11,8 @@ import java.util.Date;
 public class OGLRenderer implements Renderer {
 	long prevTime = 0;
 	long curTime = 0;
+	int width = 0;
+	int height = 0;
 	
 	IMesh root = null;
 	
@@ -63,7 +65,9 @@ public class OGLRenderer implements Renderer {
 		//Log.d("TEST", String.format("Render.onDrawFrame %f", (float)((curTime - prevTime)/1000)));
 	}
 
-	public void onSurfaceChanged(GL10 gl, int width, int height) {
+	public void onSurfaceChanged(GL10 gl, int iwidth, int iheight) {
+		width = iwidth;
+		height = iheight;
 		// Sets the current view port to the new size.
 		gl.glViewport(0, 0, width, height);
 		// Select the projection matrix
@@ -78,6 +82,5 @@ public class OGLRenderer implements Renderer {
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		// Reset the modelview matrix
 		gl.glLoadIdentity();
-		
 	}
 }
