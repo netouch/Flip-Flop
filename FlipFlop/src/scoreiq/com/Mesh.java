@@ -69,10 +69,10 @@ public class Mesh implements IMesh{
 	
 	private void loadTexture(GL10 gl){
 		int textures[] = new int[1];
-		Log.d("TEST", String.format("not generated texture = %d", mTextureId));
+		//Log.d("TEST", String.format("not generated texture = %d", mTextureId));
 		gl.glGenTextures(1, textures, 0);
 		mTextureId = textures[0];
-		Log.d("TEST", String.format("generated texture = %d", mTextureId));
+		//Log.d("TEST", String.format("generated texture = %d", mTextureId));
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, mTextureId);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);

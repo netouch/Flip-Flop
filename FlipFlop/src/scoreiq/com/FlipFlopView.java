@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
 
+import util.scoreiq.com.Vector3d;
+
 public class FlipFlopView extends GLSurfaceView {
-	OGLRenderer renderer;
+	private OGLRenderer renderer;
+	private Camera camera;
 	public Vector<Pad> pads = new Vector<Pad>();
 	public MeshGroup visibleGroup = new MeshGroup();
 	
@@ -23,6 +26,10 @@ public class FlipFlopView extends GLSurfaceView {
 		Log.d("TEST", String.format("View created"));
 	}
 	
+	public void setCamera(Camera cam){
+		camera = cam;
+		renderer.setCamera(camera);
+	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event){
@@ -34,8 +41,9 @@ public class FlipFlopView extends GLSurfaceView {
 		else xPos = 2;
 		
 		if(!pads.get(xPos).isFlipping())pads.get(xPos).Rotate(180,1);
-		
 		//Log.d("TEST", String.format("SomeBody touched me!"));
+		Vector3d ray = new Vector3d();
+		ray = camera.getTapRay(event.getX(), event.getY());
 		return true;
 	}
 	
@@ -43,5 +51,4 @@ public class FlipFlopView extends GLSurfaceView {
 		pads.add(mPad);
 		visibleGroup.addMesh(mPad);
 	}
-
 }

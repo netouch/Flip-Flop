@@ -15,7 +15,7 @@ import android.app.Activity;
 public class MeshBuilder {
 	Activity act = null;
 	
-	Vector<String> cont = null;
+	Vector<String> cont = new Vector<String>();
 	
 	Vector<VerticeUnit> vb = new Vector<VerticeUnit>();
 	Vector<UVCoordUnit> vtb = new Vector<UVCoordUnit>();
@@ -26,6 +26,7 @@ public class MeshBuilder {
 	}
 	
 	public Mesh createMesh(String file){
+		clearBuffers();
 		loadObjFile(file);
 		parseCont();
 		Mesh m = generateMesh();
@@ -39,7 +40,17 @@ public class MeshBuilder {
 		vtb.clear();
 		ib.clear();
 	}
-
+	
+	public void loadObjToClone(String file){
+		clearBuffers();
+		loadObjFile(file);
+		parseCont();
+	}
+	
+	public Mesh cloneMesh(){
+		return generateMesh();
+	}
+	
 	public boolean loadObjFile(String path){
 		InputStream inputStream = null;
 		BufferedReader reader = null;

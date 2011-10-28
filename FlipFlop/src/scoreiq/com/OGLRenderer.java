@@ -11,10 +11,12 @@ import java.util.Date;
 public class OGLRenderer implements Renderer {
 	long prevTime = 0;
 	long curTime = 0;
+	
 	int width = 0;
 	int height = 0;
 	
 	IMesh root = null;
+	Camera camera;
 	
 	public OGLRenderer(){
 		prevTime = curTime = System.currentTimeMillis();
@@ -25,9 +27,12 @@ public class OGLRenderer implements Renderer {
 		root = m_root;
 	}
 	
+	public void setCamera(Camera camera){
+		this.camera = camera;
+		this.camera.setScreenDimension(width , height);
+	}
+	
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		//TODO: fix 800x400 later
-		//GLU.gluOrtho2D(gl, 0, 800, 0, 400);
 		// Set the background color to black ( rgba ).
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		// Enable Smooth Shading, default not really needed.
@@ -49,13 +54,9 @@ public class OGLRenderer implements Renderer {
 		// Clears the screen and depth buffer.
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		// Replace the current matrix with the identity matrix
-		/*
-		//TODO: del this
 		gl.glLoadIdentity();
-		gl.glTranslatef(0, 0, -6.0f);
-		gl.glScalef(0.5f, 0.5f, 0.5f);
-		gl.glRotatef(90, 1, 0, 0);
-		*/
+		if(camera!=null)camera.setViewMatrix(gl);
+		
 		// Draw.
 		if(root!=null){
 			root.update((float)(curTime - prevTime)/1000);
@@ -69,6 +70,8 @@ public class OGLRenderer implements Renderer {
 	public void onSurfaceChanged(GL10 gl, int iwidth, int iheight) {
 		width = iwidth;
 		height = iheight;
+		if(camera!=null)
+			camera.setScreenDimension(width , height);
 		// Sets the current view port to the new size.
 		gl.glViewport(0, 0, width, height);
 		// Select the projection matrix
