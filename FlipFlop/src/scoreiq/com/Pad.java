@@ -5,8 +5,12 @@ import android.util.Log;
 public class Pad extends MeshGroup{
 	private float rxSpeedPerSecond = 0;
 	private float targetRx = 0;
+	private float maxX , minX;
+	private float maxY, minY;
 	
 	public Pad(){
+		maxX = maxY = 1.0f;
+		minX = minY = -1.0f;
 	}
 	
 	@Override
@@ -15,6 +19,13 @@ public class Pad extends MeshGroup{
 		
 		if(rx<targetRx)rx+=(float)(rxSpeedPerSecond*secElapsed);
 		else rxSpeedPerSecond = 0;
+	}
+	
+	public boolean isIntersect(float ix, float iy){
+		//Log.d("TEST", String.format("---Pad.isIntersect"));
+		//Log.d("TEST", String.format("--- cur pad pos is (%f;%f;%f) and picked pos is(%f;%f)", x,y,z, ix,iy));
+		if( (x+minX)<ix && ix<(x+maxX) && (y+minY)<iy && iy<(y+maxY))return true;
+		else return false;
 	}
 	
 	public void Rotate(int angle, float seconds){

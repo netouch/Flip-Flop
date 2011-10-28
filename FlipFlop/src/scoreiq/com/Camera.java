@@ -37,6 +37,10 @@ public class Camera {
 		position.add(x, y, z);
 	}
 	
+	public Vector3d getPosition(){
+		return position;
+	}
+	
 	public Vector3d getTapRay(float x, float y){
 		int viewPort[] = {0,0,screenWidth, screenHeight};
 		float eye[] = new float[4];

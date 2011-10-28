@@ -8,6 +8,7 @@ import android.app.Activity;
 import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
+import java.math.*;
 
 import util.scoreiq.com.Vector3d;
 
@@ -33,20 +34,31 @@ public class FlipFlopView extends GLSurfaceView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event){
-		//for(int i=0;i<padList.size();i++)
-		//TODO: Warning! Bidlocode!! add UIActiveArea etc...
-		int xPos=0;
-		if(event.getX()<=160)xPos=0;
-		else if(event.getX()<=320)xPos=1;
-		else xPos = 2;
-		
-		if(!pads.get(xPos).isFlipping())pads.get(xPos).Rotate(180,1);
-		//Log.d("TEST", String.format("SomeBody touched me!"));
 		Vector3d ray = new Vector3d();
 		ray = camera.getTapRay(event.getX(), event.getY());
+		rotateTapedPad(ray);
 		return true;
 	}
 	
+	private void rotateTapedPad(Vector3d ray) {
+		Log.d("TEST", String.format("Calculate touched pad-------------------"));
+		float x;
+		float y;
+		Vector3d pos = camera.getPosition();
+		float multipliyer = pos.z/Math.abs(ray.z);
+		Log.d("TEST", String.format("- multipliyer = %f", multipliyer));
+		x=pos.x + ray.x*multipliyer;
+		y=pos.y + ray.y*multipliyer;
+		Log.d("TEST", String.format("- x;y = %f;%f", x,y));
+		for(int i=0;i<pads.size();i++){
+			if(pads.get(i).isIntersect(x, y)){
+				Log.d("TEST", String.format(" --> Index of picked Pad is %d", i));
+				if(!pads.get(i).isFlipping())pads.get(i).Rotate(180, 1);
+				}
+		}
+		
+	}
+
 	public void addPad(Pad mPad){
 		pads.add(mPad);
 		visibleGroup.addMesh(mPad);
