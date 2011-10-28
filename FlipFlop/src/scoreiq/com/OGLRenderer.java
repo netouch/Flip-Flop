@@ -49,12 +49,13 @@ public class OGLRenderer implements Renderer {
 		// Clears the screen and depth buffer.
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		// Replace the current matrix with the identity matrix
+		/*
 		//TODO: del this
 		gl.glLoadIdentity();
 		gl.glTranslatef(0, 0, -6.0f);
 		gl.glScalef(0.5f, 0.5f, 0.5f);
 		gl.glRotatef(90, 1, 0, 0);
-		
+		*/
 		// Draw.
 		if(root!=null){
 			root.update((float)(curTime - prevTime)/1000);
@@ -75,12 +76,13 @@ public class OGLRenderer implements Renderer {
 		// Reset the projection matrix
 		gl.glLoadIdentity();
 		// Calculate the aspect ratio of the window
-		//TODO: fix later
 		GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 0.1f,	100.0f);
 		//GLU.gluOrtho2D(gl, 0, width, 0, height);
 		// Select the modelview matrix
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		// Reset the modelview matrix
 		gl.glLoadIdentity();
+		//TODO: move this to Camera class
+		GLU.gluLookAt(gl, 0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 	}
 }

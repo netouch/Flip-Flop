@@ -28,9 +28,9 @@ public class FlipFlopActivity extends Activity {
     
     public void createPads(){
     	MeshBuilder builder = new MeshBuilder(this);
-    	Pad tmpPad = new Pad();
     	Mesh tmpMesh;
     	
+    	Pad tmpPad = new Pad();
     	tmpMesh = builder.createMesh("pad_top.obj");
     	tmpMesh.loadBitmapFromFile("fr1.png", this);
     	tmpPad.addMesh(tmpMesh);
@@ -41,7 +41,8 @@ public class FlipFlopActivity extends Activity {
     	tmpPad.addMesh(tmpMesh);
     	
     	tmpPad.Rotate(180, 1);
-    	tmpPad.x += -2.2;
+    	tmpPad.x += -2.0;
+    	tmpPad.y += 3.0;
  
     	view.addPad(tmpPad);
     	/////////////
@@ -71,7 +72,7 @@ public class FlipFlopActivity extends Activity {
     	tmpPad.addMesh(tmpMesh);
     	
     	tmpPad.Rotate(180, 1);
-    	tmpPad.x += 2.2;
+    	tmpPad.x += 2.0;
  
     	view.addPad(tmpPad);
     	
