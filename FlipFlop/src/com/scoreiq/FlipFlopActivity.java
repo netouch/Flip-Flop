@@ -1,4 +1,4 @@
-package scoreiq.com;
+package com.scoreiq;
 
 import java.io.File;
 import java.io.InputStream;

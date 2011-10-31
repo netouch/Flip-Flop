@@ -1,4 +1,4 @@
-package scoreiq.com;
+package com.scoreiq;
 
 import java.util.Vector;
 import javax.microedition.khronos.opengles.GL10;

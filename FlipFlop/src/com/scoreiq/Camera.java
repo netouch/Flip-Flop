@@ -1,10 +1,11 @@
-package scoreiq.com;
+package com.scoreiq;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import com.scoreiq.util.Vector3d;
+
 import android.opengl.GLU;
 import android.util.Log;
-import util.scoreiq.com.Vector3d;;
 
 public class Camera {
 	private Vector3d position;

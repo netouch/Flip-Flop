@@ -1,4 +1,4 @@
-package scoreiq.com;
+package com.scoreiq;
 
 import android.opengl.GLSurfaceView.Renderer;
 import javax.microedition.khronos.egl.EGLConfig;

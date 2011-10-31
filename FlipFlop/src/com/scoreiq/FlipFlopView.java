@@ -1,4 +1,4 @@
-package scoreiq.com;
+package com.scoreiq;
 
 import android.opengl.GLSurfaceView;
 import android.util.Log;
@@ -10,7 +10,8 @@ import java.util.Stack;
 import java.util.Vector;
 import java.math.*;
 
-import util.scoreiq.com.Vector3d;
+import com.scoreiq.util.Vector3d;
+
 
 public class FlipFlopView extends GLSurfaceView {
 	private OGLRenderer renderer;

@@ -1,4 +1,4 @@
-package util.scoreiq.com;
+package com.scoreiq.util;
 
 public class Vector3d {
 	public float x;

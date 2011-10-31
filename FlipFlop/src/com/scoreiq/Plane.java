@@ -1,4 +1,4 @@
-package scoreiq.com;
+package com.scoreiq;
 
 public class Plane extends Mesh {
 	

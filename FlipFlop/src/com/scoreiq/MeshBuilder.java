@@ -1,4 +1,4 @@
-package scoreiq.com;
+package com.scoreiq;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
