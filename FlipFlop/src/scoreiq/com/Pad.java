@@ -9,8 +9,8 @@ public class Pad extends MeshGroup{
 	private float maxY, minY;
 	
 	public Pad(){
-		maxX = maxY = 1.0f;
-		minX = minY = -1.0f;
+		maxX = maxY = 1.5f;
+		minX = minY = -1.5f;
 	}
 	
 	@Override

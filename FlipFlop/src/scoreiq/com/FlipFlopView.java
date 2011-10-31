@@ -59,6 +59,10 @@ public class FlipFlopView extends GLSurfaceView {
 		
 	}
 
+	public void addToVisible(Mesh mesh){
+		visibleGroup.addMesh(mesh);
+	}
+	
 	public void addPad(Pad mPad){
 		pads.add(mPad);
 		visibleGroup.addMesh(mPad);

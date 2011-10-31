@@ -34,62 +34,74 @@ public class FlipFlopActivity extends Activity {
 			}
 		});
         
-        createPads();
+        createPads("rio/");
         createCamera();
         
         setContentView(view);
         Log.d("TEST", String.format("NEW START\nActivity created"));
     }
-    
-    private void createCamera() {
-		// TODO Auto-generated method stub
+
+	private void createCamera() {
 		Camera cam = new Camera();
 		cam.setMatrixGrabber(mg);
 		cam.setPosition(0, 0, 15);
 		view.setCamera(cam);
 	}
 
-	public void createPads(){
-    	MeshBuilder builder_top = new MeshBuilder(this);
+	public void createPads(String theme){
+    	if(theme == "")theme = "default/";
+		
+		MeshBuilder builder_top = new MeshBuilder(this);
     	MeshBuilder builder_bottom = new MeshBuilder(this);
     	
-    	builder_top.loadObjToClone("pad_top.obj");
-    	builder_bottom.loadObjToClone("pad_bottom.obj");
+    	builder_top.loadObjToClone("pad_top3d.obj");
+    	builder_bottom.loadObjToClone("pad_bottom3d.obj");
     	
     	Mesh tmpMesh;
     	Pad tmpPad;
     	
+    	int fileNum=1;
     	for(int y=0;y<4;y++)
     		for(int x=0;x<3;x++){
     			tmpPad = new Pad();
     	    	
     	    	tmpMesh = builder_top.cloneMesh();
-    	    	tmpMesh.loadBitmapFromFile("fr1.png", this);
+    	    	tmpMesh.loadBitmapFromFile(theme+"fr"+fileNum+".png", this);
     	    	tmpPad.addMesh(tmpMesh);
     	    	
     	    	tmpMesh = builder_bottom.cloneMesh();
-    	    	tmpMesh.loadBitmapFromFile("back.png", this);
+    	    	tmpMesh.loadBitmapFromFile(theme+"back.png", this);
     	    	tmpPad.addMesh(tmpMesh);
     	    	
-    	    	tmpPad.Rotate(90, 1);
+    	    	tmpPad.Rotate(270, 1);
     	    	tmpPad.x += -2.5+x*2.5;
     	    	tmpPad.y += 4.0-y*2.7;
     	    	
     	    	view.addPad(tmpPad);
+    	    	
+    	    	fileNum++;
+    	    	if(fileNum>6)fileNum=1;
     		}
+    	
+    	Plane plane = new Plane(16.0f , 16.0f);
+    	plane.z += -4.0f;
+    	plane.loadBitmapFromFile(theme+"background.png", this);
+    	view.addToVisible(plane);
     }
-/*    
+    
     @Override
     public void onPause(){
+    	super.onPause();
     }
     
     @Override
     public void onStop(){
+    	super.onStop();
     }
     
     @Override
     public void onResume(){
-    	
+    	super.onResume();
     }
-*/
+
 }
