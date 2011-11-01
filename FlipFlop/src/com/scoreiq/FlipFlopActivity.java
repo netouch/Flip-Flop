@@ -21,8 +21,6 @@ public class FlipFlopActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         view = new FlipFlopView(this);
@@ -34,11 +32,12 @@ public class FlipFlopActivity extends Activity {
 			}
 		});
         
-        createPads("rio/");
+        String theme = "rio/";
+        createPads(theme);
         createCamera();
         
         setContentView(view);
-        Log.d("TEST", String.format("NEW START\nActivity created"));
+        Log.d("TEST", String.format("Activity onCreate() finished"));
     }
 
 	private void createCamera() {

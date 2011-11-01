@@ -2,8 +2,6 @@ package com.scoreiq;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import com.scoreiq.util.Vector3d;
-
 import android.opengl.GLU;
 import android.util.Log;
 

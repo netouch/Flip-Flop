@@ -3,10 +3,11 @@ package com.scoreiq;
 import android.opengl.GLSurfaceView.Renderer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import com.scoreiq.util.TextureManager;
+
 import android.opengl.GLU;
 import android.util.Log;
-
-import java.util.Date;
 
 public class OGLRenderer implements Renderer {
 	long prevTime = 0;
@@ -70,6 +71,10 @@ public class OGLRenderer implements Renderer {
 	public void onSurfaceChanged(GL10 gl, int iwidth, int iheight) {
 		width = iwidth;
 		height = iheight;
+		
+		//init TextureManager by gl
+		TextureManager.getInstance().setGlInstance(gl);
+		
 		if(camera!=null)
 			camera.setScreenDimension(width , height);
 		// Sets the current view port to the new size.
