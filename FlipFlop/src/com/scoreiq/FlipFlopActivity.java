@@ -4,23 +4,29 @@ import java.io.File;
 import java.io.InputStream;
 
 import javax.microedition.khronos.opengles.GL;
+import javax.microedition.khronos.opengles.GL10;
 
 import android.R;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
+import android.opengl.GLUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class FlipFlopActivity extends Activity {
+public class FlipFlopActivity extends Activity implements TextureManagerListener{
 	private FlipFlopView view;
 	private MatrixGrabber mg = new MatrixGrabber();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("TEST", String.format("-------------------------------\nNEW START Activity"));
+        TextureManager.getInstance().setListener(this);
+        TextureManager.getInstance().setActivity(this);
+        
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         view = new FlipFlopView(this);
@@ -32,8 +38,8 @@ public class FlipFlopActivity extends Activity {
 			}
 		});
         
-        String theme = "rio/";
-        createPads(theme);
+        //String theme = "rio/";
+        //createPads(theme);
         createCamera();
         
         setContentView(view);
@@ -102,5 +108,10 @@ public class FlipFlopActivity extends Activity {
     public void onResume(){
     	super.onResume();
     }
-
+    
+    public void onTextureManagerReady(){
+    	Log.d("TEST", String.format("Activity received Ready from TextureManager"));
+    	String theme = "rio/";
+        createPads(theme);
+    }
 }

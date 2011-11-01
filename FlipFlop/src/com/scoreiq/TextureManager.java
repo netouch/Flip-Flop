@@ -3,6 +3,7 @@ package com.scoreiq;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -15,6 +16,7 @@ import android.util.Log;
 public class TextureManager {
 	private static TextureManager instance = new TextureManager();
 
+	private TextureManagerListener listener;
 	private ArrayList<Integer> TextureIds = new ArrayList<Integer>();
 	private ArrayList<String> TextureNames = new ArrayList<String>();
 	private GL10 glInstance = null;
@@ -74,16 +76,29 @@ public class TextureManager {
 
 	public void setGlInstance(GL10 gl){
 		glInstance = gl;
+		Log.d("TEST", String.format("TextureManager - GL instance is set"));
 		checkReady();
 	}
 
 	public void setActivity(Activity iact){
 		act = iact;
+		Log.d("TEST", String.format("TextureManager - Activity instance is set"));
 		checkReady();
+	}
+	
+	public void setListener(TextureManagerListener listener){
+		this.listener = listener;
 	}
 
 	public void checkReady(){
-		if(act!=null && glInstance != null)isReady = true;
+		if(act!=null && glInstance != null){
+			isReady = true;
+			Log.d("TEST", String.format("TextureManager - is ready"));
+			if(listener!=null)listener.onTextureManagerReady();
+		}
+		else{
+			Log.d("TEST", String.format("TextureManager - still not ready"));
+		}
 	}
 
 	public void setTexture(int texId){
