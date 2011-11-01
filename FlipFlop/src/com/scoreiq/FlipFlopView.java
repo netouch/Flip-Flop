@@ -10,9 +10,6 @@ import java.util.Stack;
 import java.util.Vector;
 import java.math.*;
 
-import com.scoreiq.util.Vector3d;
-
-
 public class FlipFlopView extends GLSurfaceView {
 	private OGLRenderer renderer;
 	private Camera camera;

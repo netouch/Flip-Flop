@@ -90,7 +90,7 @@ public class TextureManager {
 		glInstance.glEnable(GL10.GL_TEXTURE_2D);
 		glInstance.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 
-		glInstance.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mUVTextureBuffer);
+		//glInstance.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mUVTextureBuffer);
 		glInstance.glBindTexture(GL10.GL_TEXTURE_2D, texId);
 	}
 }
