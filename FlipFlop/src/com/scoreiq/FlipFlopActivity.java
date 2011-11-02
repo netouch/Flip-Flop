@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class FlipFlopActivity extends Activity implements TextureManagerListener{
+public class FlipFlopActivity extends Activity implements IGameEventListener{
 	private FlipFlopView view;
 	private MatrixGrabber mg = new MatrixGrabber();
 	
@@ -118,8 +118,8 @@ public class FlipFlopActivity extends Activity implements TextureManagerListener
     	Log.d("TEST", String.format("Activity - onResume()"));
     }
     
-    public void onTextureManagerReady(){
-    	Log.d("TEST", String.format("Activity received Ready from TextureManager"));
+    public void onGameEvent(String event){
+    	Log.d("TEST", String.format("Activity received Ready <game event - %s>", event));
     	String theme = "rio/";
         createPads(theme);
     }

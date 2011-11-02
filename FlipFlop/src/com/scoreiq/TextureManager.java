@@ -16,11 +16,14 @@ import android.util.Log;
 public class TextureManager {
 	private static TextureManager instance = new TextureManager();
 
-	private TextureManagerListener listener;
-	private ArrayList<Integer> TextureIds = new ArrayList<Integer>();
-	private ArrayList<String> TextureNames = new ArrayList<String>();
+	//private ITextureManagerListener listener;
+	private IGameEventListener listener;
+	private ArrayList<Integer> textureIds = new ArrayList<Integer>();
+	private ArrayList<String> textureNames = new ArrayList<String>();
 	private GL10 glInstance = null;
 	private Activity act = null;
+	
+	private int currentTexture = -1;
 
 	private boolean isReady = false;
 
@@ -52,8 +55,8 @@ public class TextureManager {
 		//Log.d("TEST", String.format("not generated texture = %d", mTextureId));
 		glInstance.glGenTextures(1, texId, 0);
 
-		TextureNames.add(file);
-		TextureIds.add(texId[0]);
+		textureNames.add(file);
+		textureIds.add(texId[0]);
 		//Log.d("TEST", String.format("generated texture = %d", mTextureId));
 		glInstance.glBindTexture(GL10.GL_TEXTURE_2D, texId[0]);
 		glInstance.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
@@ -70,7 +73,9 @@ public class TextureManager {
 	}
 
 	private int isTextureLoaded(String file) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<textureNames.size();i++){
+			if(textureNames.get(i) == file) return textureIds.get(i);
+		}
 		return 0;
 	}
 
@@ -93,7 +98,7 @@ public class TextureManager {
 		checkReady();
 	}
 	
-	public void setListener(TextureManagerListener listener){
+	public void setListener(IGameEventListener listener){
 		this.listener = listener;
 		Log.d("TEST", String.format("TextureManager - listener is set"));
 	}
@@ -103,7 +108,8 @@ public class TextureManager {
 			isReady = true;
 			Log.d("TEST", String.format("TextureManager - is ready"));
 			if(listener!=null){
-				listener.onTextureManagerReady();
+				//listener.onTextureManagerReady();
+				listener.onGameEvent("TextureManagerReady");
 			}
 		}
 		else{
@@ -113,10 +119,11 @@ public class TextureManager {
 	}
 
 	public void setTexture(int texId){
-		glInstance.glEnable(GL10.GL_TEXTURE_2D);
-		glInstance.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-
-		//glInstance.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mUVTextureBuffer);
-		glInstance.glBindTexture(GL10.GL_TEXTURE_2D, texId);
+		if(texId != currentTexture){
+			glInstance.glEnable(GL10.GL_TEXTURE_2D);
+			glInstance.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+			glInstance.glBindTexture(GL10.GL_TEXTURE_2D, texId);
+			currentTexture = texId;
+		}
 	}
 }

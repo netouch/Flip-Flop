@@ -47,6 +47,10 @@ public class Mesh implements IMesh{
 		mUVTextureBuffer.position(0);
 	}
 	
+	public void setTextureId(int texId){
+		mTextureId = texId;
+	}
+	
 	public void loadBitmap(Bitmap btmp){
 		//bitmap = BitmapFactory.decodeResource(Context.getResources(), R.drawable.icon);
 		mBitmap = btmp;

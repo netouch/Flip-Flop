@@ -1,5 +1,5 @@
 package com.scoreiq;
 
-public interface TextureManagerListener {
+public interface ITextureManagerListener {
 	public void onTextureManagerReady();
 }
