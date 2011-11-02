@@ -23,7 +23,8 @@ public class FlipFlopActivity extends Activity implements TextureManagerListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("TEST", String.format("-------------------------------\nNEW START Activity"));
+        Log.d("TEST", String.format("\n\n-------------------------------\nNEW START\nActivity - onCreate()"));
+        TextureManager.getInstance().clearInstances();
         TextureManager.getInstance().setListener(this);
         TextureManager.getInstance().setActivity(this);
         
@@ -68,21 +69,26 @@ public class FlipFlopActivity extends Activity implements TextureManagerListener
     	int fileNum=1;
     	for(int y=0;y<4;y++)
     		for(int x=0;x<3;x++){
+    			//Log.d("TEST", String.format("-------------------------------\ncreatePads() - Enter"));
     			tmpPad = new Pad();
     	    	
     	    	tmpMesh = builder_top.cloneMesh();
     	    	tmpMesh.loadBitmapFromFile(theme+"fr"+fileNum+".png", this);
     	    	tmpPad.addMesh(tmpMesh);
+    	    	//Log.d("TEST", String.format("createPads() - top cloned"));
     	    	
     	    	tmpMesh = builder_bottom.cloneMesh();
     	    	tmpMesh.loadBitmapFromFile(theme+"back.png", this);
     	    	tmpPad.addMesh(tmpMesh);
+    	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
     	    	
     	    	tmpPad.Rotate(270, 1);
     	    	tmpPad.x += -2.5+x*2.5;
     	    	tmpPad.y += 4.0-y*2.7;
+    	    	//Log.d("TEST", String.format("createPads() - Pad's position setted"));
     	    	
     	    	view.addPad(tmpPad);
+    	    	//Log.d("TEST", String.format("createPads() - Pad added"));
     	    	
     	    	fileNum++;
     	    	if(fileNum>6)fileNum=1;
@@ -97,16 +103,19 @@ public class FlipFlopActivity extends Activity implements TextureManagerListener
     @Override
     public void onPause(){
     	super.onPause();
+    	Log.d("TEST", String.format("Activity - onPause()"));
     }
     
     @Override
     public void onStop(){
     	super.onStop();
+    	Log.d("TEST", String.format("Activity - onStop()"));
     }
     
     @Override
     public void onResume(){
     	super.onResume();
+    	Log.d("TEST", String.format("Activity - onResume()"));
     }
     
     public void onTextureManagerReady(){

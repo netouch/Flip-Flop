@@ -32,6 +32,9 @@ public class OGLRenderer implements Renderer {
 	}
 	
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+		//init TextureManager by gl
+		TextureManager.getInstance().setGlInstance(gl);
+		
 		// Set the background color to black ( rgba ).
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		// Enable Smooth Shading, default not really needed.
@@ -70,9 +73,6 @@ public class OGLRenderer implements Renderer {
 		width = iwidth;
 		height = iheight;
 		
-		//init TextureManager by gl
-		TextureManager.getInstance().setGlInstance(gl);
-		
 		if(camera!=null)
 			camera.setScreenDimension(width , height);
 		// Sets the current view port to the new size.
@@ -90,5 +90,6 @@ public class OGLRenderer implements Renderer {
 		gl.glLoadIdentity();
 		//TODO: move this to Camera class
 		GLU.gluLookAt(gl, 0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		Log.d("TEST", String.format("Renderer - onSurfaceChanged()"));
 	}
 }

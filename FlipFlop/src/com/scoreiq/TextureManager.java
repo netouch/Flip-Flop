@@ -86,17 +86,28 @@ public class TextureManager {
 		checkReady();
 	}
 	
+	public void clearInstances(){
+		glInstance = null;
+		act = null;
+		//isReadySended = false;
+		checkReady();
+	}
+	
 	public void setListener(TextureManagerListener listener){
 		this.listener = listener;
+		Log.d("TEST", String.format("TextureManager - listener is set"));
 	}
 
 	public void checkReady(){
 		if(act!=null && glInstance != null){
 			isReady = true;
 			Log.d("TEST", String.format("TextureManager - is ready"));
-			if(listener!=null)listener.onTextureManagerReady();
+			if(listener!=null){
+				listener.onTextureManagerReady();
+			}
 		}
 		else{
+			isReady = false;
 			Log.d("TEST", String.format("TextureManager - still not ready"));
 		}
 	}
@@ -109,4 +120,3 @@ public class TextureManager {
 		glInstance.glBindTexture(GL10.GL_TEXTURE_2D, texId);
 	}
 }
-
