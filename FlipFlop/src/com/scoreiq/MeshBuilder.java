@@ -161,7 +161,8 @@ public class MeshBuilder {
 			vertices[i*3+2] = vb.get(ib.get(i).mvi-1).z;
 			
 			if(uvTexCoord != null){
-				uvTexCoord[i*2+0] = 1 - vtb.get(ib.get(i).mvti-1).uv;
+				//uvTexCoord[i*2+0] = 1 - vtb.get(ib.get(i).mvti-1).uv;
+				uvTexCoord[i*2+0] = vtb.get(ib.get(i).mvti-1).uv;
 				uvTexCoord[i*2+1] = vtb.get(ib.get(i).mvti-1).uw;
 			}
 		}

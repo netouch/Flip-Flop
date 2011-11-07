@@ -54,6 +54,7 @@ public class FlipFlopActivity extends Activity implements IGameEventListener{
 		view.setCamera(cam);
 	}
 
+	/*
 	public void createPads(String theme){
     	if(theme == "")theme = "default/";
 		
@@ -80,6 +81,7 @@ public class FlipFlopActivity extends Activity implements IGameEventListener{
     	    	tmpMesh = builder_bottom.cloneMesh();
     	    	tmpMesh.loadBitmapFromFile(theme+"back.png", this);
     	    	tmpPad.addMesh(tmpMesh);
+    	    	tmpPad.faceImageId = fileNum;
     	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
     	    	
     	    	tmpPad.Rotate(270, 1);
@@ -93,13 +95,67 @@ public class FlipFlopActivity extends Activity implements IGameEventListener{
     	    	fileNum++;
     	    	if(fileNum>6)fileNum=1;
     		}
+    	view.shufflePads();
     	
     	Plane plane = new Plane(16.0f , 16.0f);
     	plane.z += -4.0f;
     	plane.loadBitmapFromFile(theme+"background.png", this);
     	view.addToVisible(plane);
-    }
+    } */
     
+	public void createPads(String theme){
+    	if(theme == "")theme = "default/";
+		
+		MeshBuilder builder_top = new MeshBuilder(this);
+    	MeshBuilder builder_bottom = new MeshBuilder(this);
+    	TextureManager tm = TextureManager.getInstance();
+    	
+    	builder_top.loadObjToClone("pad_top3d.obj");
+    	builder_bottom.loadObjToClone("pad_bottom3d.obj");
+    	
+    	Mesh tmpMesh;
+    	Pad tmpPad;
+    	
+    	int fileNum=1;
+    	for(int y=0;y<4;y++)
+    		for(int x=0;x<3;x++){
+    			//Log.d("TEST", String.format("-------------------------------\ncreatePads() - Enter"));
+    			tmpPad = new Pad();
+    	    	
+    	    	tmpMesh = builder_top.cloneMesh();
+    	    	//tmpMesh.loadBitmapFromFile(theme+"fr"+fileNum+".png", this);
+    	    	tmpMesh.setTextureId(tm.loadTexture(theme+"fr"+fileNum+".png"));
+    	    	tmpPad.addMesh(tmpMesh);
+    	    	//Log.d("TEST", String.format("createPads() - top cloned"));
+    	    	
+    	    	tmpMesh = builder_bottom.cloneMesh();
+    	    	//tmpMesh.loadBitmapFromFile(theme+"back.png", this);
+    	    	tmpMesh.setTextureId(tm.loadTexture(theme+"back.png"));
+    	    	tmpPad.addMesh(tmpMesh);
+    	    	tmpPad.faceImageId = fileNum;
+    	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
+    	    	
+    	    	tmpPad.Rotate(270, 1);
+    	    	tmpPad.x += -2.5+x*2.5;
+    	    	tmpPad.y += 4.0-y*2.7;
+    	    	//Log.d("TEST", String.format("createPads() - Pad's position setted"));
+    	    	
+    	    	view.addPad(tmpPad);
+    	    	//Log.d("TEST", String.format("createPads() - Pad added"));
+    	    	
+    	    	fileNum++;
+    	    	if(fileNum>6)fileNum=1;
+    		}
+    	view.shufflePads();
+    	
+    	Plane plane = new Plane(16.0f , 16.0f);
+    	plane.z += -4.0f;
+    	//plane.loadBitmapFromFile(theme+"background.png", this);
+    	plane.setTextureId(tm.loadTexture(theme+"background.png"));
+    	view.addToVisible(plane);
+    }
+
+	
     @Override
     public void onPause(){
     	super.onPause();

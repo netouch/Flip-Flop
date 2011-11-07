@@ -52,10 +52,10 @@ public class Camera {
 		
 		Vector3d pickRay =  new Vector3d(eye[0] - position.x , eye[1] - position.y , eye[2] - position.z, 0.0f);
 		
-		Log.d("TEST", String.format("Cam pos is (%f , %f , %f)", position.x , position.y , position.z));
-		Log.d("TEST", String.format("Dir is (%f , %f , %f)", direction.x , direction.y , direction.z));
-		Log.d("TEST", String.format("Up is (%f , %f , %f)", up.x , up.y , up.z));
-		Log.d("TEST", String.format("PickRay is (%f , %f , %f)", pickRay.x , pickRay.y , pickRay.z));
+		//Log.d("TEST", String.format("Cam pos is (%f , %f , %f)", position.x , position.y , position.z));
+		//Log.d("TEST", String.format("Dir is (%f , %f , %f)", direction.x , direction.y , direction.z));
+		//Log.d("TEST", String.format("Up is (%f , %f , %f)", up.x , up.y , up.z));
+		//Log.d("TEST", String.format("PickRay is (%f , %f , %f)", pickRay.x , pickRay.y , pickRay.z));
 		
 		return pickRay;
 	}

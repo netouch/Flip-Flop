@@ -7,6 +7,8 @@ public class Pad extends MeshGroup{
 	private float targetRx = 0;
 	private float maxX , minX;
 	private float maxY, minY;
+	public boolean isActive = true;
+	public int faceImageId = 0;
 	
 	public Pad(){
 		maxX = maxY = 1.5f;

@@ -16,6 +16,8 @@ public class FlipFlopView extends GLSurfaceView {
 	public Vector<Pad> pads = new Vector<Pad>();
 	public MeshGroup visibleGroup = new MeshGroup();
 	
+	
+	
 	public FlipFlopView(Activity act){
 		super(act);
 		renderer = new OGLRenderer();
@@ -32,13 +34,15 @@ public class FlipFlopView extends GLSurfaceView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event){
-		Vector3d ray = new Vector3d();
+		Vector3d ray;// = new Vector3d();
 		ray = camera.getTapRay(event.getX(), event.getY());
-		rotateTapedPad(ray);
+		
+		int i = getTapedPadNum(ray);
+		if(!pads.get(i).isFlipping())pads.get(i).Rotate(180, 1);
 		return true;
 	}
 	
-	private void rotateTapedPad(Vector3d ray) {
+	private int getTapedPadNum(Vector3d ray) {
 		Log.d("TEST", String.format("Calculate touched pad-------------------"));
 		float x;
 		float y;
@@ -51,10 +55,11 @@ public class FlipFlopView extends GLSurfaceView {
 		for(int i=0;i<pads.size();i++){
 			if(pads.get(i).isIntersect(x, y)){
 				Log.d("TEST", String.format(" --> Index of picked Pad is %d", i));
-				if(!pads.get(i).isFlipping())pads.get(i).Rotate(180, 1);
+				//if(!pads.get(i).isFlipping())pads.get(i).Rotate(180, 1);
+				return i;
 				}
 		}
-		
+		return -1;
 	}
 
 	public void addToVisible(Mesh mesh){
@@ -66,5 +71,17 @@ public class FlipFlopView extends GLSurfaceView {
 		//Log.d("TEST", String.format("---> View Pad added to pad list"));
 		visibleGroup.addMesh(mPad);
 		//Log.d("TEST", String.format("---> View Pad added to visible list"));
+	}
+	
+	public void shufflePads(){
+		int padsNum = pads.size();
+		Vector3d tmpPos;
+		
+		for(int i=0 ; i < padsNum ; i++){
+			int rndPad = (int)(Math.random()*padsNum);
+			tmpPos = pads.get(i).getPosition();
+			pads.get(i).setPosition(pads.get(rndPad).getPosition());
+			pads.get(rndPad).setPosition(tmpPos);
+		}
 	}
 }
