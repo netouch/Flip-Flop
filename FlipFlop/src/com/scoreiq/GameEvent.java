@@ -8,4 +8,6 @@ public class GameEvent {
 	}
 	
 	static final int TEXTURE_MANAGER_READY = 1;
+	static final int MENU_START = 2;
+	static final int MENU_SELECT_THEME = 3;
 }

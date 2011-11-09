@@ -24,7 +24,16 @@ public class GameManager implements IGameEventListener, IMesh{
 		case GameEvent.TEXTURE_MANAGER_READY:
 			createMenu();
 			break;
+		case GameEvent.MENU_START:
+			startGame();
+			break;
 		}
+	}
+
+
+	private void startGame() {
+		game = new Game(act);
+		currentGameState = game;
 	}
 
 
