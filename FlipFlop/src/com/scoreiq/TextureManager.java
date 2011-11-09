@@ -46,8 +46,11 @@ public class TextureManager {
 		}
 
 		try{
+			BitmapFactory.Options opt = new BitmapFactory.Options();
+			opt.inPreferredConfig = Bitmap.Config.RGB_565;
+			
 			InputStream in = act.getAssets().open(file);
-			btmp = BitmapFactory.decodeStream(in);
+			btmp = BitmapFactory.decodeStream(in, null,opt);
 		}
 		catch (IOException e){
 		}

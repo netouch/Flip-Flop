@@ -32,6 +32,7 @@ public class OGLRenderer implements Renderer {
 	}
 	
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+		Log.d("TEST", String.format("Render.OnSurfaceCreated start"));
 		//init TextureManager by gl
 		TextureManager.getInstance().setGlInstance(gl);
 		
@@ -47,6 +48,9 @@ public class OGLRenderer implements Renderer {
 		gl.glDepthFunc(GL10.GL_LEQUAL);
 		// Really nice perspective calculations.
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
+		
+		gl.glEnable(GL10.GL_BLEND);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		Log.d("TEST", String.format("Render.OnSurfaceCreated complete"));
 	}
 
@@ -70,6 +74,7 @@ public class OGLRenderer implements Renderer {
 	}
 
 	public void onSurfaceChanged(GL10 gl, int iwidth, int iheight) {
+		Log.d("TEST", String.format("Renderer - onSurfaceChanged() start"));
 		width = iwidth;
 		height = iheight;
 		
@@ -90,6 +95,6 @@ public class OGLRenderer implements Renderer {
 		gl.glLoadIdentity();
 		//TODO: move this to Camera class
 		GLU.gluLookAt(gl, 0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-		Log.d("TEST", String.format("Renderer - onSurfaceChanged()"));
+		Log.d("TEST", String.format("Renderer - onSurfaceChanged() finish"));
 	}
 }

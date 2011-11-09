@@ -8,7 +8,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.MotionEvent;
 
-public class Game implements IMesh {
+public class Game implements ITouchNMesh {
 	private Activity act;
 	
 	private Vector<Pad> pads = new Vector<Pad>();

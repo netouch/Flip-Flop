@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class FlipFlopActivity extends Activity implements IGameEventListener{
+public class FlipFlopActivity extends Activity{
 	private FlipFlopView view;
 	private MatrixGrabber mg = new MatrixGrabber();
 	
@@ -25,12 +25,14 @@ public class FlipFlopActivity extends Activity implements IGameEventListener{
         super.onCreate(savedInstanceState);
         Log.d("TEST", String.format("\n\n-------------------------------\nNEW START\nActivity - onCreate()"));
         TextureManager.getInstance().clearInstances();
-        TextureManager.getInstance().setListener(this);
         TextureManager.getInstance().setActivity(this);
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        view = new FlipFlopView(this);
+        Log.d("TEST", String.format("Activity onCreate() now create View"));
+        view = new FlipFlopView(this, mg);
+        
+        Log.d("TEST", String.format("Activity onCreate() now set wrapper"));
         view.setGLWrapper(new GLSurfaceView.GLWrapper() {
 			
 			@Override
@@ -39,123 +41,10 @@ public class FlipFlopActivity extends Activity implements IGameEventListener{
 			}
 		});
         
-        //String theme = "rio/";
-        //createPads(theme);
-        createCamera();
-        
         setContentView(view);
         Log.d("TEST", String.format("Activity onCreate() finished"));
     }
-
-	private void createCamera() {
-		Camera cam = new Camera();
-		cam.setMatrixGrabber(mg);
-		cam.setPosition(0, 0, 15);
-		view.setCamera(cam);
-	}
-
-	/*
-	public void createPads(String theme){
-    	if(theme == "")theme = "default/";
-		
-		MeshBuilder builder_top = new MeshBuilder(this);
-    	MeshBuilder builder_bottom = new MeshBuilder(this);
-    	
-    	builder_top.loadObjToClone("pad_top3d.obj");
-    	builder_bottom.loadObjToClone("pad_bottom3d.obj");
-    	
-    	Mesh tmpMesh;
-    	Pad tmpPad;
-    	
-    	int fileNum=1;
-    	for(int y=0;y<4;y++)
-    		for(int x=0;x<3;x++){
-    			//Log.d("TEST", String.format("-------------------------------\ncreatePads() - Enter"));
-    			tmpPad = new Pad();
-    	    	
-    	    	tmpMesh = builder_top.cloneMesh();
-    	    	tmpMesh.loadBitmapFromFile(theme+"fr"+fileNum+".png", this);
-    	    	tmpPad.addMesh(tmpMesh);
-    	    	//Log.d("TEST", String.format("createPads() - top cloned"));
-    	    	
-    	    	tmpMesh = builder_bottom.cloneMesh();
-    	    	tmpMesh.loadBitmapFromFile(theme+"back.png", this);
-    	    	tmpPad.addMesh(tmpMesh);
-    	    	tmpPad.faceImageId = fileNum;
-    	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
-    	    	
-    	    	tmpPad.Rotate(270, 1);
-    	    	tmpPad.x += -2.5+x*2.5;
-    	    	tmpPad.y += 4.0-y*2.7;
-    	    	//Log.d("TEST", String.format("createPads() - Pad's position setted"));
-    	    	
-    	    	view.addPad(tmpPad);
-    	    	//Log.d("TEST", String.format("createPads() - Pad added"));
-    	    	
-    	    	fileNum++;
-    	    	if(fileNum>6)fileNum=1;
-    		}
-    	view.shufflePads();
-    	
-    	Plane plane = new Plane(16.0f , 16.0f);
-    	plane.z += -4.0f;
-    	plane.loadBitmapFromFile(theme+"background.png", this);
-    	view.addToVisible(plane);
-    } */
-    
-	public void createPads(String theme){
-    	if(theme == "")theme = "default/";
-		
-		MeshBuilder builder_top = new MeshBuilder(this);
-    	MeshBuilder builder_bottom = new MeshBuilder(this);
-    	TextureManager tm = TextureManager.getInstance();
-    	
-    	builder_top.loadObjToClone("pad_top3d.obj");
-    	builder_bottom.loadObjToClone("pad_bottom3d.obj");
-    	
-    	Mesh tmpMesh;
-    	Pad tmpPad;
-    	
-    	int fileNum=1;
-    	for(int y=0;y<4;y++)
-    		for(int x=0;x<3;x++){
-    			//Log.d("TEST", String.format("-------------------------------\ncreatePads() - Enter"));
-    			tmpPad = new Pad();
-    	    	
-    	    	tmpMesh = builder_top.cloneMesh();
-    	    	//tmpMesh.loadBitmapFromFile(theme+"fr"+fileNum+".png", this);
-    	    	tmpMesh.setTextureId(tm.loadTexture(theme+"fr"+fileNum+".png"));
-    	    	tmpPad.addMesh(tmpMesh);
-    	    	//Log.d("TEST", String.format("createPads() - top cloned"));
-    	    	
-    	    	tmpMesh = builder_bottom.cloneMesh();
-    	    	//tmpMesh.loadBitmapFromFile(theme+"back.png", this);
-    	    	tmpMesh.setTextureId(tm.loadTexture(theme+"back.png"));
-    	    	tmpPad.addMesh(tmpMesh);
-    	    	tmpPad.faceImageId = fileNum;
-    	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
-    	    	
-    	    	tmpPad.Rotate(270, 1);
-    	    	tmpPad.x += -2.5+x*2.5;
-    	    	tmpPad.y += 4.0-y*2.7;
-    	    	//Log.d("TEST", String.format("createPads() - Pad's position setted"));
-    	    	
-    	    	view.addPad(tmpPad);
-    	    	//Log.d("TEST", String.format("createPads() - Pad added"));
-    	    	
-    	    	fileNum++;
-    	    	if(fileNum>6)fileNum=1;
-    		}
-    	view.shufflePads();
-    	
-    	Plane plane = new Plane(16.0f , 16.0f);
-    	plane.z += -4.0f;
-    	//plane.loadBitmapFromFile(theme+"background.png", this);
-    	plane.setTextureId(tm.loadTexture(theme+"background.png"));
-    	view.addToVisible(plane);
-    }
-
-	
+   
     @Override
     public void onPause(){
     	super.onPause();
@@ -172,11 +61,5 @@ public class FlipFlopActivity extends Activity implements IGameEventListener{
     public void onResume(){
     	super.onResume();
     	Log.d("TEST", String.format("Activity - onResume()"));
-    }
-    
-    public void onGameEvent(GameEvent event){
-    	Log.d("TEST", String.format("Activity received Ready <game event - %s>", event));
-    	String theme = "rio/";
-        createPads(theme);
     }
 }
