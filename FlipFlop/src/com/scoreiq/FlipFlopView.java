@@ -12,6 +12,9 @@ import java.math.*;
 
 public class FlipFlopView extends GLSurfaceView {
 	private OGLRenderer renderer;
+	
+	private GameManager gameManager;
+	
 	private Camera camera;
 	public Vector<Pad> pads = new Vector<Pad>();
 	public MeshGroup visibleGroup = new MeshGroup();
@@ -20,9 +23,12 @@ public class FlipFlopView extends GLSurfaceView {
 	
 	public FlipFlopView(Activity act){
 		super(act);
+		gameManager = new GameManager(act);
+		TextureManager.getInstance().setListener(gameManager);
 		renderer = new OGLRenderer();
 		setRenderer(renderer);
 		
+		//TODO:renderer.setDrawing(gameManager);
 		renderer.setDrawing(visibleGroup);
 		Log.d("TEST", String.format("View created"));
 	}

@@ -7,6 +7,10 @@ public class Plane extends Mesh {
 	}
 	
 	public Plane(float width , float height){
+		this(width, height, 0.0f, 0.0f, 1.0f, 1.0f);
+	}
+	
+	public Plane(float width , float height, float u_left, float w_down, float u_right, float w_top){
 		float[] vertices = new float[4*3];
 		float[] colors = new float[4*4];
 		short[] indices = new short[6];
@@ -29,17 +33,17 @@ public class Plane extends Mesh {
 		vertices[10] = height/2;
 		vertices[11] = 0.0f;
 		
-		uwCoords[0]=0.0f;
-		uwCoords[1]=1.0f;
+		uwCoords[0]=u_left;
+		uwCoords[1]=w_top;
 		
-		uwCoords[2]=1.0f;
-		uwCoords[3]=1.0f;
+		uwCoords[2]=u_right;
+		uwCoords[3]=w_top;
 		
-		uwCoords[4]=0.0f;
-		uwCoords[5]=0.0f;
+		uwCoords[4]=u_left;
+		uwCoords[5]=w_down;
 		
-		uwCoords[6]=1.0f;
-		uwCoords[7]=0.0f;
+		uwCoords[6]=u_right;
+		uwCoords[7]=w_down;
 		
 		for(int i=0;i<16;i++)colors[i] = 1.0f;
 				

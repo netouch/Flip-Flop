@@ -174,7 +174,7 @@ public class FlipFlopActivity extends Activity implements IGameEventListener{
     	Log.d("TEST", String.format("Activity - onResume()"));
     }
     
-    public void onGameEvent(String event){
+    public void onGameEvent(GameEvent event){
     	Log.d("TEST", String.format("Activity received Ready <game event - %s>", event));
     	String theme = "rio/";
         createPads(theme);

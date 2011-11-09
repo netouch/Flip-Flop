@@ -109,7 +109,7 @@ public class TextureManager {
 			Log.d("TEST", String.format("TextureManager - is ready"));
 			if(listener!=null){
 				//listener.onTextureManagerReady();
-				listener.onGameEvent("TextureManagerReady");
+				listener.onGameEvent(new GameEvent(GameEvent.TEXTURE_MANAGER_READY));
 			}
 		}
 		else{

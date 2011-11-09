@@ -10,8 +10,6 @@ import android.util.Log;
 
 import android.app.Activity;
 
-//TODO: добавить загрузку текстур.
-
 public class MeshBuilder {
 	Activity act = null;
 	
