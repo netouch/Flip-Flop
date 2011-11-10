@@ -30,11 +30,20 @@ public class GameManager implements IGameEventListener, IMesh{
 			createMenu();
 			break;
 		case GameEvent.MENU_START:
-			Log.d("TEST", String.format("GameManager resived <START message>"));
+			Log.d("TEST", String.format("GameManager recived <START message>"));
+			startGame();
 			break;
 		case GameEvent.MENU_THEME:
-			Log.d("TEST", String.format("GameManager resived <THEME message>"));
+			Log.d("TEST", String.format("GameManager recived <THEME message>"));
 			break;
+		}
+	}
+
+	private void startGame() {
+		if(game==null){
+			game = new Game(act);
+			game.loadLevel("rio/");
+			currentGameState = game;
 		}
 	}
 

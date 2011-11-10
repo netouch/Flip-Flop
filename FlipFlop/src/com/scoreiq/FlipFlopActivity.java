@@ -54,6 +54,7 @@ public class FlipFlopActivity extends Activity{
     @Override
     public void onStop(){
     	super.onStop();
+    	TextureManager.getInstance().onStop();
     	Log.d("TEST", String.format("Activity - onStop()"));
     }
     

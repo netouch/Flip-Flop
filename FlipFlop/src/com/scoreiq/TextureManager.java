@@ -29,34 +29,44 @@ public class TextureManager {
 
 	public TextureManager(){
 	}
+	
+	public void onStop(){
+		textureIds.clear();
+		textureNames.clear();
+	}
 
 	public static TextureManager getInstance(){
 		return instance;
 	}
 
 	public int loadTexture(String file){
+		Log.d("TEST", String.format("TextureManager - loadTexture() start"));
 		int texId[] = new int[1];
 		Bitmap btmp=null;
 
 		texId[0]=isTextureLoaded(file);
 
-		if(texId[0]!=0){
+		if(texId[0]!=-1){
 			Log.d("TEST", String.format("TextureManager - texture = %s is already loaded and ID is %d", file, texId[0]));
 			return texId[0];
 		}
 
 		try{
-			BitmapFactory.Options opt = new BitmapFactory.Options();
-			opt.inPreferredConfig = Bitmap.Config.RGB_565;
+			//BitmapFactory.Options opt = new BitmapFactory.Options();
+			//opt.inPreferredConfig = Bitmap.Config.RGB_565;
 			
 			InputStream in = act.getAssets().open(file);
-			btmp = BitmapFactory.decodeStream(in, null,opt);
+			//btmp = BitmapFactory.decodeStream(in, null,opt);
+			btmp = BitmapFactory.decodeStream(in);
+			if(btmp!=null)Log.d("TEST", String.format("TextureManager - Bitmap = %s loaded", btmp.toString()));
 		}
 		catch (IOException e){
 		}
 
-		//Log.d("TEST", String.format("not generated texture = %d", mTextureId));
+		Log.d("TEST", String.format("TextureManager - loadTexture() now gen tex id"));
 		glInstance.glGenTextures(1, texId, 0);
+		Log.d("TEST", String.format("TextureManager - loadTexture() tex id=%d", texId[0]));
+		
 
 		textureNames.add(file);
 		textureIds.add(texId[0]);
@@ -71,7 +81,9 @@ public class TextureManager {
 		*/
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, btmp, 0);
-
+		traceNames();
+		Log.d("TEST", String.format("TextureManager - texture = %s loaded, ID is %d", file, texId[0]));
+		Log.d("TEST", String.format("TextureManager - loadTexture() finish"));
 		return texId[0];
 	}
 
@@ -79,7 +91,7 @@ public class TextureManager {
 		for(int i=0;i<textureNames.size();i++){
 			if(textureNames.get(i) == file) return textureIds.get(i);
 		}
-		return 0;
+		return -1;
 	}
 
 	public void setGlInstance(GL10 gl){
@@ -127,6 +139,12 @@ public class TextureManager {
 			glInstance.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 			glInstance.glBindTexture(GL10.GL_TEXTURE_2D, texId);
 			currentTexture = texId;
+		}
+	}
+	
+	private void traceNames(){
+		for(int i=0;i<textureNames.size();i++){
+			Log.d("TEST", String.format("TextureManager - name trace [%d] = <%s>", i, textureNames.get(i)));
 		}
 	}
 }
