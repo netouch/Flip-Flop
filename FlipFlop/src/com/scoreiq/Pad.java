@@ -9,10 +9,12 @@ public class Pad extends MeshGroup{
 	private float maxY, minY;
 	public boolean isActive = true;
 	public int faceImageId = 0;
+	public boolean fliped = false;
 	
 	public Pad(){
 		maxX = maxY = 1.5f;
 		minX = minY = -1.5f;
+		rxSpeedPerSecond = 0.0f;
 	}
 	
 	@Override
@@ -47,8 +49,14 @@ public class Pad extends MeshGroup{
 	}
 	
 	public boolean isFlipping(){
+		Log.d("TEST", String.format("rxSpeedPerSecond = %f", rxSpeedPerSecond));
 		if(rxSpeedPerSecond>0)return true;
 		else return false;
+	}
+	
+	public void flip(){
+		Rotate(180, 1);
+		fliped = ! fliped;
 	}
 	
 }

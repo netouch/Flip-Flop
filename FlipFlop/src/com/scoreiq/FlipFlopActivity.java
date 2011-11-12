@@ -48,6 +48,7 @@ public class FlipFlopActivity extends Activity{
     @Override
     public void onPause(){
     	super.onPause();
+    	view.onPause();
     	Log.d("TEST", String.format("Activity - onPause()"));
     }
     
@@ -61,6 +62,7 @@ public class FlipFlopActivity extends Activity{
     @Override
     public void onResume(){
     	super.onResume();
+    	view.onResume();
     	Log.d("TEST", String.format("Activity - onResume()"));
     }
 }

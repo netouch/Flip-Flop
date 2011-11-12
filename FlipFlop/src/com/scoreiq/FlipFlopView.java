@@ -15,8 +15,6 @@ public class FlipFlopView extends GLSurfaceView {
 	
 	public GameManager gameManager;
 	
-	private Camera camera;
-	
 	public FlipFlopView(Activity act, MatrixGrabber mg){
 		super(act);
 		Log.d("TEST", String.format("View create start"));
@@ -24,6 +22,7 @@ public class FlipFlopView extends GLSurfaceView {
 		Log.d("TEST", String.format("View now create GameManager"));
 		gameManager = new GameManager(act);
 		gameManager.createCamera(mg);
+		
 		TextureManager.getInstance().setListener(gameManager);
 		
 		Log.d("TEST", String.format("View create now create renderer"));
@@ -37,11 +36,6 @@ public class FlipFlopView extends GLSurfaceView {
 		Log.d("TEST", String.format("View created"));
 	}
 	
-	public void setCamera(Camera cam){
-		camera = cam;
-		renderer.setCamera(camera);
-	}
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event){
 		gameManager.onTouch(event.getX(), event.getY());

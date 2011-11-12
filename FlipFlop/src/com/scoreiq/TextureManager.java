@@ -10,13 +10,15 @@ import javax.microedition.khronos.opengles.GL10;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.opengl.GLException;
 import android.opengl.GLUtils;
 import android.util.Log;
 
 public class TextureManager {
-	private static TextureManager instance = new TextureManager();
-
-	//private ITextureManagerListener listener;
+	//private static TextureManager instance = new TextureManager();
+	private static TextureManager instance;
+	
+	OGLRenderer renderer;
 	private IGameEventListener listener;
 	private ArrayList<Integer> textureIds = new ArrayList<Integer>();
 	private ArrayList<String> textureNames = new ArrayList<String>();
@@ -27,7 +29,7 @@ public class TextureManager {
 
 	private boolean isReady = false;
 
-	public TextureManager(){
+	private TextureManager(){
 	}
 	
 	public void onStop(){
@@ -35,11 +37,21 @@ public class TextureManager {
 		textureNames.clear();
 	}
 
+	/*
 	public static TextureManager getInstance(){
+		return instance;
+	}
+	*/
+	
+	public static synchronized TextureManager getInstance(){
+		if(instance==null){
+			instance = new TextureManager();
+		}
 		return instance;
 	}
 
 	public int loadTexture(String file){
+		//renderer.draw = false;
 		Log.d("TEST", String.format("TextureManager - loadTexture() start"));
 		int texId[] = new int[1];
 		Bitmap btmp=null;
@@ -64,9 +76,11 @@ public class TextureManager {
 		}
 
 		Log.d("TEST", String.format("TextureManager - loadTexture() now gen tex id"));
+		Log.d("TEST", String.format("TextureManager - glGenTextures() error=%d", glInstance.glGetError()));
 		glInstance.glGenTextures(1, texId, 0);
+
 		Log.d("TEST", String.format("TextureManager - loadTexture() tex id=%d", texId[0]));
-		
+		Log.d("TEST", String.format("TextureManager - glGenTextures() error=%d", glInstance.glGetError()));
 
 		textureNames.add(file);
 		textureIds.add(texId[0]);
@@ -84,6 +98,7 @@ public class TextureManager {
 		traceNames();
 		Log.d("TEST", String.format("TextureManager - texture = %s loaded, ID is %d", file, texId[0]));
 		Log.d("TEST", String.format("TextureManager - loadTexture() finish"));
+		//renderer.draw = true;
 		return texId[0];
 	}
 
@@ -98,6 +113,10 @@ public class TextureManager {
 		glInstance = gl;
 		Log.d("TEST", String.format("TextureManager - GL instance is set"));
 		checkReady();
+	}
+	
+	public void setRenderer(OGLRenderer rend){
+		renderer = rend;
 	}
 
 	public void setActivity(Activity iact){

@@ -20,7 +20,8 @@ public class GameManager implements IGameEventListener, IMesh{
 	}
 	
 	public void onTouch(float x, float y){
-		currentGameState.onTouch(camera.getPosition(), camera.getTapRay(x, y));
+		if(currentGameState!=null)
+			currentGameState.onTouch(camera.getPosition(), camera.getTapRay(x, y));
 	}
 	
 	@Override
@@ -28,10 +29,14 @@ public class GameManager implements IGameEventListener, IMesh{
 		switch(event.type){
 		case GameEvent.TEXTURE_MANAGER_READY:
 			createMenu();
+			createGame();
+			currentGameState = menu;
 			break;
 		case GameEvent.MENU_START:
 			Log.d("TEST", String.format("GameManager recived <START message>"));
-			startGame();
+			currentGameState = null;
+			currentGameState = game;
+			//createGame();
 			break;
 		case GameEvent.MENU_THEME:
 			Log.d("TEST", String.format("GameManager recived <THEME message>"));
@@ -39,12 +44,13 @@ public class GameManager implements IGameEventListener, IMesh{
 		}
 	}
 
-	private void startGame() {
+	private void createGame() {
 		if(game==null){
 			game = new Game(act);
 			game.loadLevel("rio/");
-			currentGameState = game;
+			//game.loadLevel("default/");
 		}
+		//currentGameState = game;
 	}
 
 	public void createCamera(MatrixGrabber mg) {
@@ -60,14 +66,14 @@ public class GameManager implements IGameEventListener, IMesh{
 		menu = new Menu();
 		menu.setListener(this);
 		menu.createMenu();
-		currentGameState = menu;
+		//currentGameState = menu;
 		Log.d("TEST", String.format("GameManager createMenu() finish"));
 	}
 
 
 	@Override
 	public void draw(GL10 gl) {
-		currentGameState.draw(gl);
+		if(currentGameState!=null)currentGameState.draw(gl);
 	}
 
 

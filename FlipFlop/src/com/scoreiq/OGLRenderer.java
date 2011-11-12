@@ -14,6 +14,8 @@ public class OGLRenderer implements Renderer {
 	int width = 0;
 	int height = 0;
 	
+	//public boolean draw = true;
+	
 	IMesh root = null;
 	Camera camera;
 	
@@ -29,12 +31,14 @@ public class OGLRenderer implements Renderer {
 	public void setCamera(Camera camera){
 		this.camera = camera;
 		this.camera.setScreenDimension(width , height);
+		Log.d("TEST", String.format("Renderer - setCamera() width:height = %d:%d", width, height));
 	}
 	
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		Log.d("TEST", String.format("Render.OnSurfaceCreated start"));
 		//init TextureManager by gl
 		TextureManager.getInstance().setGlInstance(gl);
+		//TextureManager.getInstance().setRenderer(this);
 		
 		// Set the background color to black ( rgba ).
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
@@ -55,22 +59,24 @@ public class OGLRenderer implements Renderer {
 	}
 
 	public void onDrawFrame(GL10 gl) {
-		curTime = System.currentTimeMillis();
-		
-		// Clears the screen and depth buffer.
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-		// Replace the current matrix with the identity matrix
-		gl.glLoadIdentity();
-		if(camera!=null)camera.setViewMatrix(gl);
-		
-		// Draw.
-		if(root!=null){
-			root.update((float)(curTime - prevTime)/1000);
-			root.draw(gl);
-		}
-		
-		prevTime = curTime;
-		//Log.d("TEST", String.format("Render.onDrawFrame %f", (float)((curTime - prevTime)/1000)));
+		//if(draw){
+			curTime = System.currentTimeMillis();
+			
+			// Clears the screen and depth buffer.
+			gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+			// Replace the current matrix with the identity matrix
+			gl.glLoadIdentity();
+			if(camera!=null)camera.setViewMatrix(gl);
+			
+			// Draw.
+			if(root!=null){
+				root.update((float)(curTime - prevTime)/1000);
+				root.draw(gl);
+			}
+			
+			prevTime = curTime;
+			//Log.d("TEST", String.format("Render.onDrawFrame %f", (float)((curTime - prevTime)/1000)));
+		//}
 	}
 
 	public void onSurfaceChanged(GL10 gl, int iwidth, int iheight) {
@@ -78,8 +84,10 @@ public class OGLRenderer implements Renderer {
 		width = iwidth;
 		height = iheight;
 		
-		if(camera!=null)
+		if(camera!=null){
 			camera.setScreenDimension(width , height);
+			Log.d("TEST", String.format("Renderer - setCamera in onSurfaceChanged width:height = %d:%d", width, height));
+		}
 		// Sets the current view port to the new size.
 		gl.glViewport(0, 0, width, height);
 		// Select the projection matrix

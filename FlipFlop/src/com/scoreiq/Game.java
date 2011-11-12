@@ -9,10 +9,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 public class Game implements ITouchNMesh {
+	private static final int NO_PAD = -1;
+	
 	private Activity act;
 	
 	private Vector<Pad> pads = new Vector<Pad>();
 	private Plane background;
+	
+	private int flipedPadImage = NO_PAD;
 	 
 	public Game(Activity act){
 		this.act = act;
@@ -50,7 +54,7 @@ public class Game implements ITouchNMesh {
     	    	tmpPad.faceImageId = fileNum;
     	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
     	    	
-    	    	tmpPad.Rotate(270, 1);
+    	    	tmpPad.Rotate(270, 0.5f);
     	    	tmpPad.x += -2.5+x*2.5;
     	    	tmpPad.y += 4.0-y*2.7;
     	    	//Log.d("TEST", String.format("createPads() - Pad's position setted"));
@@ -83,10 +87,31 @@ public class Game implements ITouchNMesh {
 	
 	public boolean onTouch(Vector3d camPos , Vector3d ray){
 		int i = getTapedPadNum(camPos,ray);
-		if(!pads.get(i).isFlipping())pads.get(i).Rotate(180, 1);
+		if(i != NO_PAD)
+			if(!pads.get(i).isFlipping()){
+				if(flipedPadImage == NO_PAD){
+					//pads.get(i).Rotate(180, 1);
+					pads.get(i).flip();
+					flipedPadImage = i;
+				}
+				else checkPadIdentity(i); 
+			}
+		
 		return true;
 	}
 	
+	private void checkPadIdentity(int i) {
+		if(flipedPadImage == i){
+			pads.get(flipedPadImage).isActive = false;
+			pads.get(i).isActive = false;
+		}
+		else{
+			pads.get(flipedPadImage).flip();
+			pads.get(i).flip();
+		}
+		flipedPadImage = NO_PAD;
+	}
+
 	private int getTapedPadNum(Vector3d camPos , Vector3d ray) {
 		Log.d("TEST", String.format("Calculate touched pad-------------------"));
 		float x;
@@ -98,13 +123,12 @@ public class Game implements ITouchNMesh {
 		y=camPos.y + ray.y*multipliyer;
 		Log.d("TEST", String.format("- x;y = %f;%f", x,y));
 		for(int i=0;i<pads.size();i++){
-			if(pads.get(i).isIntersect(x, y)){
+			if(pads.get(i).isIntersect(x, y) && !pads.get(i).fliped){
 				Log.d("TEST", String.format(" --> Index of picked Pad is %d", i));
-				//if(!pads.get(i).isFlipping())pads.get(i).Rotate(180, 1);
 				return i;
 				}
 		}
-		return -1;
+		return NO_PAD;
 	}
 
 	@Override
@@ -120,8 +144,11 @@ public class Game implements ITouchNMesh {
 
 	@Override
 	public void update(float secElapsed) {
-		// TODO Auto-generated method stub
-
+		Pad tmpPad;
+		for(int i=0;i<pads.size();i++){
+			tmpPad = pads.get(i);
+			if(tmpPad.isActive)tmpPad.update(secElapsed);
+		}
 	}
 
 }
