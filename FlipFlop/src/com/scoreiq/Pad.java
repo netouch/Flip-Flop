@@ -8,8 +8,14 @@ public class Pad extends MeshGroup{
 	private float maxX , minX;
 	private float maxY, minY;
 	public boolean isActive = true;
+	private boolean isNotIdle = false;
+	
 	public int faceImageId = 0;
+	public int id;
+	
 	public boolean fliped = false;
+	
+	private IGameEventListener listener = null;
 	
 	public Pad(){
 		maxX = maxY = 1.5f;
@@ -17,12 +23,22 @@ public class Pad extends MeshGroup{
 		rxSpeedPerSecond = 0.0f;
 	}
 	
+	public Pad(IGameEventListener list){
+		this();
+		listener = list;
+	}
+	
 	@Override
 	public void update(float secElapsed){
 		super.update(secElapsed);
-		
-		if(rx<targetRx)rx+=(float)(rxSpeedPerSecond*secElapsed);
-		else rxSpeedPerSecond = 0;
+		if(isNotIdle){
+			if(rx<targetRx)rx+=(float)(rxSpeedPerSecond*secElapsed);
+			else{
+				rxSpeedPerSecond = 0;
+				isNotIdle = false;
+				if(listener != null)listener.onGameEvent(new GameEvent(GameEvent.PAD_FLIPPED, this));
+			}
+		}
 	}
 	
 	public boolean isIntersect(float ix, float iy){
@@ -35,6 +51,7 @@ public class Pad extends MeshGroup{
 	public void Rotate(int angle, float seconds){
 		targetRx += angle;
 		setRxSpeed(seconds);
+		
 	}
 
 	private void setRxSpeed(float seconds) {
@@ -42,6 +59,7 @@ public class Pad extends MeshGroup{
 			float rxDelta = targetRx - rx;
 			rxSpeedPerSecond = rxDelta/seconds;
 		}
+		isNotIdle = true;
 	}
 	
 	public Pad getByIndex(int i){

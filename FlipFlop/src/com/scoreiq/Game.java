@@ -8,7 +8,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.MotionEvent;
 
-public class Game implements ITouchNMesh {
+public class Game implements ITouchNMesh , IGameEventListener {
 	private static final int NO_PAD = -1;
 	
 	private Activity act;
@@ -16,8 +16,9 @@ public class Game implements ITouchNMesh {
 	private Vector<Pad> pads = new Vector<Pad>();
 	private Plane background;
 	
-	private int flipedPadImage = NO_PAD;
-	 
+	private Vector<Pad> flipedPads = new Vector<Pad>();
+	private int playerOneTouchedPads = 0;
+	
 	public Game(Activity act){
 		this.act = act;
 	}
@@ -39,7 +40,7 @@ public class Game implements ITouchNMesh {
     	for(int y=0;y<4;y++)
     		for(int x=0;x<3;x++){
     			//Log.d("TEST", String.format("-------------------------------\ncreatePads() - Enter"));
-    			tmpPad = new Pad();
+    			tmpPad = new Pad(this);
     	    	
     	    	tmpMesh = builder_top.cloneMesh();
     	    	//tmpMesh.loadBitmapFromFile(theme+"fr"+fileNum+".png", this);
@@ -52,9 +53,11 @@ public class Game implements ITouchNMesh {
     	    	tmpMesh.setTextureId(tm.loadTexture(theme+"back.png"));
     	    	tmpPad.addMesh(tmpMesh);
     	    	tmpPad.faceImageId = fileNum;
+    	    	tmpPad.id = y*4+x;
     	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
     	    	
-    	    	tmpPad.Rotate(270, 0.5f);
+    	    	//tmpPad.Rotate(270, 0.5f);
+    	    	tmpPad.rx = 270;
     	    	tmpPad.x += -2.5+x*2.5;
     	    	tmpPad.y += 4.0-y*2.7;
     	    	//Log.d("TEST", String.format("createPads() - Pad's position setted"));
@@ -88,28 +91,30 @@ public class Game implements ITouchNMesh {
 	public boolean onTouch(Vector3d camPos , Vector3d ray){
 		int i = getTapedPadNum(camPos,ray);
 		if(i != NO_PAD)
-			if(!pads.get(i).isFlipping()){
-				if(flipedPadImage == NO_PAD){
+			if(playerOneTouchedPads < 2 && !pads.get(i).isFlipping()){
 					//pads.get(i).Rotate(180, 1);
 					pads.get(i).flip();
-					flipedPadImage = i;
+					flipedPads.add(pads.get(i));
+					playerOneTouchedPads += 1;
 				}
-				else checkPadIdentity(i); 
-			}
-		
 		return true;
 	}
 	
-	private void checkPadIdentity(int i) {
-		if(flipedPadImage == i){
-			pads.get(flipedPadImage).isActive = false;
-			pads.get(i).isActive = false;
+	private void checkPadIdentity() {
+		Log.d("TEST", String.format("Game: checkPadIdentity()"));
+		Pad one , two;
+		one = flipedPads.get(0);
+		two = flipedPads.get(1);
+		if(one.faceImageId == two.faceImageId){
+			one.isActive = false;
+			two.isActive = false;
 		}
 		else{
-			pads.get(flipedPadImage).flip();
-			pads.get(i).flip();
+			one.flip();
+			two.flip();
 		}
-		flipedPadImage = NO_PAD;
+		flipedPads.clear();
+		playerOneTouchedPads = 0;
 	}
 
 	private int getTapedPadNum(Vector3d camPos , Vector3d ray) {
@@ -148,6 +153,17 @@ public class Game implements ITouchNMesh {
 		for(int i=0;i<pads.size();i++){
 			tmpPad = pads.get(i);
 			if(tmpPad.isActive)tmpPad.update(secElapsed);
+		}
+	}
+
+	@Override
+	public void onGameEvent(GameEvent event) {
+		switch(event.type){
+		case GameEvent.PAD_FLIPPED:
+			Log.d("TEST", String.format("Game: receive GameEvent PAD_FLIPPED"));
+			
+			if(flipedPads.size()==2)checkPadIdentity();
+			break;
 		}
 	}
 
