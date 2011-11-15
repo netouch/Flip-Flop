@@ -56,8 +56,8 @@ public class Game implements ITouchNMesh , IGameEventListener {
     	    	tmpPad.id = y*4+x;
     	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
     	    	
-    	    	//tmpPad.Rotate(270, 0.5f);
-    	    	tmpPad.rx = 270;
+    	    	tmpPad.Rotate(270, 0.5f);
+    	    	//tmpPad.rx = 270;
     	    	tmpPad.x += -2.5+x*2.5;
     	    	tmpPad.y += 4.0-y*2.7;
     	    	//Log.d("TEST", String.format("createPads() - Pad's position setted"));
@@ -91,9 +91,8 @@ public class Game implements ITouchNMesh , IGameEventListener {
 	public boolean onTouch(Vector3d camPos , Vector3d ray){
 		int i = getTapedPadNum(camPos,ray);
 		if(i != NO_PAD)
-			if(playerOneTouchedPads < 2 && !pads.get(i).isFlipping()){
-					//pads.get(i).Rotate(180, 1);
-					pads.get(i).flip();
+			if(playerOneTouchedPads < 2){
+					pads.get(i).playerFlip();
 					flipedPads.add(pads.get(i));
 					playerOneTouchedPads += 1;
 				}
@@ -101,20 +100,23 @@ public class Game implements ITouchNMesh , IGameEventListener {
 	}
 	
 	private void checkPadIdentity() {
-		Log.d("TEST", String.format("Game: checkPadIdentity()"));
-		Pad one , two;
-		one = flipedPads.get(0);
-		two = flipedPads.get(1);
-		if(one.faceImageId == two.faceImageId){
-			one.isActive = false;
-			two.isActive = false;
+		Log.d("TEST", String.format("Game: checkPadIdentity() start"));
+		if(flipedPads.size()==2){
+			Log.d("TEST", String.format("Game: checkPadIdentity() size=%d", flipedPads.size()));
+			Pad one , two;
+			one = flipedPads.get(0);
+			two = flipedPads.get(1);
+			if(one.faceImageId == two.faceImageId){
+				one.isActive = false;
+				two.isActive = false;
+			}
+			else{
+				one.flip();
+				two.flip();
+			}
+			flipedPads.clear();
+			playerOneTouchedPads = 0;
 		}
-		else{
-			one.flip();
-			two.flip();
-		}
-		flipedPads.clear();
-		playerOneTouchedPads = 0;
 	}
 
 	private int getTapedPadNum(Vector3d camPos , Vector3d ray) {
@@ -128,7 +130,7 @@ public class Game implements ITouchNMesh , IGameEventListener {
 		y=camPos.y + ray.y*multipliyer;
 		Log.d("TEST", String.format("- x;y = %f;%f", x,y));
 		for(int i=0;i<pads.size();i++){
-			if(pads.get(i).isIntersect(x, y) && !pads.get(i).fliped){
+			if(pads.get(i).isIntersect(x, y) && !pads.get(i).fliped && !pads.get(i).isFlipping()){
 				Log.d("TEST", String.format(" --> Index of picked Pad is %d", i));
 				return i;
 				}
@@ -161,8 +163,7 @@ public class Game implements ITouchNMesh , IGameEventListener {
 		switch(event.type){
 		case GameEvent.PAD_FLIPPED:
 			Log.d("TEST", String.format("Game: receive GameEvent PAD_FLIPPED"));
-			
-			if(flipedPads.size()==2)checkPadIdentity();
+			checkPadIdentity();
 			break;
 		}
 	}

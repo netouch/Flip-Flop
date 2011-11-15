@@ -9,6 +9,7 @@ public class Pad extends MeshGroup{
 	private float maxY, minY;
 	public boolean isActive = true;
 	private boolean isNotIdle = false;
+	private boolean sendMessage = false;
 	
 	public int faceImageId = 0;
 	public int id;
@@ -36,7 +37,10 @@ public class Pad extends MeshGroup{
 			else{
 				rxSpeedPerSecond = 0;
 				isNotIdle = false;
-				if(listener != null)listener.onGameEvent(new GameEvent(GameEvent.PAD_FLIPPED, this));
+				if(listener != null && sendMessage){
+					listener.onGameEvent(new GameEvent(GameEvent.PAD_FLIPPED, this));
+					sendMessage = false;
+				}
 			}
 		}
 	}
@@ -62,10 +66,6 @@ public class Pad extends MeshGroup{
 		isNotIdle = true;
 	}
 	
-	public Pad getByIndex(int i){
-		return (Pad)getByIndex(i);
-	}
-	
 	public boolean isFlipping(){
 		Log.d("TEST", String.format("rxSpeedPerSecond = %f", rxSpeedPerSecond));
 		if(rxSpeedPerSecond>0)return true;
@@ -77,4 +77,8 @@ public class Pad extends MeshGroup{
 		fliped = ! fliped;
 	}
 	
+	public void playerFlip(){
+		flip();
+		sendMessage = true;
+	}
 }
