@@ -1,6 +1,7 @@
 package com.scoreiq;
 
 public class MenuItem extends Plane {
+	IGameEventListener listener;
 	GameEvent event;
 	float hWidth;
 	float hHeight;
@@ -13,6 +14,14 @@ public class MenuItem extends Plane {
 	
 	public void setEvent(GameEvent event){
 		this.event = event;
+	}
+	
+	public void setListener(IGameEventListener listener){
+		this.listener = listener;
+	}
+	
+	public void dispatchEvent(){
+		if(listener!=null)listener.onGameEvent(event);
 	}
 	
 	public boolean isIntersect(float x, float y){

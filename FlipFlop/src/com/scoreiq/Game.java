@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 public class Game implements ITouchNMesh , IGameEventListener {
 	private static final int NO_PAD = -1;
 	
+	private IGameEventListener listener;
 	private Activity act;
 	
 	private Vector<Pad> pads = new Vector<Pad>();
@@ -21,6 +22,10 @@ public class Game implements ITouchNMesh , IGameEventListener {
 	
 	public Game(Activity act){
 		this.act = act;
+	}
+	
+	public void setListener(IGameEventListener lnr){
+		listener = lnr;
 	}
 	
 	public void loadLevel(String theme){
@@ -56,7 +61,7 @@ public class Game implements ITouchNMesh , IGameEventListener {
     	    	tmpPad.id = y*4+x;
     	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
     	    	
-    	    	tmpPad.Rotate(270, 0.5f);
+    	    	tmpPad.Rotate(90, 0.5f);
     	    	//tmpPad.rx = 270;
     	    	tmpPad.x += -2.5+x*2.5;
     	    	tmpPad.y += 4.0-y*2.7;
@@ -68,7 +73,7 @@ public class Game implements ITouchNMesh , IGameEventListener {
     	    	fileNum++;
     	    	if(fileNum>6)fileNum=1;
     		}
-    	shufflePads();
+    	//shufflePads();
     	
     	background = new Plane(16.0f , 16.0f);
     	background.z += -4.0f;
@@ -93,7 +98,7 @@ public class Game implements ITouchNMesh , IGameEventListener {
 		if(i != NO_PAD)
 			if(playerOneTouchedPads < 2){
 					pads.get(i).playerFlip();
-					flipedPads.add(pads.get(i));
+					//flipedPads.add(pads.get(i));
 					playerOneTouchedPads += 1;
 				}
 		return true;
@@ -163,9 +168,26 @@ public class Game implements ITouchNMesh , IGameEventListener {
 		switch(event.type){
 		case GameEvent.PAD_FLIPPED:
 			Log.d("TEST", String.format("Game: receive GameEvent PAD_FLIPPED"));
+			flipedPads.add(event.pad);
 			checkPadIdentity();
+			if(checkEndGame())
+				if(listener!=null)listener.onGameEvent(new GameEvent(GameEvent.GAME_END));
 			break;
 		}
 	}
 
+	private boolean checkEndGame() {
+		boolean isActivePads = false;
+		for(int i=0;i<pads.size();i++)if(pads.get(i).isActive)isActivePads = true;
+		return !isActivePads;
+	}
+	
+	public void reset(){
+		for(int i=0; i<pads.size();i++){
+			pads.get(i).isActive = true;
+			pads.get(i).fliped = true;
+			pads.get(i).flip();
+		}
+		shufflePads();
+	}
 }

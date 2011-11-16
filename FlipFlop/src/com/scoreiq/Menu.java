@@ -1,5 +1,7 @@
 package com.scoreiq;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -7,14 +9,22 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.util.Log;
 
-public class Menu extends MeshGroup implements ITouchNMesh {	
+public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {	
+	private static final int MAINMENU = 0;
+	private static final int THEMEMENU = 1;
+	
+	
 	private IGameEventListener listener;
 	
 	private Plane background;
-	private Vector<MenuItem>items = new Vector<MenuItem>();
+	private int currentMenuGroup = MAINMENU;
+	private ArrayList<Vector> menuGroups = new ArrayList<Vector>();
+	//private Vector<MenuItem>items = new Vector<MenuItem>();
 	
 	public Menu(){
 		Log.d("TEST", String.format("Menu - Menu() constructor"));
+		menuGroups.add(new Vector<MenuItem>());
+		menuGroups.add(new Vector<MenuItem>());
 	}
 	
 	public void createMenu(){
@@ -30,14 +40,31 @@ public class Menu extends MeshGroup implements ITouchNMesh {
 		item = new MenuItem(6.0f, 2.0f, 0.0f, 0.0f, 1.0f, 0.25f);
 		item.setTextureId(TextureManager.getInstance().loadTexture("menu.png"));
 		item.setEvent(new GameEvent(GameEvent.MENU_START));
+		item.setListener(this);
 		item.y += 3.0f;
-		items.add(item);
+		menuGroups.get(MAINMENU).add(item);
 		
 		item = new MenuItem(6.0f, 2.0f, 0.0f, 0.25f, 1.0f, 0.5f);
 		item.setTextureId(TextureManager.getInstance().loadTexture("menu.png"));
 		item.setEvent(new GameEvent(GameEvent.MENU_THEME));
+		item.setListener(this);
 		item.y += -1.0f;
-		items.add(item);
+		menuGroups.get(MAINMENU).add(item);
+		
+		//Now create theme menu
+		item = new MenuItem(3.0f, 3.0f, 0.0f, 0.0f, 1.0f, 1.0f);
+		item.setTextureId(TextureManager.getInstance().loadTexture("rio/title.png"));
+		item.setEvent(new GameEvent(GameEvent.THEME_SELECT , "rio/"));
+		item.setListener(this);
+		item.x += -2.0f;
+		menuGroups.get(THEMEMENU).add(item);
+		
+		item = new MenuItem(3.0f, 3.0f, 0.0f, 0.0f, 1.0f, 1.0f);
+		item.setTextureId(TextureManager.getInstance().loadTexture("default/title.png"));
+		item.setEvent(new GameEvent(GameEvent.THEME_SELECT, "default/"));
+		item.setListener(this);
+		item.x += 2.0f;
+		menuGroups.get(THEMEMENU).add(item);
 		
 		Log.d("TEST", String.format("Menu - createMenu() finish"));
 	}
@@ -56,10 +83,14 @@ public class Menu extends MeshGroup implements ITouchNMesh {
 		x=camPos.x + ray.x*multipliyer;
 		y=camPos.y + ray.y*multipliyer;
 		Log.d("TEST", String.format("- x:y  at z=0 = %f;%f", x,y));
+		
+		Vector<MenuItem> items = menuGroups.get(currentMenuGroup);
+		
 		for(int i=0;i<items.size();i++){
 			if(items.get(i).isIntersect(x, y)){
-				Log.d("TEST", String.format(" --> Index of picked menuItem is %d", i));
-				listener.onGameEvent(items.get(i).event);
+				Log.d("TEST", String.format(" --> Index of picked menuItem is %d in menuGroup #%d", i, currentMenuGroup));
+				//if(listener!=null)listener.onGameEvent(items.get(i).event);
+				items.get(i).dispatchEvent();
 				}
 		}
 		return true;
@@ -68,8 +99,15 @@ public class Menu extends MeshGroup implements ITouchNMesh {
 	@Override
 	public void draw(GL10 gl) {
 		if(background!=null)background.draw(gl);
+		/*
 		for(int i=0; i< items.size();i++){
 			items.get(i).draw(gl);
+		}
+		*/
+		MenuItem mi;
+		for(int i=0;i< menuGroups.get(currentMenuGroup).size() ; i++){
+			mi = (MenuItem)menuGroups.get(currentMenuGroup).get(i);
+			mi.draw(gl);
 		}
 	}
 
@@ -79,4 +117,18 @@ public class Menu extends MeshGroup implements ITouchNMesh {
 
 	}
 
+	@Override
+	public void onGameEvent(GameEvent event) {
+		switch(event.type){
+		case GameEvent.MENU_START:
+			if(listener!=null)listener.onGameEvent(event);
+			break;
+		case GameEvent.MENU_THEME:
+			currentMenuGroup = THEMEMENU;
+			break;
+		case GameEvent.THEME_SELECT:
+			currentMenuGroup = MAINMENU;
+			break;
+		}
+	}
 }

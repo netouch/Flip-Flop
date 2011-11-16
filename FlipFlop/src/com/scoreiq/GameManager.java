@@ -34,6 +34,7 @@ public class GameManager implements IGameEventListener, IMesh{
 			break;
 		case GameEvent.MENU_START:
 			Log.d("TEST", String.format("GameManager recived <START message>"));
+			game.reset();
 			currentGameState = null;
 			currentGameState = game;
 			//createGame();
@@ -41,14 +42,19 @@ public class GameManager implements IGameEventListener, IMesh{
 		case GameEvent.MENU_THEME:
 			Log.d("TEST", String.format("GameManager recived <THEME message>"));
 			break;
+		case GameEvent.GAME_END:
+			currentGameState = null;
+			currentGameState = menu;
+			break;
 		}
 	}
 
 	private void createGame() {
 		if(game==null){
 			game = new Game(act);
-			game.loadLevel("rio/");
-			//game.loadLevel("default/");
+			game.setListener(this);
+			//game.loadLevel("rio/");
+			game.loadLevel("default/");
 		}
 		//currentGameState = game;
 	}

@@ -38,7 +38,8 @@ public class FlipFlopView extends GLSurfaceView {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event){
-		gameManager.onTouch(event.getX(), event.getY());
+		if(event.getAction() == MotionEvent.ACTION_UP)
+			gameManager.onTouch(event.getX(), event.getY());
 		return true;
 	}
 }
