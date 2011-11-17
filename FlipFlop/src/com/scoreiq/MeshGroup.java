@@ -42,7 +42,8 @@ public class MeshGroup extends Mesh {
 	}
 	
 	public Mesh getByIndex(int i){
-		return mChildren.get(i);
+		//if(i<mChildren.size())
+			return mChildren.get(i);
 	}
 	
 	public void clear(){

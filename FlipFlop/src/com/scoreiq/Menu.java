@@ -17,9 +17,10 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 	private IGameEventListener listener;
 	
 	private Plane background;
+	private Plane curTitle;
+	private String theme="default/";
 	private int currentMenuGroup = MAINMENU;
 	private ArrayList<Vector> menuGroups = new ArrayList<Vector>();
-	//private Vector<MenuItem>items = new Vector<MenuItem>();
 	
 	public Menu(){
 		Log.d("TEST", String.format("Menu - Menu() constructor"));
@@ -37,11 +38,17 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		background.setTextureId(texId);
 		background.z += -4.0f;
 		
+		curTitle = new Plane(1.0f , 1.0f);
+		curTitle.setTextureId(TextureManager.getInstance().loadTexture(theme+"title.png"));
+		curTitle.y += 3.0f;
+		curTitle.x += 2.0f;
+		
 		item = new MenuItem(6.0f, 2.0f, 0.0f, 0.0f, 1.0f, 0.25f);
 		item.setTextureId(TextureManager.getInstance().loadTexture("menu.png"));
 		item.setEvent(new GameEvent(GameEvent.MENU_START));
 		item.setListener(this);
 		item.y += 3.0f;
+		//item.x += -2.0f;
 		menuGroups.get(MAINMENU).add(item);
 		
 		item = new MenuItem(6.0f, 2.0f, 0.0f, 0.25f, 1.0f, 0.5f);
@@ -89,7 +96,6 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		for(int i=0;i<items.size();i++){
 			if(items.get(i).isIntersect(x, y)){
 				Log.d("TEST", String.format(" --> Index of picked menuItem is %d in menuGroup #%d", i, currentMenuGroup));
-				//if(listener!=null)listener.onGameEvent(items.get(i).event);
 				items.get(i).dispatchEvent();
 				}
 		}
@@ -99,11 +105,8 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 	@Override
 	public void draw(GL10 gl) {
 		if(background!=null)background.draw(gl);
-		/*
-		for(int i=0; i< items.size();i++){
-			items.get(i).draw(gl);
-		}
-		*/
+		if(curTitle!=null && currentMenuGroup == MAINMENU)curTitle.draw(gl);
+
 		MenuItem mi;
 		for(int i=0;i< menuGroups.get(currentMenuGroup).size() ; i++){
 			mi = (MenuItem)menuGroups.get(currentMenuGroup).get(i);
@@ -127,6 +130,9 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 			currentMenuGroup = THEMEMENU;
 			break;
 		case GameEvent.THEME_SELECT:
+			theme = event.theme;
+			curTitle.setTextureId(TextureManager.getInstance().loadTexture(theme+"title.png"));
+			listener.onGameEvent(event);
 			currentMenuGroup = MAINMENU;
 			break;
 		}

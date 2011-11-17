@@ -1,16 +1,15 @@
 package com.scoreiq;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.opengl.GLException;
 import android.opengl.GLUtils;
 import android.util.Log;
 
@@ -36,12 +35,6 @@ public class TextureManager {
 		textureIds.clear();
 		textureNames.clear();
 	}
-
-	/*
-	public static TextureManager getInstance(){
-		return instance;
-	}
-	*/
 	
 	public static synchronized TextureManager getInstance(){
 		if(instance==null){
@@ -95,7 +88,7 @@ public class TextureManager {
 		*/
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, btmp, 0);
-		traceNames();
+		//traceNames();
 		Log.d("TEST", String.format("TextureManager - texture = %s loaded, ID is %d", file, texId[0]));
 		Log.d("TEST", String.format("TextureManager - loadTexture() finish"));
 		//renderer.draw = true;
@@ -104,7 +97,10 @@ public class TextureManager {
 
 	private int isTextureLoaded(String file) {
 		for(int i=0;i<textureNames.size();i++){
-			if(textureNames.get(i) == file) return textureIds.get(i);
+			//Log.d("TEST", String.format("TextureManager - isTextureLoaded(): eixist tex[%d] <%s>==loading<%s> is %b", i, textureNames.get(i), file,textureNames.get(i) == file ));
+			Log.d("TEST", String.format("TextureManager - isTextureLoaded(): exist tex[%d] <%s>==loading<%s> is %b",
+					i, textureNames.get(i), file,textureNames.get(i).equalsIgnoreCase(file)));
+			if(textureNames.get(i).equalsIgnoreCase(file)) return textureIds.get(i);
 		}
 		return -1;
 	}
@@ -165,5 +161,39 @@ public class TextureManager {
 		for(int i=0;i<textureNames.size();i++){
 			Log.d("TEST", String.format("TextureManager - name trace [%d] = <%s>", i, textureNames.get(i)));
 		}
+	}
+	
+	public void loadAllTexturesIn(String path) {
+		loadTexture(path+"back.png");
+		loadTexture(path+"fr1.png");
+		loadTexture(path+"fr2.png");
+		loadTexture(path+"fr3.png");
+		loadTexture(path+"fr4.png");
+		loadTexture(path+"fr5.png");
+		loadTexture(path+"fr6.png");
+		loadTexture(path+"background.png");
+		loadTexture(path+"title.png");
+		
+		/*
+		Log.d("TEST", String.format("TextureManager - loadAllTexturesIn(%s) start", path));
+		path = "/";
+		String list[];
+		try {
+			list = act.getAssets().list(path);
+			
+		} catch (IOException e) {
+			Log.d("TEST", String.format("TextureManager - loadAllTexturesIn(%s) failed with IOException", path));
+			return;
+		}
+		
+		File fd;
+		if(list!=null)
+			for(int i=0;i < list.length;i++){
+				fd = new File(path, list[i]);
+				Log.d("TEST", String.format("TextureManager - loadAllTexturesIn(%s): %s________is dir = %b ",path,  list[i], fd.isDirectory()));
+				//loadAllTexturesIn(path+list[i]);
+			}
+		Log.d("TEST", String.format("TextureManager - loadAllTexturesIn(%s) finish", path));
+		*/
 	}
 }

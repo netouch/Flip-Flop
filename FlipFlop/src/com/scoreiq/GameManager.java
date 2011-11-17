@@ -1,5 +1,7 @@
 package com.scoreiq;
 
+import java.io.File;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
@@ -13,6 +15,7 @@ public class GameManager implements IGameEventListener, IMesh{
 	private Menu menu;
 	private Game game;
 	private Preloader preloader;
+	private String theme = "default/";
 	
 	public GameManager(Activity act){
 		this.act = act;
@@ -28,13 +31,15 @@ public class GameManager implements IGameEventListener, IMesh{
 	public void onGameEvent(GameEvent event) {
 		switch(event.type){
 		case GameEvent.TEXTURE_MANAGER_READY:
+			TextureManager.getInstance().loadAllTexturesIn("rio/");
+			TextureManager.getInstance().loadAllTexturesIn("default/");
 			createMenu();
 			createGame();
 			currentGameState = menu;
 			break;
 		case GameEvent.MENU_START:
 			Log.d("TEST", String.format("GameManager recived <START message>"));
-			game.reset();
+			game.reset(theme);
 			currentGameState = null;
 			currentGameState = game;
 			//createGame();
@@ -45,6 +50,9 @@ public class GameManager implements IGameEventListener, IMesh{
 		case GameEvent.GAME_END:
 			currentGameState = null;
 			currentGameState = menu;
+			break;
+		case GameEvent.THEME_SELECT:
+			theme = event.theme;
 			break;
 		}
 	}

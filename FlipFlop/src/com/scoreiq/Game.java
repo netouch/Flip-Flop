@@ -44,41 +44,32 @@ public class Game implements ITouchNMesh , IGameEventListener {
     	int fileNum=1;
     	for(int y=0;y<4;y++)
     		for(int x=0;x<3;x++){
-    			//Log.d("TEST", String.format("-------------------------------\ncreatePads() - Enter"));
     			tmpPad = new Pad(this);
     	    	
     	    	tmpMesh = builder_top.cloneMesh();
-    	    	//tmpMesh.loadBitmapFromFile(theme+"fr"+fileNum+".png", this);
-    	    	tmpMesh.setTextureId(tm.loadTexture(theme+"fr"+fileNum+".png"));
+    	    	//tmpMesh.setTextureId(tm.loadTexture(theme+"fr"+fileNum+".png"));
     	    	tmpPad.addMesh(tmpMesh);
-    	    	//Log.d("TEST", String.format("createPads() - top cloned"));
     	    	
     	    	tmpMesh = builder_bottom.cloneMesh();
-    	    	//tmpMesh.loadBitmapFromFile(theme+"back.png", this);
-    	    	tmpMesh.setTextureId(tm.loadTexture(theme+"back.png"));
+    	    	//tmpMesh.setTextureId(tm.loadTexture(theme+"back.png"));
     	    	tmpPad.addMesh(tmpMesh);
-    	    	tmpPad.faceImageId = fileNum;
+    	    	//tmpPad.faceImageId = fileNum;
     	    	tmpPad.id = y*4+x;
-    	    	//Log.d("TEST", String.format("createPads() - bottomcloned"));
     	    	
-    	    	tmpPad.Rotate(90, 0.5f);
-    	    	//tmpPad.rx = 270;
+    	    	tmpPad.Rotate(270, 0.3f);
     	    	tmpPad.x += -2.5+x*2.5;
     	    	tmpPad.y += 4.0-y*2.7;
-    	    	//Log.d("TEST", String.format("createPads() - Pad's position setted"));
     	    	
     	    	pads.add(tmpPad);
-    	    	//Log.d("TEST", String.format("createPads() - Pad added"));
     	    	
     	    	fileNum++;
     	    	if(fileNum>6)fileNum=1;
     		}
-    	//shufflePads();
     	
     	background = new Plane(16.0f , 16.0f);
     	background.z += -4.0f;
-    	//plane.loadBitmapFromFile(theme+"background.png", this);
-    	background.setTextureId(tm.loadTexture(theme+"background.png"));
+    	//background.setTextureId(tm.loadTexture(theme+"background.png"));
+    	reset(theme);
 	}
 	
 	private void shufflePads() {
@@ -182,12 +173,25 @@ public class Game implements ITouchNMesh , IGameEventListener {
 		return !isActivePads;
 	}
 	
-	public void reset(){
+	public void reset(String theme){
+		TextureManager tm = TextureManager.getInstance();
+		int imgNum=1;
+		
 		for(int i=0; i<pads.size();i++){
 			pads.get(i).isActive = true;
+			
+			pads.get(i).getByIndex(0).setTextureId(tm.loadTexture(theme+"fr"+imgNum+".png"));
+			pads.get(i).faceImageId = imgNum;
+			imgNum++;
+			if(imgNum>6)imgNum=1;
+			
+			pads.get(i).getByIndex(1).setTextureId(tm.loadTexture(theme+"back.png"));
+			
 			pads.get(i).fliped = true;
 			pads.get(i).flip();
 		}
+		
+		background.setTextureId(tm.loadTexture(theme+"background.png"));
 		shufflePads();
 	}
 }
