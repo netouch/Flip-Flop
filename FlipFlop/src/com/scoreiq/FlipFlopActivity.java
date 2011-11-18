@@ -27,6 +27,12 @@ public class FlipFlopActivity extends Activity{
         TextureManager.getInstance().clearInstances();
         TextureManager.getInstance().setActivity(this);
         
+        SoundManager.getInstance();
+        SoundManager.getInstance().init(this);
+        SoundManager.getInstance().loadSounds();
+        SoundManager.getInstance().playSound(SoundManager.CLICK, 1);
+        
+        
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Log.d("TEST", String.format("Activity onCreate() now create View"));

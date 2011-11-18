@@ -117,7 +117,6 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 	@Override
 	public void update(float secElapsed) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -125,11 +124,14 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		switch(event.type){
 		case GameEvent.MENU_START:
 			if(listener!=null)listener.onGameEvent(event);
+			SoundManager.getInstance().playSound(SoundManager.CLICK, 1.0f);
 			break;
 		case GameEvent.MENU_THEME:
+			SoundManager.getInstance().playSound(SoundManager.CLICK, 1.0f);
 			currentMenuGroup = THEMEMENU;
 			break;
 		case GameEvent.THEME_SELECT:
+			SoundManager.getInstance().playSound(SoundManager.CLICK, 1.0f);
 			theme = event.theme;
 			curTitle.setTextureId(TextureManager.getInstance().loadTexture(theme+"title.png"));
 			listener.onGameEvent(event);

@@ -1,13 +1,20 @@
 package com.scoreiq;
 
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.util.Log;
 
 public class SoundManager {
+	public static final int CLICK = 1;
+	
 	private static SoundManager instance;
 	
 	private Context context;
@@ -32,8 +39,9 @@ public class SoundManager {
 	}
 	
 	public void loadSounds(){
-		sounds.put(1, soundPool.load("sounds/flip.mp3", 1));
-		sounds.put(2, soundPool.load("sounds/identical.mp3", 1));
+		sounds.put(CLICK, soundPool.load(context, R.raw.click , 1));
+		//sounds.put(2, soundPool.load("sounds/identical.mp3", 1));
+		Log.d("TEST", String.format("----->SoundManager loadSounds() finish"));
 	}
 	
 	public void addSound(int index, String file){

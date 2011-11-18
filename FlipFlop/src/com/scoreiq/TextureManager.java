@@ -97,9 +97,6 @@ public class TextureManager {
 
 	private int isTextureLoaded(String file) {
 		for(int i=0;i<textureNames.size();i++){
-			//Log.d("TEST", String.format("TextureManager - isTextureLoaded(): eixist tex[%d] <%s>==loading<%s> is %b", i, textureNames.get(i), file,textureNames.get(i) == file ));
-			Log.d("TEST", String.format("TextureManager - isTextureLoaded(): exist tex[%d] <%s>==loading<%s> is %b",
-					i, textureNames.get(i), file,textureNames.get(i).equalsIgnoreCase(file)));
 			if(textureNames.get(i).equalsIgnoreCase(file)) return textureIds.get(i);
 		}
 		return -1;
