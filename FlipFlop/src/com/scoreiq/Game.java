@@ -84,14 +84,16 @@ public class Game implements ITouchNMesh , IGameEventListener {
 		}
 	}
 	
-	public boolean onTouch(Vector3d camPos , Vector3d ray){
-		int i = getTapedPadNum(camPos,ray);
-		if(i != NO_PAD)
-			if(playerOneTouchedPads < 2){
-					pads.get(i).playerFlip();
-					//flipedPads.add(pads.get(i));
-					playerOneTouchedPads += 1;
-				}
+	public boolean onTouch(Vector3d camPos , Vector3d ray, int eventAction){
+		if(eventAction == MotionEvent.ACTION_UP){
+			int i = getTapedPadNum(camPos,ray);
+			if(i != NO_PAD)
+				if(playerOneTouchedPads < 2){
+						pads.get(i).playerFlip();
+						//flipedPads.add(pads.get(i));
+						playerOneTouchedPads += 1;
+					}
+		}
 		return true;
 	}
 	

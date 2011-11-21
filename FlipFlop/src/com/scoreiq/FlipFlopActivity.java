@@ -9,6 +9,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.R;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.os.Bundle;
@@ -30,8 +31,8 @@ public class FlipFlopActivity extends Activity{
         SoundManager.getInstance();
         SoundManager.getInstance().init(this);
         SoundManager.getInstance().loadSounds();
-        SoundManager.getInstance().playSound(SoundManager.CLICK, 1);
         
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

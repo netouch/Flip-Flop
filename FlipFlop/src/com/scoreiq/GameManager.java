@@ -6,6 +6,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.MotionEvent;
 
 public class GameManager implements IGameEventListener, IMesh{
 	private Activity act;
@@ -22,9 +23,13 @@ public class GameManager implements IGameEventListener, IMesh{
 		Log.d("TEST", String.format("GameManager created"));
 	}
 	
-	public void onTouch(float x, float y){
-		if(currentGameState!=null)
-			currentGameState.onTouch(camera.getPosition(), camera.getTapRay(x, y));
+	public void onTouch(MotionEvent event){
+		if(event.getAction() == MotionEvent.ACTION_UP){	
+			float x = event.getX();
+			float y = event.getY();
+			if(currentGameState!=null)
+				currentGameState.onTouch(camera.getPosition(), camera.getTapRay(x, y), MotionEvent.ACTION_UP);
+		}
 	}
 	
 	@Override

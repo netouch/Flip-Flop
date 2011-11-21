@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.util.Log;
+import android.view.MotionEvent;
 
 public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {	
 	private static final int MAINMENU = 0;
@@ -34,28 +35,32 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		MenuItem item;
 		
 		background = new Plane(16.0f , 16.0f);
-		texId = TextureManager.getInstance().loadTexture("menu_bg.png");
+		texId = TextureManager.getInstance().loadTexture("menu_bg2.png");
 		background.setTextureId(texId);
 		background.z += -4.0f;
 		
 		curTitle = new Plane(1.0f , 1.0f);
 		curTitle.setTextureId(TextureManager.getInstance().loadTexture(theme+"title.png"));
-		curTitle.y += 3.0f;
-		curTitle.x += 2.0f;
+		curTitle.y += -0.8f;
+		curTitle.x += +2.0f;
 		
 		item = new MenuItem(6.0f, 2.0f, 0.0f, 0.0f, 1.0f, 0.25f);
-		item.setTextureId(TextureManager.getInstance().loadTexture("menu.png"));
+		//item.setTextureId(TextureManager.getInstance().loadTexture("menu.png"));
+		item.setTextures(	TextureManager.getInstance().loadTexture("menu.png"), 
+							TextureManager.getInstance().loadTexture("menu_press.png"));
 		item.setEvent(new GameEvent(GameEvent.MENU_START));
 		item.setListener(this);
 		item.y += 3.0f;
-		//item.x += -2.0f;
+		item.x += -1.0f;
 		menuGroups.get(MAINMENU).add(item);
 		
 		item = new MenuItem(6.0f, 2.0f, 0.0f, 0.25f, 1.0f, 0.5f);
-		item.setTextureId(TextureManager.getInstance().loadTexture("menu.png"));
+		item.setTextures(	TextureManager.getInstance().loadTexture("menu.png"), 
+							TextureManager.getInstance().loadTexture("menu_press.png"));
 		item.setEvent(new GameEvent(GameEvent.MENU_THEME));
 		item.setListener(this);
 		item.y += -1.0f;
+		item.x += -1.0f;
 		menuGroups.get(MAINMENU).add(item);
 		
 		//Now create theme menu
@@ -80,7 +85,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		listener = lnr;
 	}
 	
-	public boolean onTouch(Vector3d camPos , Vector3d ray){
+	public boolean onTouch(Vector3d camPos , Vector3d ray, int eventAction){
 		Log.d("TEST", String.format("Calculate touched menuItem-------------------"));
 		float x;
 		float y;
@@ -96,8 +101,8 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		for(int i=0;i<items.size();i++){
 			if(items.get(i).isIntersect(x, y)){
 				Log.d("TEST", String.format(" --> Index of picked menuItem is %d in menuGroup #%d", i, currentMenuGroup));
-				items.get(i).dispatchEvent();
-				}
+					items.get(i).dispatchEvent();
+			}
 		}
 		return true;
 	}
