@@ -89,6 +89,10 @@ public class GameManager implements IGameEventListener, IMesh{
 		Log.d("TEST", String.format("GameManager createMenu() finish"));
 	}
 
+	public boolean isMenuState(){
+		if(currentGameState.getName().equalsIgnoreCase("menu"))return true;
+		else return false;
+	}
 
 	@Override
 	public void draw(GL10 gl) {

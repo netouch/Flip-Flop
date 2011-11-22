@@ -23,6 +23,10 @@ public class Game implements ITouchNMesh , IGameEventListener {
 	public Game(Activity act){
 		this.act = act;
 	}
+
+	public String getName(){
+		return new String("game");
+	}
 	
 	public void setListener(IGameEventListener lnr){
 		listener = lnr;
@@ -56,7 +60,8 @@ public class Game implements ITouchNMesh , IGameEventListener {
     	    	//tmpPad.faceImageId = fileNum;
     	    	tmpPad.id = y*4+x;
     	    	
-    	    	tmpPad.Rotate(270, 0.3f);
+    	    	//tmpPad.Rotate(270, 0.3f);
+    	    	tmpPad.reset();
     	    	tmpPad.x += -2.5+x*2.5;
     	    	tmpPad.y += 4.0-y*2.7;
     	    	
@@ -175,6 +180,7 @@ public class Game implements ITouchNMesh , IGameEventListener {
 		return !isActivePads;
 	}
 	
+	
 	public void reset(String theme){
 		TextureManager tm = TextureManager.getInstance();
 		int imgNum=1;
@@ -189,11 +195,13 @@ public class Game implements ITouchNMesh , IGameEventListener {
 			
 			pads.get(i).getByIndex(1).setTextureId(tm.loadTexture(theme+"back.png"));
 			
-			pads.get(i).fliped = true;
-			pads.get(i).flip();
+			pads.get(i).reset();
 		}
 		
 		background.setTextureId(tm.loadTexture(theme+"background.png"));
 		shufflePads();
+		
+		flipedPads.clear();
+		playerOneTouchedPads = 0;
 	}
 }

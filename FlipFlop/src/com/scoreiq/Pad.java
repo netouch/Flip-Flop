@@ -55,7 +55,6 @@ public class Pad extends MeshGroup{
 	public void Rotate(int angle, float seconds){
 		targetRx += angle;
 		setRxSpeed(seconds);
-		
 	}
 
 	private void setRxSpeed(float seconds) {
@@ -80,5 +79,15 @@ public class Pad extends MeshGroup{
 	public void playerFlip(){
 		flip();
 		sendMessage = true;
+	}
+	
+	public void reset(){
+		rx = 270.0f;
+		fliped = false;
+		isActive = true;
+		isNotIdle = false;
+		sendMessage = false;
+		targetRx = 270.0f;
+		rxSpeedPerSecond = 0.0f;
 	}
 }

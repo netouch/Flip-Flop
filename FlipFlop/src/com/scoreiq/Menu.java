@@ -14,6 +14,8 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 	private static final int MAINMENU = 0;
 	private static final int THEMEMENU = 1;
 	
+	private String name = "menu";
+	
 	
 	private IGameEventListener listener;
 	
@@ -27,6 +29,10 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		Log.d("TEST", String.format("Menu - Menu() constructor"));
 		menuGroups.add(new Vector<MenuItem>());
 		menuGroups.add(new Vector<MenuItem>());
+	}
+	
+	public String getName(){
+		return new String("menu");
 	}
 	
 	public void createMenu(){
@@ -121,7 +127,6 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 
 	@Override
 	public void update(float secElapsed) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override

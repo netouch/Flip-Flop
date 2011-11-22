@@ -53,6 +53,18 @@ public class FlipFlopActivity extends Activity{
     }
    
     @Override
+    public void onBackPressed(){
+    	Log.d("TEST", String.format("Activity - onBackPressed() - I got BACK, need return to MENU"));
+    	if(view.gameManager.isMenuState()){
+    		onStop();
+        	this.finish();
+    	}
+    	else view.gameManager.onGameEvent(new GameEvent(GameEvent.GAME_END));
+    	
+    	return;
+    }
+    
+    @Override
     public void onPause(){
     	super.onPause();
     	view.onPause();
