@@ -1,17 +1,10 @@
 package com.scoreiq;
 
-import java.io.File;
-import java.io.InputStream;
-
 import javax.microedition.khronos.opengles.GL;
-import javax.microedition.khronos.opengles.GL10;
 
-import android.R;
 import android.app.Activity;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
-import android.opengl.GLUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;

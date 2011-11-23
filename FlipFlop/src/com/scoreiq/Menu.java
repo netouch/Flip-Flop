@@ -1,14 +1,11 @@
 package com.scoreiq;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import android.util.Log;
-import android.view.MotionEvent;
 
 public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {	
 	private static final int MAINMENU = 0;
@@ -32,7 +29,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 	}
 	
 	public String getName(){
-		return new String("menu");
+		return name;
 	}
 	
 	public void createMenu(){

@@ -1,14 +1,9 @@
 package com.scoreiq;
 
+import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.app.Activity;
-
-import java.util.List;
-import java.util.Stack;
-import java.util.Vector;
-import java.math.*;
 
 public class FlipFlopView extends GLSurfaceView {
 	private OGLRenderer renderer;

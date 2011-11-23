@@ -1,7 +1,5 @@
 package com.scoreiq;
 
-import java.io.File;
-
 import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
@@ -15,7 +13,7 @@ public class GameManager implements IGameEventListener, IMesh{
 	private ITouchNMesh currentGameState;
 	private Menu menu;
 	private Game game;
-	private Preloader preloader;
+	//private Preloader preloader;
 	private String theme = "default/";
 	
 	public GameManager(Activity act){

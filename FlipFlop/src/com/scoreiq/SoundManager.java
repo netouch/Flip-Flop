@@ -1,12 +1,7 @@
 package com.scoreiq;
 
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;

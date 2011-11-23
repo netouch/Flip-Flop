@@ -13,10 +13,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-//import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
-//import android.content.Context;
-import android.util.Log;
 
 public class Mesh implements IMesh{
 	private FloatBuffer verticesBuffer = null;
@@ -98,66 +95,10 @@ public class Mesh implements IMesh{
 		
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0);
 	}
-	/*
-	public void draw(GL10 gl) {
-			// Counter-clockwise winding.
-		gl.glFrontFace(GL10.GL_CCW);
-			// Enable face culling.
-			gl.glEnable(GL10.GL_CULL_FACE);
-			// What faces to remove with the face culling.
-			gl.glCullFace(GL10.GL_BACK);
-			// Enabled the vertices buffer for writing and to be used during
-			// rendering.
-			gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-			// Specifies the location and data format of an array of vertex
-			// coordinates to use when rendering.
-			gl.glVertexPointer(3, GL10.GL_FLOAT, 0, verticesBuffer);
-		    // Set flat color
-		    gl.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
-		    // Smooth color
-		    if(colorBuffer != null){
-		        // Enable the color array buffer to be used during rendering.
-		        gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
-		        // Point out the where the color buffer is.
-		        gl.glColorPointer(4, GL10.GL_FLOAT, 0, colorBuffer);
-		    }
-		    
-		    if(mShouldLoadTexture){
-		    	loadTexture(gl);
-		    	mShouldLoadTexture = false;
-		    }
-		    
-		    if(mTextureId != -1 && mUVTextureBuffer != null){
-		    	gl.glEnable(GL10.GL_TEXTURE_2D);
-		    	gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		    	
-		    	gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mUVTextureBuffer);
-		    	gl.glBindTexture(GL10.GL_TEXTURE_2D, mTextureId);
-		    }
-		    
-		    gl.glPushMatrix();
-		    gl.glTranslatef(x, y, z);
-		    gl.glRotatef(rx, 1, 0, 0);
-		    gl.glRotatef(ry, 0, 1, 0);
-		    gl.glRotatef(rz, 0, 0, 1);
-		    
-			gl.glDrawElements(GL10.GL_TRIANGLES, numOfIndices,
-				GL10.GL_UNSIGNED_SHORT, indicesBuffer);
-			
-			gl.glPopMatrix();
-			// Disable the vertices buffer.
-			gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-			
-			if(mTextureId != -1 && mUVTextureBuffer != null){
-				gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-			}
-			// Disable face culling.
-			gl.glDisable(GL10.GL_CULL_FACE);
-  } */
 	
 	public void draw(GL10 gl) {
 		// Counter-clockwise winding.
-	gl.glFrontFace(GL10.GL_CCW);
+		gl.glFrontFace(GL10.GL_CCW);
 		// Enable face culling.
 		gl.glEnable(GL10.GL_CULL_FACE);
 		// What faces to remove with the face culling.

@@ -3,7 +3,6 @@ package com.scoreiq;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLU;
-import android.util.Log;
 
 public class Camera {
 	private Vector3d position;
