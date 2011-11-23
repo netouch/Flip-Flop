@@ -20,9 +20,34 @@ public class Game implements ITouchNMesh, IGameEventListener {
 
 	private Vector<Pad> flipedPads = new Vector<Pad>();
 	private int playerOneTouchedPads = 0;
+	
+	private Vector<Player> players = new Vector<Player>();
+	private int playersTouchedPads[] = new int[2];
+	private int currentPlayerIndex = 0;
 
 	public Game(Activity act) {
 		this.act = act;
+		//setPlayers();
+	}
+
+	public void setPlayers() {
+		Log.d("TEST", String.format("Game: setPlayers().  start"));
+		
+		Player tmp;
+		
+		tmp = new HumanPlayer();
+		tmp.setListener(this);
+		players.add(tmp);
+		tmp = null;
+		Log.d("TEST", String.format("Game: setPlayers().  Human created"));
+		
+		tmp = new AiPlayer();
+		tmp.setListener(this);
+		players.add(new AiPlayer());
+		tmp = null;
+		
+		Log.d("TEST", String.format("Game: setPlayers().  AI created"));
+		Log.d("TEST", String.format("Game: setPlayers().  finish"));
 	}
 
 	public String getName() {
@@ -88,6 +113,10 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	}
 
 	public boolean onTouch(Vector3d camPos, Vector3d ray, int eventAction) {
+		for(int i =0;i<players.size();i++){
+			players.get(i).onTouch(camPos, ray);
+		}
+		
 		if (eventAction == MotionEvent.ACTION_UP) {
 			int i = getTapedPadNum(camPos, ray);
 			if (i != NO_PAD)
@@ -101,7 +130,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	}
 
 	private void checkPadIdentity() {
-		Log.d("TEST", String.format("Game: checkPadIdentity() start"));
+		Log.d("TEST", String.format("Game: checkPadIdentity()"));
 		if (flipedPads.size() == 2) {
 			Log.d("TEST", String.format("Game: checkPadIdentity() size=%d",
 					flipedPads.size()));
@@ -162,6 +191,10 @@ public class Game implements ITouchNMesh, IGameEventListener {
 			if (tmpPad.isActive)
 				tmpPad.update(secElapsed);
 		}
+		
+		for(int i =0;i<players.size();i++){
+			players.get(i).update(secElapsed);
+		}
 	}
 
 	@Override
@@ -174,6 +207,16 @@ public class Game implements ITouchNMesh, IGameEventListener {
 			if (checkEndGame())
 				if (listener != null)
 					listener.onGameEvent(new GameEvent(GameEvent.GAME_END));
+			break;
+
+		case GameEvent.AI_PLAYER_MOVE:
+			Log.d("TEST",
+					String.format("Game: receive GameEvent AI_PLAYER_MOVE"));
+			break;
+
+		case GameEvent.HUMAN_PLAYER_MOVE:
+			Log.d("TEST",
+					String.format("Game: receive GameEvent HUMAN_PLAYER_MOVE"));
 			break;
 		}
 	}
@@ -213,5 +256,10 @@ public class Game implements ITouchNMesh, IGameEventListener {
 
 		flipedPads.clear();
 		playerOneTouchedPads = 0;
+		
+		//currentPlayerIndex = (int)(2*Math.random());
+		Log.d("TEST", String.format("Game: reset() players.size()=%d", players.size()));
+		currentPlayerIndex = 1;
+		if(players.size()==2)players.get(currentPlayerIndex).getMove();
 	}
 }
