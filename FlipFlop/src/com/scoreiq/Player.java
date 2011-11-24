@@ -8,13 +8,6 @@ public class Player {
 	private float scoreMultiplier = 1.0f;
 	protected String name = "player";
 	private boolean prevMoveSuccess = false;
-	protected boolean isMyMove = false;
-	
-	protected IGameEventListener listener;
-
-	public void setListener(IGameEventListener listener) {
-		this.listener = listener;
-	}
 
 	public void addScore(int score) {
 		this.score += (int) (score * scoreMultiplier);
@@ -30,7 +23,7 @@ public class Player {
 		scoreMultiplier = 1.0f;
 	}
 
-	public void setPrevMoveSuccess(boolean isIt) {
+	public void setMoveSuccess(boolean isIt) {
 		prevMoveSuccess = isIt;
 	}
 
@@ -38,16 +31,11 @@ public class Player {
 		movesCount += 1;
 		Log.d("TEST", String.format("Player %s: movesCount=%d", name, movesCount));
 	}
-
-	public boolean onTouch(Vector3d camPos, Vector3d ray) {
-		return true;
-	}
-
-	public void update(float secElapsed) {
-	}
-
-	public void getMove() {
-		isMyMove = true;
-		Log.d("TEST", String.format("Player %s: now My Move<----------------------------"));
+	
+	public void reset(){
+		movesCount = 0;
+		score = 0;
+		scoreMultiplier = 1.0f;
+		prevMoveSuccess = false;
 	}
 }

@@ -1,6 +1,17 @@
 package com.scoreiq;
 
 public class GameEvent {
+	static final int TEXTURE_MANAGER_READY = 1;
+	static final int MENU_START = 2;
+	static final int MENU_THEME = 3;
+	static final int PAD_FLIPPED = 4;
+	static final int GAME_END = 5;
+	static final int THEME_SELECT = 6;
+	static final int HUMAN_PLAYER_MOVE = 7;
+	static final int AI_PLAYER_MOVE = 8;
+	static final int TIMER_EVENT = 9;
+
+	
 	public int type = 0;
 	public Pad pad;
 	public String theme;
@@ -35,12 +46,4 @@ public class GameEvent {
 		this.ray = ray;
 	}
 
-	static final int TEXTURE_MANAGER_READY = 1;
-	static final int MENU_START = 2;
-	static final int MENU_THEME = 3;
-	static final int PAD_FLIPPED = 4;
-	static final int GAME_END = 5;
-	static final int THEME_SELECT = 6;
-	static final int HUMAN_PLAYER_MOVE = 7;
-	static final int AI_PLAYER_MOVE = 8;
 }

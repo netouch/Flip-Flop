@@ -20,34 +20,40 @@ public class Game implements ITouchNMesh, IGameEventListener {
 
 	private Vector<Pad> flipedPads = new Vector<Pad>();
 	private int playerOneTouchedPads = 0;
+
+	private GameTimer timer;
+
+	private Player humanPlayer;
+	private boolean humanPlayerMove = false;
+	private int humanTouchedPads = 0;
 	
-	private Vector<Player> players = new Vector<Player>();
-	private int playersTouchedPads[] = new int[2];
-	private int currentPlayerIndex = 0;
+	private AiPlayer aiPlayer;
+	private boolean aiPlayerMove = false;
+	private int aiTouchedPads;
 
 	public Game(Activity act) {
 		this.act = act;
-		//setPlayers();
+
+		timer = new GameTimer();
+		timer.setListener(this);
 	}
 
 	public void setPlayers() {
-		Log.d("TEST", String.format("Game: setPlayers().  start"));
-		
-		Player tmp;
-		
-		tmp = new HumanPlayer();
-		tmp.setListener(this);
-		players.add(tmp);
-		tmp = null;
-		Log.d("TEST", String.format("Game: setPlayers().  Human created"));
-		
-		tmp = new AiPlayer();
-		tmp.setListener(this);
-		players.add(new AiPlayer());
-		tmp = null;
-		
-		Log.d("TEST", String.format("Game: setPlayers().  AI created"));
-		Log.d("TEST", String.format("Game: setPlayers().  finish"));
+		humanPlayer = new Player();
+		aiPlayer = new AiPlayer();
+
+		if ((int) Math.random() > 0)
+			humanPlayerMove = true;
+		else
+			aiPlayerMove = true;
+		//TODO: temporary for test. del later
+		aiPlayerMove = true;
+		timer.start();
+	}
+
+	public void swapPlayersMove() {
+		humanPlayerMove = !humanPlayerMove;
+		aiPlayerMove = !aiPlayerMove;
 	}
 
 	public String getName() {
@@ -113,40 +119,18 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	}
 
 	public boolean onTouch(Vector3d camPos, Vector3d ray, int eventAction) {
-		for(int i =0;i<players.size();i++){
-			players.get(i).onTouch(camPos, ray);
-		}
-		
-		if (eventAction == MotionEvent.ACTION_UP) {
+		if (eventAction == MotionEvent.ACTION_UP && humanPlayerMove) {
 			int i = getTapedPadNum(camPos, ray);
 			if (i != NO_PAD)
-				if (playerOneTouchedPads < 2) {
+				if (playerOneTouchedPads < 2 && humanTouchedPads < 2) {
+					aiPlayer.rememberPad(i, pads.get(i).faceImageId);
 					pads.get(i).playerFlip();
 					// flipedPads.add(pads.get(i));
-					playerOneTouchedPads += 1;
+					playerOneTouchedPads ++;
+					humanTouchedPads ++;
 				}
 		}
 		return true;
-	}
-
-	private void checkPadIdentity() {
-		Log.d("TEST", String.format("Game: checkPadIdentity()"));
-		if (flipedPads.size() == 2) {
-			Log.d("TEST", String.format("Game: checkPadIdentity() size=%d",
-					flipedPads.size()));
-			Pad one, two;
-			one = flipedPads.get(0);
-			two = flipedPads.get(1);
-			if (one.faceImageId == two.faceImageId) {
-				one.isActive = false;
-				two.isActive = false;
-			} else {
-				one.flip();
-				two.flip();
-			}
-			flipedPads.clear();
-			playerOneTouchedPads = 0;
-		}
 	}
 
 	private int getTapedPadNum(Vector3d camPos, Vector3d ray) {
@@ -160,10 +144,11 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		y = camPos.y + ray.y * multipliyer;
 		Log.d("TEST", String.format("- x;y = %f;%f", x, y));
 		for (int i = 0; i < pads.size(); i++) {
-			if (pads.get(i).isIntersect(x, y) && !pads.get(i).fliped
-					&& !pads.get(i).isFlipping()) {
-				Log.d("TEST",
-						String.format(" --> Index of picked Pad is %d", i));
+			if (pads.get(i).isIntersect(x, y) && 
+			!pads.get(i).fliped &&
+			!pads.get(i).isFlipping() &&
+			pads.get(i).isActive) {
+				Log.d("TEST", String.format(" --> Index of picked Pad is %d", i));
 				return i;
 			}
 		}
@@ -191,10 +176,8 @@ public class Game implements ITouchNMesh, IGameEventListener {
 			if (tmpPad.isActive)
 				tmpPad.update(secElapsed);
 		}
-		
-		for(int i =0;i<players.size();i++){
-			players.get(i).update(secElapsed);
-		}
+
+		timer.update(secElapsed);
 	}
 
 	@Override
@@ -209,15 +192,52 @@ public class Game implements ITouchNMesh, IGameEventListener {
 					listener.onGameEvent(new GameEvent(GameEvent.GAME_END));
 			break;
 
-		case GameEvent.AI_PLAYER_MOVE:
-			Log.d("TEST",
-					String.format("Game: receive GameEvent AI_PLAYER_MOVE"));
+		case GameEvent.TIMER_EVENT:
+			Log.d("TEST", String.format("Game: receive GameEvent TIMER_EVENT"));
+			if(aiPlayerMove){
+				int i = aiPlayer.getMove();
+				if (i != NO_PAD)
+					if (aiTouchedPads < 2 &&
+							!pads.get(i).fliped &&
+							!pads.get(i).isFlipping() &&
+							pads.get(i).isActive) {
+						aiPlayer.rememberPad(i, pads.get(i).faceImageId);
+						pads.get(i).playerFlip();
+						aiTouchedPads++;
+					}
+			}
 			break;
+		}
+	}
 
-		case GameEvent.HUMAN_PLAYER_MOVE:
-			Log.d("TEST",
-					String.format("Game: receive GameEvent HUMAN_PLAYER_MOVE"));
-			break;
+	private void checkPadIdentity() {
+		Log.d("TEST", String.format("Game: checkPadIdentity()"));
+		if (flipedPads.size() == 2) {
+			Log.d("TEST", String.format("Game: checkPadIdentity() size=%d",
+					flipedPads.size()));
+			Pad one, two;
+			one = flipedPads.get(0);
+			two = flipedPads.get(1);
+			
+			
+			if (one.faceImageId == two.faceImageId) {
+				one.isActive = false;
+				two.isActive = false;
+				
+				for(int i=0;i<pads.size();i++){
+					if(pads.get(i)==one || pads.get(i)==two)aiPlayer.setInactive(i);
+				}
+			} else {
+				one.flip();
+				two.flip();
+			}
+			
+			flipedPads.clear();
+			playerOneTouchedPads = 0;
+			humanTouchedPads = 0;
+			aiTouchedPads=0;
+			
+			swapPlayersMove();
 		}
 	}
 
@@ -256,10 +276,5 @@ public class Game implements ITouchNMesh, IGameEventListener {
 
 		flipedPads.clear();
 		playerOneTouchedPads = 0;
-		
-		//currentPlayerIndex = (int)(2*Math.random());
-		Log.d("TEST", String.format("Game: reset() players.size()=%d", players.size()));
-		currentPlayerIndex = 1;
-		if(players.size()==2)players.get(currentPlayerIndex).getMove();
 	}
 }
