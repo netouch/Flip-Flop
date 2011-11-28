@@ -68,6 +68,7 @@ public class FlipFlopActivity extends Activity{
     public void onStop(){
     	super.onStop();
     	TextureManager.getInstance().onStop();
+    	//SoundManager.getInstance().cleaup();
     	Log.d("TEST", String.format("Activity - onStop()"));
     }
     

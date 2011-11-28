@@ -5,11 +5,14 @@ import java.util.Vector;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
+import android.test.IsolatedContext;
 import android.util.Log;
 import android.view.MotionEvent;
 
 public class Game implements ITouchNMesh, IGameEventListener {
 	private static final int NO_PAD = -1;
+	private static final int SUCCESS_SCORE = 5;
+	
 	private String name = "game";
 
 	private IGameEventListener listener;
@@ -187,9 +190,13 @@ public class Game implements ITouchNMesh, IGameEventListener {
 			Log.d("TEST", String.format("Game: receive GameEvent PAD_FLIPPED"));
 			flipedPads.add(event.pad);
 			checkPadIdentity();
-			if (checkEndGame())
+			if (checkEndGame()){
+				Log.d("TEST", String.format("Game: END GAME!!!!"));
+				Log.d("TEST", String.format("Game: player Score is %d , ai Csore is %d", humanPlayer.getScore(), aiPlayer.getScore()));
+
 				if (listener != null)
 					listener.onGameEvent(new GameEvent(GameEvent.GAME_END));
+			}
 			break;
 
 		case GameEvent.TIMER_EVENT:
@@ -224,14 +231,21 @@ public class Game implements ITouchNMesh, IGameEventListener {
 				one.isActive = false;
 				two.isActive = false;
 				
-				for(int i=0;i<pads.size();i++){
+				for(int i=0;i<pads.size();i++)
 					if(pads.get(i)==one || pads.get(i)==two)aiPlayer.setInactive(i);
-				}
+				
+				SoundManager.getInstance().playSound(SoundManager.SUCCESS, 1.0f);
+				getActivePlayer().addScore(SUCCESS_SCORE);
+				
 			} else {
 				one.flip();
 				two.flip();
+				SoundManager.getInstance().playSound(SoundManager.FAIL, 1.0f);
+				getActivePlayer().resetScoreMultiplier();
 			}
 			
+			getActivePlayer().addMove();
+
 			flipedPads.clear();
 			playerOneTouchedPads = 0;
 			humanTouchedPads = 0;
@@ -241,6 +255,11 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		}
 	}
 
+	private Player getActivePlayer(){
+		if(humanPlayerMove)return humanPlayer;
+		else return (Player)aiPlayer;
+	}
+	
 	private boolean checkEndGame() {
 		boolean isActivePads = false;
 		for (int i = 0; i < pads.size(); i++)
@@ -275,6 +294,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		shufflePads();
 
 		flipedPads.clear();
+		if(aiPlayer != null)aiPlayer.reset();
 		playerOneTouchedPads = 0;
 	}
 }

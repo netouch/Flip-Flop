@@ -9,6 +9,8 @@ import android.util.Log;
 
 public class SoundManager {
 	public static final int CLICK = 1;
+	public static final int SUCCESS = 2;
+	public static final int FAIL = 3;
 	
 	private static SoundManager instance;
 	
@@ -35,6 +37,8 @@ public class SoundManager {
 	
 	public void loadSounds(){
 		sounds.put(CLICK, soundPool.load(context, R.raw.click , 1));
+		sounds.put(SUCCESS, soundPool.load(context, R.raw.success, 1));
+		sounds.put(FAIL, soundPool.load(context, R.raw.fail, 1));
 		//sounds.put(2, soundPool.load("sounds/identical.mp3", 1));
 		Log.d("TEST", String.format("----->SoundManager loadSounds() finish"));
 	}
