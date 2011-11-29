@@ -52,6 +52,11 @@ public class Pad extends MeshGroup{
 		else return false;
 	}
 	
+	public boolean isSelectable(){
+		if(!fliped && !isFlipping() && isActive) return true;
+		else return false;
+	}
+	
 	public void Rotate(int angle, float seconds){
 		targetRx += angle;
 		setRxSpeed(seconds);

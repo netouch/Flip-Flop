@@ -4,7 +4,7 @@ import java.util.Vector;
 import javax.microedition.khronos.opengles.GL10;
 
 public class MeshGroup extends Mesh {
-	private Vector<Mesh> mChildren = new Vector<Mesh>();
+	protected Vector<Mesh> mChildren = new Vector<Mesh>();
 	
 	@Override
 	public void draw(GL10 gl){

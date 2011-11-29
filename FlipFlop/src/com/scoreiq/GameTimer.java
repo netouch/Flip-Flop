@@ -37,9 +37,10 @@ public class GameTimer {
 
 	private void dispatchEvent() {
 		if (listener != null)listener.onGameEvent(new GameEvent(GameEvent.TIMER_EVENT));
-		
+	/*	
 		Log.d("TEST", String.format(
 				"GameTimer -------------TICK---------------\n FPS = %d",
 				(int) (updatesCount / targetTime)));
+				*/
 	}
 }

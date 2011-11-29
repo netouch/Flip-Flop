@@ -5,7 +5,7 @@ import android.util.Log;
 public class AiPlayer extends Player {
 	private static final int PAD_UNKNOWN = -1;
 	private static final int PAD_INACTIVE = -2;
-	private static final int PAD_NONE = -10;
+	public static final int PAD_NONE = -10;
 	private int pads[];
 	private int alreadyFlipedPadIndex = PAD_NONE;
 
@@ -51,15 +51,15 @@ public class AiPlayer extends Player {
 
 		Log.d(debugTag,
 				String.format(
-						"Player %s: getMove() ----------------FINISH-----------------------\n",
-						name));
+						"Player %s: getMove() return index = %d\n----------------FINISH-----------------------\n",
+						name, padIndex));
 		return padIndex;
 	}
 
 	private int getIndexOfPairByIndex(int pairIndex) {
 		for (int i = 0; i < pads.length; i++)
 			if (i != pairIndex)
-				if (pads[i] == pads[pairIndex]) {
+				if (pads[i] == pads[pairIndex] && pads[i]>0) {
 					Log.d(debugTag,
 							String.format(
 									"Player %s: getIndexOfPairByIndex():pair for index %d is index %d",
@@ -122,14 +122,16 @@ public class AiPlayer extends Player {
 	}
 
 	private int getCountedActivePad(int num) {
-		int y = 0;
-		int padIndex = 0;
-		for (int i = 0; i < pads.length; i++) {
-			if (y == num)
-				padIndex = i;
-			if (pads[i] != PAD_INACTIVE)
-				y++;
+		int count = num;
+
+		if (count > 0) {
+			for (int i = 0; i < pads.length; i++) {
+				if (pads[i] != PAD_INACTIVE)
+					count--;
+				if (count == 0)
+					return i;
+			}
 		}
-		return padIndex;
+		return PAD_NONE;
 	}
 }
