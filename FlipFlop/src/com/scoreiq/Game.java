@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 public class Game implements ITouchNMesh, IGameEventListener {
 	private static final int NO_PAD = -1;
 
-	private static final int SUCCESS_SCORE = 5;
+	private static final int SUCCESS_SCORE = 10;
 
 	private String name = "game";
 
@@ -118,6 +118,8 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		aiScoreSprite.x += 1.5f;
 		aiScoreSprite.y += 6.3f;
 		aiScoreSprite.z += -2.0f;
+		
+		setPlayers();
 		reset(theme);
 	}
 
@@ -321,5 +323,11 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		if (aiPlayer != null)
 			aiPlayer.reset();
 		playerOneTouchedPads = 0;
+		
+		humanPlayer.reset();
+		aiPlayer.reset();
+		
+		humanScoreSprite.reset();
+		aiScoreSprite.reset();
 	}
 }

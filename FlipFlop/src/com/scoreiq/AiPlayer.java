@@ -18,6 +18,7 @@ public class AiPlayer extends Player {
 	}
 	
 	public void reset(){
+		super.reset();
 		for (int i = 0; i < pads.length; i++)
 			pads[i] = PAD_UNKNOWN;
 		

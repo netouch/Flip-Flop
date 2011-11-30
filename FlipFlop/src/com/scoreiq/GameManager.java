@@ -66,7 +66,6 @@ public class GameManager implements IGameEventListener, IMesh{
 			game.setListener(this);
 			//game.loadLevel("rio/");
 			game.loadLevel("default/");
-			game.setPlayers();
 		}
 		//currentGameState = game;
 	}

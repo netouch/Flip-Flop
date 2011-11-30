@@ -22,9 +22,7 @@ public class Text2D extends MeshGroup {
 	}
 	
 	public void reset(){
-		for(int i=0;i<size();i++){
-			mChildren.get(i).setTextureCoordinates(getUv(0));
-		}
+		setNumber(0);
 	}
 
 	private float[] getUv(int n) {
@@ -44,14 +42,14 @@ public class Text2D extends MeshGroup {
 	}
 
 	public void setNumber(int number) {
-		if(number<Math.pow(10.0f, size())){
-			int dig = size()-1;
-			int n;
-			while(dig>=0){
-				n=(int)(number/Math.pow(10.0f, dig));
-				mChildren.get(dig).setTextureCoordinates(getUv(n));
-				dig--;
-			}
-		}
+		if(number<Math.pow(10.0f, size()))
+			splitNumber(number, size());
+	}
+	
+	private int splitNumber(int number, int pow){
+		int n = (int)(number/Math.pow(10.0f, pow-1));
+		mChildren.get(size()-pow).setTextureCoordinates(getUv(n));
+		if(pow == 1) return 0;
+		else return splitNumber((int)(number-n*Math.pow(10.0f, pow-1)), pow-1);
 	}
 }
