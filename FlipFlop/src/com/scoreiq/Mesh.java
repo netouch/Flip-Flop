@@ -1,6 +1,5 @@
 package com.scoreiq;
 
-//import java.net.ContentHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -28,6 +27,17 @@ public class Mesh implements IMesh{
 	private Bitmap mBitmap = null;
 	private boolean mShouldLoadTexture = false;
 	
+	public Vector3d position;
+	public Vector3d posSpeed;
+	public Vector3d posAcceleration;
+	
+	public Vector3d rotation;
+	public Vector3d rotSpeed;
+	public Vector3d rotAcceleration;
+	
+	public Vector3d scale;
+	
+	
 	public float x = 0.0f;
 	public float y = 0.0f;
 	public float z = 0.0f;
@@ -35,6 +45,16 @@ public class Mesh implements IMesh{
 	public float rx = 0.0f;
 	public float ry = 0.0f;
 	public float rz = 0.0f;
+	
+	public Mesh(){
+		position = new Vector3d(0.0f , 0.0f , 0.0f);
+		posSpeed = new Vector3d(0.0f , 0.0f , 0.0f);
+		posAcceleration = new Vector3d(0.0f , 0.0f , 0.0f);
+		rotation = new Vector3d(0.0f , 0.0f , 0.0f);
+		rotSpeed = new Vector3d(0.0f , 0.0f , 0.0f);
+		rotAcceleration = new Vector3d(0.0f , 0.0f , 0.0f);
+		scale = new Vector3d(1.0f , 1.0f , 1.0f);
+	}
 	
 	public void setTextureCoordinates(float textureCoordinates[]){
 		ByteBuffer byteBuff = ByteBuffer.allocateDirect(textureCoordinates.length*4);
@@ -48,6 +68,7 @@ public class Mesh implements IMesh{
 		mTextureId = texId;
 	}
 	
+	//TODO: refactor to return position;
 	public Vector3d getPosition(){
 		return new Vector3d(x,y,z);
 	}
@@ -56,6 +77,24 @@ public class Mesh implements IMesh{
 		x = pos.x;
 		y = pos.y;
 		z = pos.z;
+		
+		position = pos;
+	}
+	
+	public void setPosAcceleration(Vector3d posAcceleration) {
+		this.posAcceleration = posAcceleration;
+	}
+	
+	public void setPosSpeed(Vector3d posSpeed) {
+		this.posSpeed = posSpeed;
+	}
+	
+	public void setRotAcceleration(Vector3d rotAcceleration) {
+		this.rotAcceleration = rotAcceleration;
+	}
+	
+	public void setRotSpeed(Vector3d rotSpeed) {
+		this.rotSpeed = rotSpeed;
 	}
 	
 	public void loadBitmap(Bitmap btmp){
@@ -128,10 +167,20 @@ public class Mesh implements IMesh{
 	    }
 	    
 	    gl.glPushMatrix();
+	    
+	    /*
 	    gl.glTranslatef(x, y, z);
 	    gl.glRotatef(rx, 1, 0, 0);
 	    gl.glRotatef(ry, 0, 1, 0);
 	    gl.glRotatef(rz, 0, 0, 1);
+	    */
+	    
+	    gl.glTranslatef(position.x, position.y, position.z);
+	    gl.glRotatef(rotation.x, 1, 0, 0);
+	    gl.glRotatef(rotation.y, 0, 1, 0);
+	    gl.glRotatef(rotation.z, 0, 0, 1);
+	    gl.glScalef(scale.x, scale.y, scale.z);
+	    
 	    
 		gl.glDrawElements(GL10.GL_TRIANGLES, numOfIndices,
 			GL10.GL_UNSIGNED_SHORT, indicesBuffer);
@@ -148,7 +197,12 @@ public class Mesh implements IMesh{
 }
 	
 	public void update(float secElapsed){
-	};
+		posSpeed = posSpeed.add(posAcceleration);
+		position = position.add(posSpeed.multiply(secElapsed));
+		
+		rotSpeed = rotSpeed.add(rotAcceleration);
+		rotation = rotation.add(rotSpeed.multiply(secElapsed));
+	}
 	
 	public void setVertices(float[] vertices){
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);

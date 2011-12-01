@@ -24,10 +24,19 @@ public class Vector3d {
 		w=0;
 	}
 
-	public void add(float ix, float iy, float iz){
+	public Vector3d add(float ix, float iy, float iz){
 		x+=ix;
 		y+=iy;
 		z+=iz;
+		return this;
+	}
+	
+	public Vector3d add(Vector3d v){
+		return new Vector3d(x+v.x , y+v.y , z+v.z , w+v.w);
+	}
+	
+	public Vector3d multiply(float f){
+		return new Vector3d(x*f , y*f , z*f);
 	}
 
 }
