@@ -13,7 +13,6 @@ import android.opengl.GLUtils;
 import android.util.Log;
 
 public class TextureManager {
-	//private static TextureManager instance = new TextureManager();
 	private static TextureManager instance;
 	
 	OGLRenderer renderer;
@@ -43,15 +42,12 @@ public class TextureManager {
 	}
 
 	public int loadTexture(String file){
-		//renderer.draw = false;
-		Log.d("TEST", String.format("TextureManager - loadTexture() start"));
 		int texId[] = new int[1];
 		Bitmap btmp=null;
 
 		texId[0]=isTextureLoaded(file);
 
 		if(texId[0]!=-1){
-			Log.d("TEST", String.format("TextureManager - texture = %s is already loaded and ID is %d", file, texId[0]));
 			return texId[0];
 		}
 
@@ -62,21 +58,15 @@ public class TextureManager {
 			InputStream in = act.getAssets().open(file);
 			//btmp = BitmapFactory.decodeStream(in, null,opt);
 			btmp = BitmapFactory.decodeStream(in);
-			if(btmp!=null)Log.d("TEST", String.format("TextureManager - Bitmap = %s loaded", btmp.toString()));
 		}
 		catch (IOException e){
 		}
 
-		Log.d("TEST", String.format("TextureManager - loadTexture() now gen tex id"));
-		Log.d("TEST", String.format("TextureManager - glGenTextures() error=%d", glInstance.glGetError()));
 		glInstance.glGenTextures(1, texId, 0);
-
-		Log.d("TEST", String.format("TextureManager - loadTexture() tex id=%d", texId[0]));
-		Log.d("TEST", String.format("TextureManager - glGenTextures() error=%d", glInstance.glGetError()));
 
 		textureNames.add(file);
 		textureIds.add(texId[0]);
-		//Log.d("TEST", String.format("generated texture = %d", mTextureId));
+
 		glInstance.glBindTexture(GL10.GL_TEXTURE_2D, texId[0]);
 		glInstance.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
 		glInstance.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
@@ -87,10 +77,7 @@ public class TextureManager {
 		*/
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, btmp, 0);
-		//traceNames();
 		Log.d("TEST", String.format("TextureManager - texture = %s loaded, ID is %d", file, texId[0]));
-		Log.d("TEST", String.format("TextureManager - loadTexture() finish"));
-		//renderer.draw = true;
 		return texId[0];
 	}
 
@@ -103,7 +90,6 @@ public class TextureManager {
 
 	public void setGlInstance(GL10 gl){
 		glInstance = gl;
-		Log.d("TEST", String.format("TextureManager - GL instance is set"));
 		checkReady();
 	}
 	
@@ -113,34 +99,28 @@ public class TextureManager {
 
 	public void setActivity(Activity iact){
 		act = iact;
-		Log.d("TEST", String.format("TextureManager - Activity instance is set"));
 		checkReady();
 	}
 	
 	public void clearInstances(){
 		glInstance = null;
 		act = null;
-		//isReadySended = false;
 		checkReady();
 	}
 	
 	public void setListener(IGameEventListener listener){
 		this.listener = listener;
-		Log.d("TEST", String.format("TextureManager - listener is set"));
 	}
 
 	public void checkReady(){
 		if(act!=null && glInstance != null){
 			isReady = true;
-			Log.d("TEST", String.format("TextureManager - is ready"));
 			if(listener!=null){
-				//listener.onTextureManagerReady();
 				listener.onGameEvent(new GameEvent(GameEvent.TEXTURE_MANAGER_READY));
 			}
 		}
 		else{
 			isReady = false;
-			Log.d("TEST", String.format("TextureManager - still not ready"));
 		}
 	}
 

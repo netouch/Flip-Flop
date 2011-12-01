@@ -40,7 +40,6 @@ public class SoundManager {
 		sounds.put(SUCCESS, soundPool.load(context, R.raw.success, 1));
 		sounds.put(FAIL, soundPool.load(context, R.raw.fail, 1));
 		//sounds.put(2, soundPool.load("sounds/identical.mp3", 1));
-		Log.d("TEST", String.format("----->SoundManager loadSounds() finish"));
 	}
 	
 	public void addSound(int index, String file){

@@ -16,34 +16,44 @@ public class AiPlayer extends Player {
 		pads = new int[12];
 		reset();
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		super.reset();
 		for (int i = 0; i < pads.length; i++)
 			pads[i] = PAD_UNKNOWN;
 		
-		Log.d(debugTag,
-				String.format(
-						"\n\n\nPlayer %s: getMove() ----------------RESET-----------------------",
-						name));
+		alreadyFlipedPadIndex = PAD_NONE;
+
+		Log.d(debugTag, String.format(
+				"Player %s: ----------------RESET-----------------------",
+				name));
 	}
 
 	public int getMove() {
 		Log.d(debugTag,
 				String.format(
-						"Player %s: getMove() -------------------START--------------------",
+						"\nPlayer %s: getMove() -------------------START--------------------",
 						name));
+		tracePads();
+
 		int padIndex = PAD_NONE;
 
 		if (alreadyFlipedPadIndex == PAD_NONE) {
 			padIndex = getPadIndexOfKnownPair();
 
 			if (padIndex == PAD_NONE)
+				padIndex = getRandomUnknownPad();
+			
+			if (padIndex == PAD_NONE)
 				padIndex = getRandomActivePad();
 
 			alreadyFlipedPadIndex = padIndex;
 		} else {
 			padIndex = getIndexOfPairByIndex(alreadyFlipedPadIndex);
+			
+			if (padIndex == PAD_NONE)
+				padIndex = getRandomUnknownPad();
+			
 			if (padIndex == PAD_NONE)
 				padIndex = getRandomActivePad();
 
@@ -52,7 +62,7 @@ public class AiPlayer extends Player {
 
 		Log.d(debugTag,
 				String.format(
-						"Player %s: getMove() return index = %d\n----------------FINISH-----------------------\n",
+						"Player %s: getMove() return index = [%d] ----------------FINISH-----------------------\n\n",
 						name, padIndex));
 		return padIndex;
 	}
@@ -60,7 +70,7 @@ public class AiPlayer extends Player {
 	private int getIndexOfPairByIndex(int pairIndex) {
 		for (int i = 0; i < pads.length; i++)
 			if (i != pairIndex)
-				if (pads[i] == pads[pairIndex] && pads[i]>0) {
+				if (pads[i] == pads[pairIndex] && pads[i] > 0) {
 					Log.d(debugTag,
 							String.format(
 									"Player %s: getIndexOfPairByIndex():pair for index %d is index %d",
@@ -75,8 +85,20 @@ public class AiPlayer extends Player {
 	}
 
 	private int getRandomActivePad() {
-		int i = (int) (getActivePadsCount() * Math.random());
-		return getCountedActivePad(i);
+		int n = (int) (getActivePadsCount() * Math.random());
+		int i = getCountedActivePad(n);
+		Log.d(debugTag,
+				String.format("Player %s: getRandomActivePad():%d", name, i));
+		return i;
+	}
+
+	//TODO: если остался 1 неизвестный пад? криво отрабатывает.
+	private int getRandomUnknownPad() {
+		int n = (int) (getUnknownPadsCount() * Math.random()+1);
+		int i = getCountedUnknownPad(n);
+		Log.d(debugTag,
+				String.format("Player %s: getRandomUnknownPad():%d", name, i));
+		return i;
 	}
 
 	private int getPadIndexOfKnownPair() {
@@ -94,8 +116,15 @@ public class AiPlayer extends Player {
 	}
 
 	public void rememberPad(int padNum, int padFace) {
-		if (padNum < pads.length)
+		if (padNum < pads.length) {
 			pads[padNum] = padFace;
+			Log.d(debugTag, String.format(
+					"Player %s: I remember pad [%d] = %d", name, padNum,
+					padFace));
+		}
+	}
+
+	private void tracePads() {
 		String arr = "";
 		for (int i = 0; i < pads.length; i++)
 			arr += pads[i] + " ";
@@ -111,6 +140,8 @@ public class AiPlayer extends Player {
 		for (int i = 0; i < pads.length; i++)
 			if (pads[i] != PAD_INACTIVE)
 				num++;
+
+		Log.d(debugTag, String.format("Player: getActivePadsCount() = %d", num));
 		return num;
 	}
 
@@ -119,6 +150,9 @@ public class AiPlayer extends Player {
 		for (int i = 0; i < pads.length; i++)
 			if (pads[i] == PAD_UNKNOWN)
 				num++;
+
+		Log.d(debugTag,
+				String.format("Player: getUnknownPadsCount() = %d", num));
 		return num;
 	}
 
@@ -129,10 +163,52 @@ public class AiPlayer extends Player {
 			for (int i = 0; i < pads.length; i++) {
 				if (pads[i] != PAD_INACTIVE)
 					count--;
-				if (count == 0)
+				if (count == 0) {
+					Log.d(debugTag,
+							String.format(
+									"Player: getCountedActivePad(): index is of %d-th active pad = [%d]",
+									num, i));
 					return i;
+				}
 			}
 		}
 		return PAD_NONE;
+	}
+
+	/*
+	 * 
+D/TEST_AI ( 3887): Player AiPlayer: getMove() -------------------START--------------------
+D/TEST_AI ( 3887): Player pads = -2 -2 -2 -2 5 -2 -2 -2 -2 -2 -1 -2 
+D/TEST_AI ( 3887): Player: getUnknownPadsCount() = 1
+D/TEST_AI ( 3887): Player AiPlayer: getRandomUnknownPad():-10
+D/TEST_AI ( 3887): Player: getActivePadsCount() = 2
+D/TEST_AI ( 3887): Player AiPlayer: getRandomActivePad():-10
+D/TEST_AI ( 3887): Player AiPlayer: getMove() return index = [-10] ----------------FINISH-----------------------
+ 
+	 */
+	
+	// TODO:
+	public int getCountedUnknownPad(int num) {
+		int count = num;
+
+		if (count > 0) {
+			for (int i = 0; i < pads.length; i++) {
+				if (pads[i] == PAD_UNKNOWN)
+					count--;
+				
+				if (count == 0) {
+					Log.d(debugTag,
+							String.format(
+									"Player: getCountedUnknownPad(): index is of %d-th umknown pad = [%d]",
+									num, i));
+					return i;
+				}
+			}
+		}
+		return PAD_NONE;
+	}
+	
+	public void debugSetPads(int pads[]) {
+		this.pads = pads;
 	}
 }

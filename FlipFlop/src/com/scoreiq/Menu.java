@@ -23,7 +23,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 	private ArrayList<Vector> menuGroups = new ArrayList<Vector>();
 	
 	public Menu(){
-		Log.d("TEST", String.format("Menu - Menu() constructor"));
+		//Log.d("TEST", String.format("Menu - Menu() constructor"));
 		menuGroups.add(new Vector<MenuItem>());
 		menuGroups.add(new Vector<MenuItem>());
 	}
@@ -33,7 +33,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 	}
 	
 	public void createMenu(){
-		Log.d("TEST", String.format("Menu - createMenu() start"));
+		//Log.d("TEST", String.format("Menu - createMenu() start"));
 		int texId=0;
 		MenuItem item;
 		
@@ -81,7 +81,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		item.x += 2.0f;
 		menuGroups.get(THEMEMENU).add(item);
 		
-		Log.d("TEST", String.format("Menu - createMenu() finish"));
+		//Log.d("TEST", String.format("Menu - createMenu() finish"));
 	}
 	
 	public void setListener(IGameEventListener lnr){
@@ -89,7 +89,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 	}
 	
 	public boolean onTouch(Vector3d camPos , Vector3d ray, int eventAction){
-		Log.d("TEST", String.format("Calculate touched menuItem-------------------"));
+		//Log.d("TEST", String.format("Calculate touched menuItem-------------------"));
 		float x;
 		float y;
 
@@ -103,7 +103,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		
 		for(int i=0;i<items.size();i++){
 			if(items.get(i).isIntersect(x, y)){
-				Log.d("TEST", String.format(" --> Index of picked menuItem is %d in menuGroup #%d", i, currentMenuGroup));
+				//Log.d("TEST", String.format(" --> Index of picked menuItem is %d in menuGroup #%d", i, currentMenuGroup));
 					items.get(i).dispatchEvent();
 			}
 		}

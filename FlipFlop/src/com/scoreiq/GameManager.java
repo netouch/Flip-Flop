@@ -71,20 +71,20 @@ public class GameManager implements IGameEventListener, IMesh{
 	}
 
 	public void createCamera(MatrixGrabber mg) {
-		Log.d("TEST", String.format("GameManager createCamera() start"));
+		//Log.d("TEST", String.format("GameManager createCamera() start"));
 		camera = new Camera();
 		camera.setMatrixGrabber(mg);
 		camera.setPosition(0, 0, 15);
-		Log.d("TEST", String.format("GameManager createCamera() finish"));
+		//Log.d("TEST", String.format("GameManager createCamera() finish"));
 	}
 
 	private void createMenu() {
-		Log.d("TEST", String.format("GameManager createMenu() start"));
+		//Log.d("TEST", String.format("GameManager createMenu() start"));
 		menu = new Menu();
 		menu.setListener(this);
 		menu.createMenu();
 		//currentGameState = menu;
-		Log.d("TEST", String.format("GameManager createMenu() finish"));
+		//Log.d("TEST", String.format("GameManager createMenu() finish"));
 	}
 
 	public boolean isMenuState(){

@@ -12,23 +12,23 @@ public class FlipFlopView extends GLSurfaceView {
 	
 	public FlipFlopView(Activity act, MatrixGrabber mg){
 		super(act);
-		Log.d("TEST", String.format("View create start"));
+		//Log.d("TEST", String.format("View create start"));
 		
-		Log.d("TEST", String.format("View now create GameManager"));
+		//Log.d("TEST", String.format("View now create GameManager"));
 		gameManager = new GameManager(act);
 		gameManager.createCamera(mg);
 		
 		TextureManager.getInstance().setListener(gameManager);
 		
-		Log.d("TEST", String.format("View create now create renderer"));
+		//Log.d("TEST", String.format("View create now create renderer"));
 		renderer = new OGLRenderer();
-		Log.d("TEST", String.format("View.renderer now set camera"));
+		//Log.d("TEST", String.format("View.renderer now set camera"));
 		renderer.setCamera(gameManager.camera);
-		Log.d("TEST", String.format("View.renderer now set Drawing"));
+		//Log.d("TEST", String.format("View.renderer now set Drawing"));
 		renderer.setDrawing(gameManager);
 		
 		setRenderer(renderer);
-		Log.d("TEST", String.format("View created"));
+		//Log.d("TEST", String.format("View created"));
 	}
 	
 	@Override

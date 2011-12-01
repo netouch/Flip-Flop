@@ -84,7 +84,7 @@ public class MeshBuilder {
 			}
 		}
 		
-		Log.d("TEST", String.format("MeshBuilder - %s loaded", path));
+		//Log.d("TEST", String.format("MeshBuilder - %s loaded", path));
 		return true;
 	}
 
@@ -136,9 +136,9 @@ public class MeshBuilder {
 			
 		}
 		
-		Log.d("TEST", String.format("num of verticies is %d\nnum of UV is %d\nnum of indices is %d", vb.size(), vtb.size(), ib.size()));
+		//Log.d("TEST", String.format("num of verticies is %d\nnum of UV is %d\nnum of indices is %d", vb.size(), vtb.size(), ib.size()));
 		//for(int i=0;i<ib.size();i++)Log.d("TEST", String.format("[%d] vi= %d vti = %d\n", i, ib.get(i).mvi, ib.get(i).mvti));
-		Log.d("TEST", String.format("MeshBuilder - content is parsed"));
+		//Log.d("TEST", String.format("MeshBuilder - content is parsed"));
 	}
 
 	private Mesh generateMesh(){
@@ -167,7 +167,7 @@ public class MeshBuilder {
 		mesh.setVertices(vertices);
 		if(uvTexCoord!=null)mesh.setTextureCoordinates(uvTexCoord);
 		mesh.setIndices(index);
-		Log.d("TEST", String.format("MeshBuilder - Mesh is generated"));
+		//Log.d("TEST", String.format("MeshBuilder - Mesh is generated"));
 		return mesh;
 	}
 

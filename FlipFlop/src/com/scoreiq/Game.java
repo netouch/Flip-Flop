@@ -151,19 +151,18 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	}
 
 	private int getTapedPadNum(Vector3d camPos, Vector3d ray) {
-		Log.d("TEST", String.format("Calculate touched pad-------------------"));
+		//Log.d("TEST", String.format("Calculate touched pad-------------------"));
 		float x;
 		float y;
 		// Vector3d pos = camera.getPosition();
 		float multipliyer = camPos.z / Math.abs(ray.z);
-		Log.d("TEST", String.format("- multipliyer = %f", multipliyer));
+		//Log.d("TEST", String.format("- multipliyer = %f", multipliyer));
 		x = camPos.x + ray.x * multipliyer;
 		y = camPos.y + ray.y * multipliyer;
-		Log.d("TEST", String.format("- x;y = %f;%f", x, y));
+		//Log.d("TEST", String.format("- x;y = %f;%f", x, y));
 		for (int i = 0; i < pads.size(); i++) {
 			if (pads.get(i).isIntersect(x, y) && pads.get(i).isSelectable()) {
-				Log.d("TEST",
-						String.format(" --> Index of picked Pad is %d", i));
+				//Log.d("TEST", String.format(" --> Index of picked Pad is %d", i));
 				return i;
 			}
 		}
@@ -233,10 +232,10 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	}
 
 	private void checkPadIdentity() {
-		Log.d("TEST", String.format("Game: checkPadIdentity()"));
+		//Log.d("TEST", String.format("Game: checkPadIdentity()"));
 		if (flipedPads.size() == 2) {
-			Log.d("TEST", String.format("Game: checkPadIdentity() size=%d",
-					flipedPads.size()));
+			//Log.d("TEST", String.format("Game: checkPadIdentity() size=%d",
+				//	flipedPads.size()));
 			Pad one, two;
 			one = flipedPads.get(0);
 			two = flipedPads.get(1);

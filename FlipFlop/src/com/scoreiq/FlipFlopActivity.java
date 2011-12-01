@@ -29,10 +29,10 @@ public class FlipFlopActivity extends Activity{
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Log.d("TEST", String.format("Activity onCreate() now create View"));
+        //Log.d("TEST", String.format("Activity onCreate() now create View"));
         view = new FlipFlopView(this, mg);
         
-        Log.d("TEST", String.format("Activity onCreate() now set wrapper"));
+        //Log.d("TEST", String.format("Activity onCreate() now set wrapper"));
         view.setGLWrapper(new GLSurfaceView.GLWrapper() {
 			
 			@Override
