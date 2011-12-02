@@ -5,6 +5,8 @@ import java.util.Vector;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
+import android.content.Context;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -17,12 +19,15 @@ public class Game implements ITouchNMesh, IGameEventListener {
 
 	private IGameEventListener listener;
 	private Activity act;
+	private Vibrator vibrator; 
 
 	private Vector<Pad> pads = new Vector<Pad>();
 	private Plane background;
 
 	private Text2D humanScoreSprite;
 	private Text2D aiScoreSprite;
+	
+	private boolean gameEnds = false;
 
 	private Vector<Pad> flipedPads = new Vector<Pad>();
 	private int playerOneTouchedPads = 0;
@@ -39,11 +44,15 @@ public class Game implements ITouchNMesh, IGameEventListener {
 
 	public Game(Activity act) {
 		this.act = act;
-
+		vibrator = (Vibrator)act.getSystemService(Context.VIBRATOR_SERVICE);
 		timer = new GameTimer();
 		timer.setListener(this);
 	}
-
+	
+	private void vibrate(){
+		if(vibrator!=null)vibrator.vibrate(200);
+	}
+	
 	public void setPlayers() {
 		humanPlayer = new Player();
 		aiPlayer = new AiPlayer();
@@ -136,7 +145,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	}
 
 	public boolean onTouch(Vector3d camPos, Vector3d ray, int eventAction) {
-		if (eventAction == MotionEvent.ACTION_UP && humanPlayerMove) {
+		if (!gameEnds && eventAction == MotionEvent.ACTION_UP && humanPlayerMove) {
 			int i = getTapedPadNum(camPos, ray);
 			if (i != NO_PAD)
 				if (playerOneTouchedPads < 2 && humanTouchedPads < 2) {
@@ -147,6 +156,11 @@ public class Game implements ITouchNMesh, IGameEventListener {
 					humanTouchedPads++;
 				}
 		}
+		
+		
+		if (gameEnds && listener != null)
+			listener.onGameEvent(new GameEvent(GameEvent.GAME_END));
+		
 		return true;
 	}
 
@@ -209,16 +223,17 @@ public class Game implements ITouchNMesh, IGameEventListener {
 				Log.d("TEST", String.format(
 						"Game: player Score is %d , ai Csore is %d",
 						humanPlayer.getScore(), aiPlayer.getScore()));
-
-				if (listener != null)
-					listener.onGameEvent(new GameEvent(GameEvent.GAME_END));
+				gameEnds = true;
+				//showFinalDialog();
+				//if (listener != null)
+				//	listener.onGameEvent(new GameEvent(GameEvent.GAME_END));
 			}
 			break;
 
 		case GameEvent.TIMER_EVENT:
 			// Log.d("TEST",
 			// String.format("Game: receive GameEvent TIMER_EVENT"));
-			if (aiPlayerMove) {
+			if (!gameEnds && aiPlayerMove) {
 				int i = aiPlayer.getMove();
 				if (i != NO_PAD && i != AiPlayer.PAD_NONE)
 					if (aiTouchedPads < 2 && pads.get(i).isSelectable()) {
@@ -250,6 +265,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 
 				SoundManager.getInstance()
 						.playSound(SoundManager.SUCCESS, 1.0f);
+				vibrate();
 				getActivePlayer().addScore(SUCCESS_SCORE);
 				getActivePlayerScoreSprite().setNumber(getActivePlayer().getScore());
 
@@ -328,5 +344,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		
 		humanScoreSprite.reset();
 		aiScoreSprite.reset();
+		
+		gameEnds = false;
 	}
 }

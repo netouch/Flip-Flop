@@ -168,19 +168,19 @@ public class Mesh implements IMesh{
 	    
 	    gl.glPushMatrix();
 	    
-	    /*
+	    
 	    gl.glTranslatef(x, y, z);
 	    gl.glRotatef(rx, 1, 0, 0);
 	    gl.glRotatef(ry, 0, 1, 0);
 	    gl.glRotatef(rz, 0, 0, 1);
-	    */
 	    
+	    /*
 	    gl.glTranslatef(position.x, position.y, position.z);
 	    gl.glRotatef(rotation.x, 1, 0, 0);
 	    gl.glRotatef(rotation.y, 0, 1, 0);
 	    gl.glRotatef(rotation.z, 0, 0, 1);
 	    gl.glScalef(scale.x, scale.y, scale.z);
-	    
+	    */
 	    
 		gl.glDrawElements(GL10.GL_TRIANGLES, numOfIndices,
 			GL10.GL_UNSIGNED_SHORT, indicesBuffer);
@@ -197,11 +197,13 @@ public class Mesh implements IMesh{
 }
 	
 	public void update(float secElapsed){
+		/*
 		posSpeed = posSpeed.add(posAcceleration);
 		position = position.add(posSpeed.multiply(secElapsed));
 		
 		rotSpeed = rotSpeed.add(rotAcceleration);
 		rotation = rotation.add(rotSpeed.multiply(secElapsed));
+		*/
 	}
 	
 	public void setVertices(float[] vertices){
