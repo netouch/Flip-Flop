@@ -14,10 +14,17 @@ public class Camera {
 	
 	private MatrixGrabber mg;
 	
+	private Vector3d shacker;
+	private boolean isShacking = false;
+	private float shackingStrength = 1.0f;
+	private float shackingTime = 0;
+	private float shackingTimeLimit = 0;
+	
 	public Camera(){
 		position = new Vector3d(0,0,0);
 		direction = new Vector3d(0,0,-1);
 		up = new Vector3d(0,1,0);
+		shacker = new Vector3d(0,0,0);
 	}
 	
 	public void setMatrixGrabber(MatrixGrabber mg){
@@ -25,7 +32,7 @@ public class Camera {
 	}
 	
 	public void setViewMatrix(GL10 gl){
-		GLU.gluLookAt(gl, position.x, position.y, position.z,
+		GLU.gluLookAt(gl, position.x+ shacker.x, position.y+shacker.y, position.z+shacker.z,
 				position.x + direction.x, position.y + direction.y, position.z + direction.z,
 				up.x, up.y, up.z);
 		mg.getCurrentState(gl);
@@ -38,6 +45,32 @@ public class Camera {
 	public Vector3d getPosition(){
 		return position;
 	}
+	
+	private void updateShacker(float secElapsed){
+		if(shackingTimeLimit!=0){
+			shackingTime+=secElapsed;
+			shacker.x += Math.random()*shackingStrength - shackingStrength/2;
+			shacker.y += Math.random()*shackingStrength - shackingStrength/2;
+			
+			if(shackingTime>shackingTimeLimit){
+				shackingTimeLimit = 0;
+				shackingTime = 0;
+				shackingStrength = 1.0f;
+				shacker.x = 0;
+				shacker.y = 0;
+			}
+		}
+	}
+	
+	public void update(float secElapsed){
+		updateShacker(secElapsed);
+	}
+	
+	public void shake(float strength, float time){
+		shackingTimeLimit = time;
+		shackingStrength = strength;
+	}
+	
 	
 	public Vector3d getTapRay(float x, float y){
 		int viewPort[] = {0,0,screenWidth, screenHeight};

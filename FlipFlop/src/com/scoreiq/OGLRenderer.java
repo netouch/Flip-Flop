@@ -63,8 +63,10 @@ public class OGLRenderer implements Renderer {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity();
-		if (camera != null)
+		if (camera != null){
 			camera.setViewMatrix(gl);
+			camera.update((float) (curTime - prevTime) / 1000);
+		}
 
 		// Draw.
 		if (root != null) {

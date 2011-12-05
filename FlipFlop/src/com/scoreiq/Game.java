@@ -20,6 +20,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	private IGameEventListener listener;
 	private Activity act;
 	private Vibrator vibrator; 
+	private Camera camera;
 
 	private Vector<Pad> pads = new Vector<Pad>();
 	private Plane background;
@@ -42,8 +43,9 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	private boolean aiPlayerMove = false;
 	private int aiTouchedPads;
 
-	public Game(Activity act) {
+	public Game(Activity act, Camera camera) {
 		this.act = act;
+		this.camera = camera;
 		vibrator = (Vibrator)act.getSystemService(Context.VIBRATOR_SERVICE);
 		timer = new GameTimer();
 		timer.setListener(this);
@@ -266,6 +268,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 				SoundManager.getInstance()
 						.playSound(SoundManager.SUCCESS, 1.0f);
 				vibrate();
+				camera.shake(0.005f, 0.25f);
 				getActivePlayer().addScore(SUCCESS_SCORE);
 				getActivePlayerScoreSprite().setNumber(getActivePlayer().getScore());
 

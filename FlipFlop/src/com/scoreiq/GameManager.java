@@ -62,7 +62,7 @@ public class GameManager implements IGameEventListener, IMesh{
 
 	private void createGame() {
 		if(game==null){
-			game = new Game(act);
+			game = new Game(act, camera);
 			game.setListener(this);
 			//game.loadLevel("rio/");
 			game.loadLevel("default/");
