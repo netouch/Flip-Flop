@@ -11,9 +11,9 @@ public class AiPlayer extends Player {
 
 	private String debugTag = "TEST_AI";
 
-	public AiPlayer() {
+	public AiPlayer(int size) {
 		name = "AiPlayer";
-		pads = new int[12];
+		pads = new int[size];
 		reset();
 	}
 
@@ -210,5 +210,9 @@ D/TEST_AI ( 3887): Player AiPlayer: getMove() return index = [-10] -------------
 	
 	public void debugSetPads(int pads[]) {
 		this.pads = pads;
+	}
+	
+	public void clear(){
+		pads = null;
 	}
 }

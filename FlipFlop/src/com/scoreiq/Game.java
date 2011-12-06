@@ -57,7 +57,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	
 	public void setPlayers() {
 		humanPlayer = new Player();
-		aiPlayer = new AiPlayer();
+		aiPlayer = new AiPlayer(12);
 
 		if ((int) Math.random() > 0)
 			humanPlayerMove = true;
