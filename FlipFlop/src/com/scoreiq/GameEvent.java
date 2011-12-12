@@ -10,6 +10,7 @@ public class GameEvent {
 	static final int HUMAN_PLAYER_MOVE = 7;
 	static final int AI_PLAYER_MOVE = 8;
 	static final int TIMER_EVENT = 9;
+	static final int NOTIFICATION_ENDS = 10;
 
 	
 	public int type = 0;

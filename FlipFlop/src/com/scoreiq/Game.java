@@ -14,6 +14,8 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	private static final int NO_PAD = -1;
 
 	private static final int SUCCESS_SCORE = 10;
+	private static final String AI_NOTIFICATION_ENDS = "ai";
+	private static final String HUMAN_NOTIFICATION_ENDS = "human";
 
 	private String name = "game";
 
@@ -29,6 +31,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	private Text2D aiScoreSprite;
 	
 	private boolean gameEnds = false;
+	private boolean pause = false;
 
 	private Vector<Pad> flipedPads = new Vector<Pad>();
 	private int playerOneTouchedPads = 0;
@@ -42,6 +45,9 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	private AiPlayer aiPlayer;
 	private boolean aiPlayerMove = false;
 	private int aiTouchedPads;
+	
+	private MovingPlane myTurnNotificator;
+	private MovingPlane humanTurnNotificator;
 
 	public Game(Activity act, Camera camera) {
 		this.act = act;
@@ -64,13 +70,28 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		else
 			aiPlayerMove = true;
 		// TODO: temporary for test. del later
-		aiPlayerMove = true;
+		aiPlayerMove = false;
+		humanPlayerMove = true;
+		
+		swapPlayersMove(true);
 		timer.start();
 	}
 
-	public void swapPlayersMove() {
-		humanPlayerMove = !humanPlayerMove;
-		aiPlayerMove = !aiPlayerMove;
+	public void swapPlayersMove(boolean justNotify) {
+		if(justNotify){
+			if(humanPlayerMove)myTurnNotificator.show(1.5f, 1.0f, AI_NOTIFICATION_ENDS);
+			if(aiPlayerMove)humanTurnNotificator.show(1.5f, 1.0f, HUMAN_NOTIFICATION_ENDS);
+			pause = true;
+			
+			Log.d("TEST",String.format("Game.swapPlayersMove(): start notification"));
+		}
+		else{
+			Log.d("TEST",String.format("Game.swapPlayersMove(): swaping players: was  ai=%b human=%b", aiPlayerMove, humanPlayerMove));
+			humanPlayerMove = !humanPlayerMove;
+			aiPlayerMove = !aiPlayerMove;
+			pause = false;
+			Log.d("TEST",String.format("Game.swapPlayersMove(): swaping players: become  ai=%b human=%b", aiPlayerMove, humanPlayerMove));
+		}
 	}
 
 	public String getName() {
@@ -130,6 +151,18 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		aiScoreSprite.y += 6.3f;
 		aiScoreSprite.z += -2.0f;
 		
+		myTurnNotificator = new MovingPlane(4.0f , 4.0f);
+		myTurnNotificator.setAmplitude(4.0f);
+		myTurnNotificator.setPosition(new Vector3d(-5.0f , 0 , 4.0f));
+		myTurnNotificator.setTextureId(tm.loadTexture("robot_eng.png"));
+		myTurnNotificator.setListener(this);
+		
+		humanTurnNotificator = new MovingPlane(4.0f , 4.0f);
+		humanTurnNotificator.setAmplitude(-4.0f);
+		humanTurnNotificator.setPosition(new Vector3d(5.0f , 0 , 4.0f));
+		humanTurnNotificator.setTextureId(tm.loadTexture("human_eng.png"));
+		humanTurnNotificator.setListener(this);
+		
 		setPlayers();
 		reset(theme);
 	}
@@ -147,7 +180,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	}
 
 	public boolean onTouch(Vector3d camPos, Vector3d ray, int eventAction) {
-		if (!gameEnds && eventAction == MotionEvent.ACTION_UP && humanPlayerMove) {
+		if (!pause && !gameEnds && eventAction == MotionEvent.ACTION_UP && humanPlayerMove) {
 			int i = getTapedPadNum(camPos, ray);
 			if (i != NO_PAD)
 				if (playerOneTouchedPads < 2 && humanTouchedPads < 2) {
@@ -199,6 +232,8 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		
 		humanScoreSprite.draw(gl);
 		aiScoreSprite.draw(gl);
+		myTurnNotificator.draw(gl);
+		humanTurnNotificator.draw(gl);
 	}
 
 	@Override
@@ -211,6 +246,8 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		}
 
 		timer.update(secElapsed);
+		myTurnNotificator.update(secElapsed);
+		humanTurnNotificator.update(secElapsed);
 	}
 
 	@Override
@@ -235,7 +272,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		case GameEvent.TIMER_EVENT:
 			// Log.d("TEST",
 			// String.format("Game: receive GameEvent TIMER_EVENT"));
-			if (!gameEnds && aiPlayerMove) {
+			if (!pause && !gameEnds && aiPlayerMove) {
 				int i = aiPlayer.getMove();
 				if (i != NO_PAD && i != AiPlayer.PAD_NONE)
 					if (aiTouchedPads < 2 && pads.get(i).isSelectable()) {
@@ -244,6 +281,11 @@ public class Game implements ITouchNMesh, IGameEventListener {
 						aiTouchedPads++;
 					}
 			}
+			break;
+			
+		case GameEvent.NOTIFICATION_ENDS:
+			Log.d("TEST",String.format("Game: receive GameEvent NOTIFICATION_ENDS"));
+			swapPlayersMove(false);
 			break;
 		}
 	}
@@ -286,7 +328,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 			humanTouchedPads = 0;
 			aiTouchedPads = 0;
 
-			swapPlayersMove();
+			swapPlayersMove(true);
 		}
 	}
 

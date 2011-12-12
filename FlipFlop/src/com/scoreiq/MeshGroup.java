@@ -22,12 +22,14 @@ public class MeshGroup extends Mesh {
 		return mChildren.size();
 	}
 	
+/*
 	private void multiplyMatricies(GL10 gl){
 		gl.glTranslatef(x, y, z);
 	    gl.glRotatef(rx, 1, 0, 0);
 	    gl.glRotatef(ry, 0, 1, 0);
 	    gl.glRotatef(rz, 0, 0, 1);
 	}
+*/
 	
 	public boolean addMesh(Mesh object){
 		return mChildren.add(object);

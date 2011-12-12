@@ -78,7 +78,7 @@ public class Mesh implements IMesh{
 		y = pos.y;
 		z = pos.z;
 		
-		position = pos;
+		position.set(pos);
 	}
 	
 	public void setPosAcceleration(Vector3d posAcceleration) {
@@ -135,6 +135,13 @@ public class Mesh implements IMesh{
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0);
 	}
 	
+	protected void multiplyMatricies(GL10 gl){
+		gl.glTranslatef(x, y, z);
+	    gl.glRotatef(rx, 1, 0, 0);
+	    gl.glRotatef(ry, 0, 1, 0);
+	    gl.glRotatef(rz, 0, 0, 1);
+	}
+	
 	public void draw(GL10 gl) {
 		// Counter-clockwise winding.
 		gl.glFrontFace(GL10.GL_CCW);
@@ -167,12 +174,13 @@ public class Mesh implements IMesh{
 	    }
 	    
 	    gl.glPushMatrix();
-	    
-	    
+	    multiplyMatricies(gl);
+	    /*
 	    gl.glTranslatef(x, y, z);
 	    gl.glRotatef(rx, 1, 0, 0);
 	    gl.glRotatef(ry, 0, 1, 0);
 	    gl.glRotatef(rz, 0, 0, 1);
+	    */
 	    
 	    /*
 	    gl.glTranslatef(position.x, position.y, position.z);
