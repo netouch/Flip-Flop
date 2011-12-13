@@ -72,6 +72,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		item.setEvent(new GameEvent(GameEvent.THEME_SELECT , "rio/"));
 		item.setListener(this);
 		item.x += -2.0f;
+		item.y += 2.0f;
 		menuGroups.get(THEMEMENU).add(item);
 		
 		item = new MenuItem(3.0f, 3.0f, 0.0f, 0.0f, 1.0f, 1.0f);
@@ -79,6 +80,15 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		item.setEvent(new GameEvent(GameEvent.THEME_SELECT, "default/"));
 		item.setListener(this);
 		item.x += 2.0f;
+		item.y += 2.0f;
+		menuGroups.get(THEMEMENU).add(item);
+		
+		item = new MenuItem(3.0f, 3.0f, 0.0f, 0.0f, 1.0f, 1.0f);
+		item.setTextureId(TextureManager.getInstance().loadTexture("newyear/title.png"));
+		item.setEvent(new GameEvent(GameEvent.THEME_SELECT, "newyear/"));
+		item.setListener(this);
+		item.x += -2.0f;
+		item.y += -3.0f;
 		menuGroups.get(THEMEMENU).add(item);
 		
 		//Log.d("TEST", String.format("Menu - createMenu() finish"));

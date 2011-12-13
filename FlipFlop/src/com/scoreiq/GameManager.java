@@ -36,6 +36,7 @@ public class GameManager implements IGameEventListener, IMesh{
 		case GameEvent.TEXTURE_MANAGER_READY:
 			TextureManager.getInstance().loadAllTexturesIn("rio/");
 			TextureManager.getInstance().loadAllTexturesIn("default/");
+			TextureManager.getInstance().loadAllTexturesIn("newyear/");
 			createMenu();
 			createGame();
 			currentGameState = menu;
