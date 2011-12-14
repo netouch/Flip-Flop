@@ -3,10 +3,9 @@ package com.scoreiq;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Vector;
-import java.io.InputStreamReader;
 import java.io.InputStream;
-import android.util.Log;
+import java.io.InputStreamReader;
+import java.util.Vector;
 
 import android.app.Activity;
 

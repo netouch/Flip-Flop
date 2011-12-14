@@ -3,8 +3,10 @@ package com.scoreiq;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 public class GameManager implements IGameEventListener, IMesh{
 	private Activity act;
@@ -34,9 +36,7 @@ public class GameManager implements IGameEventListener, IMesh{
 	public void onGameEvent(GameEvent event) {
 		switch(event.type){
 		case GameEvent.TEXTURE_MANAGER_READY:
-			TextureManager.getInstance().loadAllTexturesIn("rio/");
-			TextureManager.getInstance().loadAllTexturesIn("default/");
-			TextureManager.getInstance().loadAllTexturesIn("newyear/");
+			loadTextures();
 			createMenu();
 			createGame();
 			currentGameState = menu;
@@ -58,7 +58,39 @@ public class GameManager implements IGameEventListener, IMesh{
 		case GameEvent.THEME_SELECT:
 			theme = event.theme;
 			break;
+			
+		case GameEvent.SEND_FEEDBACK:	
+			Intent i = new Intent(Intent.ACTION_SEND);
+			i.setType("text/plain");
+			i.setType("message/rfc822");
+			i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"scoreiq@gmail.com"});
+			i.putExtra(Intent.EXTRA_SUBJECT, "FlipFlop feedback");
+			i.putExtra(Intent.EXTRA_TEXT   , "Enter text here...");
+			try {
+			    act.startActivity(Intent.createChooser(i, "Send mail..."));
+			} catch (android.content.ActivityNotFoundException ex) {
+			    Toast.makeText(act, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+			}
+			break;
 		}
+	}
+
+	private void loadTextures() {
+		TextureManager tm = TextureManager.getInstance();
+		tm.loadAllTexturesIn("rio/");
+		tm.loadAllTexturesIn("default/");
+		tm.loadAllTexturesIn("newyear/");
+		
+		tm.loadTexture("numbers.png");
+		tm.loadTexture("numbers2.png");
+		tm.loadTexture("robot_eng.png");
+		tm.loadTexture("human_eng.png");
+		
+		tm.loadTexture("menu_bg2.png");
+		tm.loadTexture("menu.png");
+		tm.loadTexture("menu_press.png");
+		
+		tm.loadTexture("winners.png");
 	}
 
 	private void createGame() {

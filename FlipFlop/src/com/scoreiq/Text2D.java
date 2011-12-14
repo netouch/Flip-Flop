@@ -1,6 +1,5 @@
 package com.scoreiq;
 
-import javax.microedition.khronos.opengles.GL10;
 
 public class Text2D extends MeshGroup {
 	private float uvOfDigits[] = { 0.0f, 0.0f, 0.25f, 0.0f, 0.5f, 0.0f, 0.75f,

@@ -5,12 +5,12 @@ import java.util.HashMap;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.util.Log;
 
 public class SoundManager {
 	public static final int CLICK = 1;
 	public static final int SUCCESS = 2;
 	public static final int FAIL = 3;
+	public static final int WIN = 4;
 	
 	private static SoundManager instance;
 	
@@ -39,6 +39,7 @@ public class SoundManager {
 		sounds.put(CLICK, soundPool.load(context, R.raw.click , 1));
 		sounds.put(SUCCESS, soundPool.load(context, R.raw.success, 1));
 		sounds.put(FAIL, soundPool.load(context, R.raw.fail, 1));
+		sounds.put(WIN, soundPool.load(context, R.raw.win, 1));
 		//sounds.put(2, soundPool.load("sounds/identical.mp3", 1));
 	}
 	

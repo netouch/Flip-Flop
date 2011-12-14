@@ -46,6 +46,11 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	private boolean aiPlayerMove = false;
 	private int aiTouchedPads;
 	
+	private Plane winGround;
+	private Plane winHuman;
+	private Plane winRobot;
+	private int showWinner = 0;
+	
 	private MovingPlane myTurnNotificator;
 	private MovingPlane humanTurnNotificator;
 
@@ -163,6 +168,23 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		humanTurnNotificator.setTextureId(tm.loadTexture("human_eng.png"));
 		humanTurnNotificator.setListener(this);
 		
+		winGround = new Plane(8.0f , 4.0f, 0.0f , 0.55f , 1.0f , 1.0f);
+		winGround.setTextureId(tm.loadTexture("winners.png"));
+		winGround.y = -4.0f;
+		winGround.z = 1.0f;
+		
+		winHuman = new Plane(3.0f , 3.0f, 0.5f , 0.0f , 1.0f , 0.6f);
+		winHuman.setTextureId(tm.loadTexture("winners.png"));
+		winHuman.y = -3.0f;
+		winHuman.x = -2.0f;
+		winHuman.z = 0.5f;
+		
+		winRobot = new Plane(3.0f , 3.0f, 0.0f , 0.0f , 0.5f , 0.6f);
+		winRobot.setTextureId(tm.loadTexture("winners.png"));
+		winRobot.y = -3.0f;
+		winRobot.x = 2.0f;
+		winRobot.z = 0.5f;
+		
 		setPlayers();
 		reset(theme);
 	}
@@ -234,6 +256,10 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		aiScoreSprite.draw(gl);
 		myTurnNotificator.draw(gl);
 		humanTurnNotificator.draw(gl);
+		
+		winHuman.draw(gl);
+		winRobot.draw(gl);
+		winGround.draw(gl);
 	}
 
 	@Override
@@ -328,7 +354,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 			humanTouchedPads = 0;
 			aiTouchedPads = 0;
 
-			swapPlayersMove(true);
+			if(!checkEndGame())swapPlayersMove(true);
 		}
 	}
 

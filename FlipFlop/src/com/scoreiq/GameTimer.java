@@ -1,6 +1,5 @@
 package com.scoreiq;
 
-import android.util.Log;
 
 public class GameTimer {
 	private int updatesCount = 0;

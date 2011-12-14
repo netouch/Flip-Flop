@@ -11,6 +11,7 @@ public class GameEvent {
 	static final int AI_PLAYER_MOVE = 8;
 	static final int TIMER_EVENT = 9;
 	static final int NOTIFICATION_ENDS = 10;
+	static final int SEND_FEEDBACK = 11;;
 
 	
 	public int type = 0;
