@@ -4,6 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
@@ -57,24 +58,33 @@ public class GameManager implements IGameEventListener, IMesh{
 			break;
 		case GameEvent.THEME_SELECT:
 			theme = event.theme;
+			
+			//TODO: test block
+			Intent i_opt = new Intent(act.getApplicationContext(), OptionsScreen.class);
+			act.startActivity(i_opt);
+			
 			break;
 			
 		case GameEvent.SEND_FEEDBACK:	
-			Intent i = new Intent(Intent.ACTION_SEND);
-			i.setType("text/plain");
-			i.setType("message/rfc822");
-			i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"scoreiq@gmail.com"});
-			i.putExtra(Intent.EXTRA_SUBJECT, "FlipFlop feedback");
-			i.putExtra(Intent.EXTRA_TEXT   , "Enter text here...");
-			try {
-			    act.startActivity(Intent.createChooser(i, "Send mail..."));
-			} catch (android.content.ActivityNotFoundException ex) {
-			    Toast.makeText(act, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-			}
+			sendFeedback();
 			break;
 		}
 	}
 
+	private void sendFeedback(){
+		Intent i = new Intent(Intent.ACTION_SEND);
+		i.setType("text/plain");
+		i.setType("message/rfc822");
+		i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"scoreiq@gmail.com"});
+		i.putExtra(Intent.EXTRA_SUBJECT, "FlipFlop feedback");
+		i.putExtra(Intent.EXTRA_TEXT   , "Enter text here...");
+		try {
+		    act.startActivity(Intent.createChooser(i, "Send mail..."));
+		} catch (android.content.ActivityNotFoundException ex) {
+		    Toast.makeText(act, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
 	private void loadTextures() {
 		TextureManager tm = TextureManager.getInstance();
 		tm.loadAllTexturesIn("rio/");

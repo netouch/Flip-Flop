@@ -13,14 +13,22 @@ public class SoundManager {
 	public static final int WIN = 4;
 	
 	private static SoundManager instance;
-	
 	private Context context;
 	
 	private SoundPool soundPool;
 	private HashMap sounds;
 	private AudioManager audioManager;
+	private boolean soundOn = true;
 	
 	private SoundManager(){
+	}
+	
+	public void soundOn(){
+		soundOn = true;
+	}
+	
+	public void soundOff(){
+		soundOn = false;
 	}
 	
 	public static synchronized SoundManager getInstance(){
@@ -48,9 +56,11 @@ public class SoundManager {
 	}
 	
 	public void playSound(int index, float speed){
-		float streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-		streamVolume = streamVolume / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-		soundPool.play((Integer) sounds.get(index), streamVolume, streamVolume, 1, 0, speed);
+		if(soundOn){
+			float streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+			streamVolume = streamVolume / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+			soundPool.play((Integer) sounds.get(index), streamVolume, streamVolume, 1, 0, speed);
+		}
 	}
 	
 	public void stop(int index){

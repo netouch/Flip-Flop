@@ -16,12 +16,16 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	private static final int SUCCESS_SCORE = 10;
 	private static final String AI_NOTIFICATION_ENDS = "ai";
 	private static final String HUMAN_NOTIFICATION_ENDS = "human";
-
+	private static final int NOBODY_WINS = 0;
+	private static final int HUMAN_WINS = 1;
+	private static final int ROBOT_WINS = 2;
+	
 	private String name = "game";
 
 	private IGameEventListener listener;
 	private Activity act;
-	private Vibrator vibrator; 
+	private Vibrator vibrator;
+	private boolean vibrateOn = true;
 	private Camera camera;
 
 	private Vector<Pad> pads = new Vector<Pad>();
@@ -49,7 +53,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	private Plane winGround;
 	private Plane winHuman;
 	private Plane winRobot;
-	private int showWinner = 0;
+	private int showWinner = NOBODY_WINS;
 	
 	private MovingPlane myTurnNotificator;
 	private MovingPlane humanTurnNotificator;
@@ -57,13 +61,14 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	public Game(Activity act, Camera camera) {
 		this.act = act;
 		this.camera = camera;
+		
 		vibrator = (Vibrator)act.getSystemService(Context.VIBRATOR_SERVICE);
 		timer = new GameTimer();
 		timer.setListener(this);
 	}
 	
 	private void vibrate(){
-		if(vibrator!=null)vibrator.vibrate(200);
+		if(vibrateOn && vibrator != null) vibrator.vibrate(200);
 	}
 	
 	public void setPlayers() {
@@ -168,27 +173,61 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		humanTurnNotificator.setTextureId(tm.loadTexture("human_eng.png"));
 		humanTurnNotificator.setListener(this);
 		
-		winGround = new Plane(8.0f , 4.0f, 0.0f , 0.55f , 1.0f , 1.0f);
+		winGround = new Plane(8.0f , 4.0f, 0.0f , 0.57f , 1.0f , 1.0f);
 		winGround.setTextureId(tm.loadTexture("winners.png"));
 		winGround.y = -4.0f;
 		winGround.z = 1.0f;
 		
-		winHuman = new Plane(3.0f , 3.0f, 0.5f , 0.0f , 1.0f , 0.6f);
+		winHuman = new Plane(7.0f , 7.0f, 0.5f , 0.01f , 1.0f , 0.55f);
 		winHuman.setTextureId(tm.loadTexture("winners.png"));
-		winHuman.y = -3.0f;
-		winHuman.x = -2.0f;
+		winHuman.y = 0.5f;
+		//winHuman.x = -2.0f;
 		winHuman.z = 0.5f;
 		
-		winRobot = new Plane(3.0f , 3.0f, 0.0f , 0.0f , 0.5f , 0.6f);
+		winRobot = new Plane(7.0f , 7.0f, 0.0f , 0.001f , 0.5f , 0.55f);
 		winRobot.setTextureId(tm.loadTexture("winners.png"));
-		winRobot.y = -3.0f;
-		winRobot.x = 2.0f;
+		winRobot.y = 0.0f;
+		//winRobot.x = 2.0f;
 		winRobot.z = 0.5f;
 		
 		setPlayers();
 		reset(theme);
 	}
 
+	private void setScoreIndicatorsPosition(int winner){
+		switch(winner){
+		case NOBODY_WINS:
+			aiScoreSprite.x = 1.5f;
+			aiScoreSprite.y = 6.3f;
+			aiScoreSprite.z = -2.0f;
+			
+			humanScoreSprite.x = -3.5f;
+			humanScoreSprite.y = 6.3f;
+			humanScoreSprite.z = -2.0f;
+			break;
+			
+		case ROBOT_WINS:
+			aiScoreSprite.x = 0.0f;
+			aiScoreSprite.y = -2.0f;
+			aiScoreSprite.z = 1.0f;
+			
+			humanScoreSprite.x = -3.5f;
+			humanScoreSprite.y = 6.3f;
+			humanScoreSprite.z = -20.0f;
+			break;
+			
+		case HUMAN_WINS:
+			aiScoreSprite.x = 1.5f;
+			aiScoreSprite.y = 6.3f;
+			aiScoreSprite.z = -20.0f;
+			
+			humanScoreSprite.x = 0.0f;
+			humanScoreSprite.y = -2.0f;
+			humanScoreSprite.z = 1.0f;
+			break;
+		}
+	}
+	
 	private void shufflePads() {
 		int padsNum = pads.size();
 		Vector3d tmpPos;
@@ -252,14 +291,24 @@ public class Game implements ITouchNMesh, IGameEventListener {
 				tmpPad.draw(gl);
 		}
 		
-		humanScoreSprite.draw(gl);
-		aiScoreSprite.draw(gl);
 		myTurnNotificator.draw(gl);
 		humanTurnNotificator.draw(gl);
 		
-		winHuman.draw(gl);
-		winRobot.draw(gl);
-		winGround.draw(gl);
+		switch(showWinner){
+		case NOBODY_WINS:
+			break;
+		case HUMAN_WINS:
+			winHuman.draw(gl);
+			winGround.draw(gl);
+			break;
+		case ROBOT_WINS:
+			winRobot.draw(gl);
+			winGround.draw(gl);
+			break;
+		}
+		
+		humanScoreSprite.draw(gl);
+		aiScoreSprite.draw(gl);
 	}
 
 	@Override
@@ -289,9 +338,12 @@ public class Game implements ITouchNMesh, IGameEventListener {
 						"Game: player Score is %d , ai Csore is %d",
 						humanPlayer.getScore(), aiPlayer.getScore()));
 				gameEnds = true;
-				//showFinalDialog();
-				//if (listener != null)
-				//	listener.onGameEvent(new GameEvent(GameEvent.GAME_END));
+				if(humanPlayer.getScore()>=aiPlayer.getScore()){
+					showWinner = HUMAN_WINS;
+					SoundManager.getInstance().playSound(SoundManager.WIN, 1.0f);
+				}
+				else showWinner = ROBOT_WINS;
+				setScoreIndicatorsPosition(showWinner);
 			}
 			break;
 
@@ -417,5 +469,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		aiScoreSprite.reset();
 		
 		gameEnds = false;
+		showWinner = NOBODY_WINS;
+		setScoreIndicatorsPosition(showWinner);
 	}
 }

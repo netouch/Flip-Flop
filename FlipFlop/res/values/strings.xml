@@ -2,4 +2,8 @@
 <resources>
     <string name="hello">Hello World, FlipFlopActivity!</string>
     <string name="app_name">FlipFlop</string>
+    <string name="options_vibrate">Vibration ON</string>
+    <string name="options_sound">Sound On</string>
+    <string name="OptionsCaption">Options</string>
+    <string name="optionsButtonBack">Back to Game</string>
 </resources>
