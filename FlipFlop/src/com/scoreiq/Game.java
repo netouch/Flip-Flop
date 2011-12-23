@@ -387,7 +387,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 
 				SoundManager.getInstance()
 						.playSound(SoundManager.SUCCESS, 1.0f);
-				vibrate();
+				VibratorManager.getInstance().vibrate();
 				camera.shake(0.005f, 0.25f);
 				getActivePlayer().addScore(SUCCESS_SCORE);
 				getActivePlayerScoreSprite().setNumber(getActivePlayer().getScore());

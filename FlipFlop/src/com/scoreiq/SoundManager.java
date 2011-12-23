@@ -23,12 +23,12 @@ public class SoundManager {
 	private SoundManager(){
 	}
 	
-	public void soundOn(){
-		soundOn = true;
+	public void setSoundOn(boolean on){
+		soundOn = on;
 	}
 	
-	public void soundOff(){
-		soundOn = false;
+	public boolean getSoundOn(){
+		return soundOn;
 	}
 	
 	public static synchronized SoundManager getInstance(){

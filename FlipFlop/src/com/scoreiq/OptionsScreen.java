@@ -1,6 +1,7 @@
 package com.scoreiq;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,6 +49,10 @@ public class OptionsScreen extends Activity {
 	     back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				//Intent config = new Intent(getApplicationContext(), FlipFlopActivity.class);
+				//config.putExtra("sound", sound.isChecked());
+				//config.putExtra("vibration", vibration.isChecked());
+				//setResult(RESULT_OK, config);
 				finish();
 			}
 		});

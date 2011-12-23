@@ -18,12 +18,15 @@ public class FlipFlopActivity extends Activity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("TEST", String.format("\n\n-------------------------------\nNEW START\nActivity - onCreate()"));
+        
         TextureManager.getInstance().clearInstances();
         TextureManager.getInstance().setActivity(this);
         
         SoundManager.getInstance();
         SoundManager.getInstance().init(this);
         SoundManager.getInstance().loadSounds();
+        
+        VibratorManager.getInstance().init(this);
         
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         
