@@ -3,6 +3,7 @@ package com.scoreiq;
 import javax.microedition.khronos.opengles.GL;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -58,6 +59,18 @@ public class FlipFlopActivity extends Activity{
     	else view.gameManager.onGameEvent(new GameEvent(GameEvent.GAME_END));
     	
     	return;
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent i){
+    	Log.d("TEST", String.format("Activity - onActivityResult() - requestCode=%d, resultCode=%d", requestCode, resultCode));
+    	if(resultCode == RESULT_FIRST_USER){
+    		boolean sound = i.getBooleanExtra("sound", true);
+	    	boolean vibration = i.getBooleanExtra("vibration", true);
+	    	Log.d("TEST", String.format("Activity - onActivityResult() - sound=%b, vibration=%b", sound, vibration));
+	    	SoundManager.getInstance().setSoundOn(sound);
+	    	VibratorManager.getInstance().setEnable(vibration);
+	    }
     }
     
     @Override

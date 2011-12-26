@@ -24,8 +24,7 @@ public class Game implements ITouchNMesh, IGameEventListener {
 
 	private IGameEventListener listener;
 	private Activity act;
-	private Vibrator vibrator;
-	private boolean vibrateOn = true;
+
 	private Camera camera;
 
 	private Vector<Pad> pads = new Vector<Pad>();
@@ -62,13 +61,8 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		this.act = act;
 		this.camera = camera;
 		
-		vibrator = (Vibrator)act.getSystemService(Context.VIBRATOR_SERVICE);
 		timer = new GameTimer();
 		timer.setListener(this);
-	}
-	
-	private void vibrate(){
-		if(vibrateOn && vibrator != null) vibrator.vibrate(200);
 	}
 	
 	public void setPlayers() {

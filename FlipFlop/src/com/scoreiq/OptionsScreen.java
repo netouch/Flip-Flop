@@ -15,47 +15,32 @@ public class OptionsScreen extends Activity {
 		 super.onCreate(savedInstanceState);
 	     setContentView(R.layout.options);
 	     
-	     //vibration = (CheckBox)findViewById(R.id.vibrationOn);
-	     //sound = (CheckBox)findViewById(R.id.soundOn);
+	     vibration = (CheckBox)findViewById(R.id.vibrationOn);
+	     sound = (CheckBox)findViewById(R.id.soundOn);
 	     Button back = (Button)findViewById(R.id.btnBack);
 	     
-/*	     receive data
-	     Intent i = getIntent();
-	     String nm=null;
-	     String em=null;
-	     if(i!=null){
-	    	 nm = i.getStringExtra("name");
-	    	 em = i.getStringExtra("email");
-	     }
-	     
-	     if(nm !=null && em!=null){
-	     	name.setText(nm);
-	     	email.setText(em);
-	     }
-*/	     
-	     
-/* sending data
- Intent nextScreen = new Intent(getApplicationContext(), OptionsScreen.class);
-				
-				nextScreen.putExtra("name", name.getText().toString());
-				nextScreen.putExtra("email", email.getText().toString());
-				Log.d("TEST", String.format("Sending %s:%s", name.getText().toString(), email.getText().toString() ));
-				
-				startActivity(nextScreen);
- * 
- */
-	     
+	     setUI();
 	    
 	     back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				//Intent config = new Intent(getApplicationContext(), FlipFlopActivity.class);
-				//config.putExtra("sound", sound.isChecked());
-				//config.putExtra("vibration", vibration.isChecked());
-				//setResult(RESULT_OK, config);
+				Intent config = new Intent();
+				config.putExtra("sound", sound.isChecked());
+				config.putExtra("vibration", vibration.isChecked());
+				setResult(RESULT_FIRST_USER, config);
+				//setResult(RESULT_FIRST_USER);
 				finish();
 			}
 		});
 	    
 	 }
+
+	private void setUI() {
+		Intent i = getIntent();
+		if(i!=null){
+			sound.setChecked(i.getBooleanExtra("sound", true));
+			vibration.setChecked(i.getBooleanExtra("vibration", true));
+		}
+	}
 }

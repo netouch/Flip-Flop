@@ -42,10 +42,10 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		background.setTextureId(texId);
 		background.z += -4.0f;
 		
-		curTitle = new Plane(1.0f , 1.0f);
+		curTitle = new Plane(2.0f , 2.0f);
 		curTitle.setTextureId(TextureManager.getInstance().loadTexture(theme+"title.png"));
-		curTitle.y += -0.8f;
-		curTitle.x += +2.0f;
+		curTitle.y += 2.5f;
+		curTitle.x += 2.5f;
 		
 		item = new MenuItem(6.0f, 2.0f, 0.0f, 0.0f, 1.0f, 0.25f);
 		//item.setTextureId(TextureManager.getInstance().loadTexture("menu.png"));
@@ -62,6 +62,15 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 							TextureManager.getInstance().loadTexture("menu_press.png"));
 		item.setEvent(new GameEvent(GameEvent.MENU_THEME));
 		item.setListener(this);
+		item.y += 1.0f;
+		item.x += -1.0f;
+		menuGroups.get(MAINMENU).add(item);
+		
+		item = new MenuItem(6.0f, 2.0f, 0.0f, 0.75f, 1.0f, 1.0f);
+		item.setTextures(	TextureManager.getInstance().loadTexture("menu.png"), 
+							TextureManager.getInstance().loadTexture("menu_press.png"));
+		item.setEvent(new GameEvent(GameEvent.MENU_OPTIONS));
+		item.setListener(this);
 		item.y += -1.0f;
 		item.x += -1.0f;
 		menuGroups.get(MAINMENU).add(item);
@@ -71,7 +80,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 							TextureManager.getInstance().loadTexture("menu.png"));
 		item.setEvent(new GameEvent(GameEvent.SEND_FEEDBACK));
 		item.setListener(this);
-		item.y += -5.0f;
+		item.y += -3.0f;
 		item.x += -1.0f;
 		menuGroups.get(MAINMENU).add(item);
 		
@@ -81,7 +90,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		item.setEvent(new GameEvent(GameEvent.THEME_SELECT , "rio/"));
 		item.setListener(this);
 		item.x += -2.0f;
-		item.y += 2.0f;
+		item.y += 3.0f;
 		menuGroups.get(THEMEMENU).add(item);
 		
 		item = new MenuItem(3.0f, 3.0f, 0.0f, 0.0f, 1.0f, 1.0f);
@@ -89,7 +98,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		item.setEvent(new GameEvent(GameEvent.THEME_SELECT, "default/"));
 		item.setListener(this);
 		item.x += 2.0f;
-		item.y += 2.0f;
+		item.y += 3.0f;
 		menuGroups.get(THEMEMENU).add(item);
 		
 		item = new MenuItem(3.0f, 3.0f, 0.0f, 0.0f, 1.0f, 1.0f);
@@ -97,7 +106,7 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 		item.setEvent(new GameEvent(GameEvent.THEME_SELECT, "newyear/"));
 		item.setListener(this);
 		item.x += -2.0f;
-		item.y += -3.0f;
+		item.y += 0.0f;
 		menuGroups.get(THEMEMENU).add(item);
 		
 		//Log.d("TEST", String.format("Menu - createMenu() finish"));
@@ -162,6 +171,9 @@ public class Menu extends MeshGroup implements ITouchNMesh, IGameEventListener {
 			curTitle.setTextureId(TextureManager.getInstance().loadTexture(theme+"title.png"));
 			listener.onGameEvent(event);
 			currentMenuGroup = MAINMENU;
+			break;
+		case GameEvent.MENU_OPTIONS:
+			listener.onGameEvent(event);
 			break;
 			
 		case GameEvent.SEND_FEEDBACK:

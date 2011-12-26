@@ -58,17 +58,23 @@ public class GameManager implements IGameEventListener, IMesh{
 			break;
 		case GameEvent.THEME_SELECT:
 			theme = event.theme;
-			
-			//TODO: test block
-			Intent i_opt = new Intent(act.getApplicationContext(), OptionsScreen.class);
-			act.startActivity(i_opt);
-			
+			break;
+		case GameEvent.MENU_OPTIONS:
+			showOptions();
 			break;
 			
 		case GameEvent.SEND_FEEDBACK:	
 			sendFeedback();
 			break;
 		}
+	}
+
+	private void showOptions() {
+		Intent i_opt = new Intent(act.getApplicationContext(), OptionsScreen.class);
+		i_opt.putExtra("sound", SoundManager.getInstance().getSoundOn());
+		i_opt.putExtra("vibration", VibratorManager.getInstance().getEnable());
+		act.startActivityForResult(i_opt, Activity.RESULT_FIRST_USER);
+		//act.startActivity(i_opt);
 	}
 
 	private void sendFeedback(){
