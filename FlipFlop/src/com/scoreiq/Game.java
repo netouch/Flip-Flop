@@ -66,16 +66,20 @@ public class Game implements ITouchNMesh, IGameEventListener {
 	}
 	
 	public void setPlayers() {
-		humanPlayer = new Player();
-		aiPlayer = new AiPlayer(12);
+		if(humanPlayer == null) humanPlayer = new Player();
+		if(aiPlayer == null) aiPlayer = new AiPlayer(12);
 
-		if ((int) Math.random() > 0)
+		humanPlayer.reset();
+		aiPlayer.reset();
+		
+		if ((int) Math.random() > 0){
 			humanPlayerMove = true;
-		else
+			aiPlayerMove = false;
+		}
+		else {
 			aiPlayerMove = true;
-		// TODO: temporary for test. del later
-		aiPlayerMove = false;
-		humanPlayerMove = true;
+			humanPlayerMove = false;
+		}
 		
 		swapPlayersMove(true);
 		timer.start();
@@ -201,8 +205,8 @@ public class Game implements ITouchNMesh, IGameEventListener {
 			break;
 			
 		case ROBOT_WINS:
-			aiScoreSprite.x = 0.0f;
-			aiScoreSprite.y = -2.0f;
+			aiScoreSprite.x = -1.0f;
+			aiScoreSprite.y = -4.0f;
 			aiScoreSprite.z = 1.0f;
 			
 			humanScoreSprite.x = -3.5f;
@@ -215,8 +219,8 @@ public class Game implements ITouchNMesh, IGameEventListener {
 			aiScoreSprite.y = 6.3f;
 			aiScoreSprite.z = -20.0f;
 			
-			humanScoreSprite.x = 0.0f;
-			humanScoreSprite.y = -2.0f;
+			humanScoreSprite.x = -1.0f;
+			humanScoreSprite.y = -4.0f;
 			humanScoreSprite.z = 1.0f;
 			break;
 		}
@@ -452,12 +456,12 @@ public class Game implements ITouchNMesh, IGameEventListener {
 		shufflePads();
 
 		flipedPads.clear();
-		if (aiPlayer != null)
-			aiPlayer.reset();
+		
 		playerOneTouchedPads = 0;
 		
-		humanPlayer.reset();
-		aiPlayer.reset();
+		setPlayers();
+		//humanPlayer.reset();
+		//aiPlayer.reset();
 		
 		humanScoreSprite.reset();
 		aiScoreSprite.reset();
